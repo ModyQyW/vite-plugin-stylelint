@@ -1,26 +1,26 @@
-# vite-plugin-eslint
+# vite-plugin-stylelint
 
-[![npm](https://img.shields.io/npm/v/vite-plugin-eslint)](https://www.npmjs.com/package/vite-plugin-eslint)
-[![GitHub license](https://img.shields.io/github/license/gxmari007/vite-plugin-eslint)](https://github.com/gxmari007/vite-plugin-eslint/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
+[![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-ESLint plugin for vite.
+Stylelint plugin for vite.
 
 ## Install
 
-```
-npm install vite-plugin-eslint --save-dev
+```sh
+npm install vite-plugin-stylelint --save-dev
 # or
-yarn add vite-plugin-eslint --dev
+yarn add vite-plugin-stylelint --dev
 ```
 
 ## Usage
 
 ```js
 import { defineConfig } from 'vite';
-import eslintPlugin from 'vite-plugin-eslint';
+import StylelintPlugin from 'vite-plugin-stylelint';
 
 export default defineConfig({
-  plugins: [eslintPlugin()],
+  plugins: [StylelintPlugin()],
 });
 ```
 
@@ -43,7 +43,7 @@ Auto fix source code.
 ### `include`
 
 - Type: `string | string[]`
-- Default: `['src/**/*.js', 'src/**/*.jsx', 'src/**/*.ts', 'src/**/*.tsx', 'src/**/*.vue']`
+- Default: `['src/**/*.css', 'src/**/*.less', 'src/**/*.scss', 'src/**/*.sass', 'src/**/*.vue']`
 
 A single file, or array of files, to include when linting.
 
@@ -56,8 +56,8 @@ A single file, or array of files, to exclude when linting.
 
 ### `formatter`
 
-- Type: `string | ESLint.Formatter`
-- Default: `stylish`
+- Type: `string | FormatterType`
+- Default: `string`
 
 Custom error formatter or the name of a built-in formatter.
 
@@ -66,7 +66,7 @@ Custom error formatter or the name of a built-in formatter.
 - Type: `boolean`
 - Default: `true`
 
-The warings found will be emitted, default to true.
+The warnings found will be emitted, default to true.
 
 ### `throwOnError`
 

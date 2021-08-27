@@ -1,6 +1,6 @@
 import qs from 'querystring';
 import path from 'path';
-import type { ESLint } from 'eslint';
+import type { FormatterType } from 'stylelint';
 
 export interface Options {
   /** The cache is enabled by default to decrease execution time */
@@ -12,8 +12,8 @@ export interface Options {
   /** A single file, or array of files, to exclude when linting */
   exclude?: string | string[];
   /** Custom error formatter or the name of a built-in formatter */
-  formatter?: string | ESLint.Formatter;
-  /** The warings found will be emitted */
+  formatter?: string | FormatterType;
+  /** The warnings found will be emitted */
   throwOnWarning?: boolean;
   /** The errors found will be emitted */
   throwOnError?: boolean;
