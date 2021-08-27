@@ -57,7 +57,7 @@ A single file, or array of files, to exclude when linting.
 ### `formatter`
 
 - Type: `string | FormatterType`
-- Default: `string`
+- Default: `'string'`
 
 Custom error formatter or the name of a built-in formatter.
 
