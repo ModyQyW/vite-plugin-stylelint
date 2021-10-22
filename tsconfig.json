@@ -6,6 +6,7 @@
     "strict": true,
     "allowSyntheticDefaultImports": true,
     "importHelpers": true,
-    "declaration": true
+    "declaration": true,
+    "noImplicitAny": false
   }
 }
