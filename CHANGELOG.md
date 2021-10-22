@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.0.4](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v1.0.3...v1.0.4) (2021-10-22)
+
+
+### Bug Fixes
+
+* fix import ([e82e43d](https://github.com/ModyQyW/vite-plugin-stylelint/commit/e82e43d14e4f80528750f6cb25f33cb0738307d1))
+
 ### [1.0.3](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v1.0.2...v1.0.3) (2021-10-22)
 
 ### [1.0.2](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v1.0.1...v1.0.2) (2021-10-22)
