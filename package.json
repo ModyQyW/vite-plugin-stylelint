@@ -2,11 +2,17 @@
   "name": "vite-plugin-stylelint",
   "version": "1.0.2",
   "description": "Stylelint plugin for vite.",
-  "author": {
-    "email": "wurui7@mail3.sysu.edu.cn",
-    "name": "ModyQyW"
-  },
+  "keywords": [
+    "stylelint",
+    "vite-plugin"
+  ],
+  "homepage": "https://github.com/ModyQyW/vite-plugin-stylelint",
+  "repository": "git+https://github.com:ModyQyW/vite-plugin-stylelint.git",
   "license": "MIT",
+  "author": {
+    "name": "ModyQyW",
+    "email": "wurui7@mail3.sysu.edu.cn"
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -14,33 +20,22 @@
     "dist"
   ],
   "scripts": {
-    "dev": "npm run build -- --watch src",
-    "lint": "eslint src",
-    "example:vue-dev": "pnpm run dev --filter example-vue",
-    "example:vue-build": "pnpm run build --filter example-vue",
-    "example:react-dev": "pnpm run dev --filter example-react",
-    "example:react-build": "pnpm run build --filter example-react",
     "build": "tsup src/index.ts --dts --format esm,cjs",
+    "dev": "npm run build -- --watch src",
+    "example:react-build": "pnpm run build --filter example-react",
+    "example:react-dev": "pnpm run dev --filter example-react",
+    "example:vue-build": "pnpm run build --filter example-vue",
+    "example:vue-dev": "pnpm run dev --filter example-vue",
+    "lint": "eslint src",
+    "prepare": "husky install",
     "prepublishOnly": "npm run build",
     "release": "standard-version"
   },
-  "standard-version": {
-    "scripts": {
-      "posttag": "git push --follow-tags origin main && npm publish"
-    }
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
-  "husky": {
-    "hooks": {
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
-      "pre-commit": "npm run lint"
-    }
-  },
-  "keywords": [
-    "stylelint",
-    "vite-plugin"
-  ],
-  "homepage": "https://github.com/ModyQyW/vite-plugin-stylelint",
-  "repository": "git+https://github.com:ModyQyW/vite-plugin-stylelint.git",
   "config": {
     "commitizen": {
       "path": "cz-conventional-changelog"
@@ -58,7 +53,7 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
-    "husky": "4",
+    "husky": "^7.0.4",
     "prettier": "^2.4.1",
     "rollup": "^2.58.0",
     "standard-version": "^9.3.2",
@@ -69,5 +64,10 @@
   },
   "peerDependencies": {
     "vite": "^2.0.0"
+  },
+  "standard-version": {
+    "scripts": {
+      "posttag": "git push --follow-tags origin main && npm publish"
+    }
   }
 }

@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "vite",
     "build": "tsc && vite build",
+    "dev": "vite",
     "serve": "vite preview"
   },
   "dependencies": {
@@ -23,7 +23,7 @@
     "eslint-plugin-react": "^7.26.1",
     "prettier": "^2.4.1",
     "stylelint": "^14.0.0",
-    "stylelint-config-html": "^0.0.2",
+    "stylelint-config-html": "^1.0.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recess-order": "^2.5.0",
     "stylelint-config-standard": "^23.0.0",

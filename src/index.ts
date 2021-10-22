@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import type { Plugin } from 'vite';
 import stylelint from 'stylelint';
 import type { LinterOptions } from 'stylelint';
