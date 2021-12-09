@@ -15,6 +15,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
       'src/**/*.less',
       'src/**/*.scss',
       'src/**/*.sass',
+      'src/**/*.styl',
       'src/**/*.vue',
     ],
     throwOnWarning: true,
