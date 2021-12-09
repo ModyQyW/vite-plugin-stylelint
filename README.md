@@ -43,7 +43,7 @@ Auto fix source code.
 ### `include`
 
 - Type: `string | string[]`
-- Default: `['src/**/*.css', 'src/**/*.less', 'src/**/*.scss', 'src/**/*.sass', 'src/**/*.vue']`
+- Default: `['src/**/*.css', 'src/**/*.less', 'src/**/*.scss', 'src/**/*.sass', 'src/**/*.styl', 'src/**/*.vue']`
 
 A single file, or array of files, to include when linting.
 
