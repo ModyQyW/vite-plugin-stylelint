@@ -4,7 +4,8 @@ import * as stylelint from 'stylelint';
 import type { LinterOptions } from 'stylelint';
 import { createFilter } from '@rollup/pluginutils';
 
-import { checkVueFile, normalizePath, Options } from './utils';
+// import { checkVueFile, normalizePath, Options } from './utils';
+import { checkVueFile, Options } from './utils';
 
 export default function StylelintPlugin(options: Options = {}): Plugin {
   const defaultOptions: Options = {
@@ -49,7 +50,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
   return {
     name: 'vite:stylelint',
     async transform(_, id) {
-      const file = normalizePath(id);
+      // const file = normalizePath(id);
 
       if (
         !filter(id) ||
@@ -66,7 +67,6 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
             const { source, ignored } = result;
             if (!ignored) {
               result.warnings.forEach((warning) => {
-                console.log('warning', warning);
                 const { severity } = warning;
                 if (severity === 'error' && linterOptions.throwOnError) {
                   this.error(
