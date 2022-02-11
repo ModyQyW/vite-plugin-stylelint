@@ -28,6 +28,7 @@
   ],
   "scripts": {
     "build": "tsup-node src/index.ts --dts --format esm,cjs",
+    "commit": "git-cz",
     "dev": "npm run build -- --watch src",
     "example:react-build": "pnpm run build --filter example-react",
     "example:react-dev": "pnpm run dev --filter example-react",
@@ -47,19 +48,18 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "@commitlint/prompt"
     }
   },
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
-    "@release-it/conventional-changelog": "^4.1.0",
+    "@commitlint/prompt": "^16.1.0",
     "@rollup/pluginutils": "^4.1.2",
     "@types/eslint": "^8.4.1",
     "@types/node": "^17.0.17",
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.11.0",
-    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.8.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
@@ -77,12 +77,6 @@
     "vite": "^2.0.0"
   },
   "release-it": {
-    "plugins": {
-      "@release-it/conventional-changelog": {
-        "preset": "conventionalcommits",
-        "infile": "CHANGELOG.md"
-      }
-    },
     "git": {
       "commitMessage": "chore(release): v${version}",
       "tagName": "v${version}"
