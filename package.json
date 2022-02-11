@@ -33,15 +33,17 @@
     "example:react-dev": "pnpm run dev --filter example-react",
     "example:vue-build": "pnpm run build --filter example-vue",
     "example:vue-dev": "pnpm run dev --filter example-vue",
-    "lint": "eslint src",
+    "lint": "eslint src --fix && tsc src/** --noEmit",
     "prepare": "husky install",
-    "prepublishOnly": "npm run build",
-    "release": "standard-version"
+    "release": "release-it"
   },
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
     ]
+  },
+  "lint-staged": {
+    "*.ts": "eslint --fix"
   },
   "config": {
     "commitizen": {
@@ -51,6 +53,8 @@
   "devDependencies": {
     "@commitlint/cli": "^16.1.0",
     "@commitlint/config-conventional": "^16.0.0",
+    "@release-it/conventional-changelog": "^4.1.0",
+    "@release-it/keep-a-changelog": "^2.3.0",
     "@rollup/pluginutils": "^4.1.2",
     "@types/eslint": "^8.4.1",
     "@types/node": "^17.0.17",
@@ -62,9 +66,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "prettier": "^2.5.1",
+    "release-it": "^14.12.4",
     "rollup": "^2.67.2",
     "rollup-plugin-dts": "^4.1.0",
-    "standard-version": "^9.3.2",
     "stylelint": "^14.5.0",
     "tsup": "^5.11.13",
     "typescript": "^4.5.5",
@@ -73,9 +77,23 @@
   "peerDependencies": {
     "vite": "^2.0.0"
   },
-  "standard-version": {
-    "scripts": {
-      "posttag": "git push --follow-tags origin main && npm publish"
+  "release-it": {
+    "plugins": {
+      "@release-it/conventional-changelog": {
+        "preset": "conventionalcommits",
+        "infile": "CHANGELOG.md"
+      },
+      "@release-it/keep-a-changelog": {
+        "filename": "CHANGELOG.md"
+      }
+    },
+    "git": {
+      "commitMessage": "chore(release): v${version}",
+      "tagName": "v${version}"
+    },
+    "hooks": {
+      "before:init": "pnpm install && pnpm run lint",
+      "after:bump": "pnpm run build"
     }
   }
 }
