@@ -1,74 +1,52 @@
 import * as path from 'path';
 import type { Plugin } from 'vite';
 import * as stylelint from 'stylelint';
-import type { LinterOptions } from 'stylelint';
 import { createFilter } from '@rollup/pluginutils';
 
-// import { checkVueFile, normalizePath, Options } from './utils';
-import { checkVueFile, Options } from './utils';
+import { normalizePath, Options } from './utils';
 
 export default function StylelintPlugin(options: Options = {}): Plugin {
-  const defaultOptions: Options = {
-    cache: true,
-    fix: false,
-    include: [
-      'src/**/*.css',
-      'src/**/*.less',
-      'src/**/*.scss',
-      'src/**/*.sass',
-      'src/**/*.styl',
-      'src/**/*.vue',
-    ],
-    throwOnWarning: true,
-    throwOnError: true,
-  };
-  const linterOptions: Partial<LinterOptions> &
-    Partial<{ throwOnWarning: boolean; throwOnError: boolean }> = {
-    allowEmptyInput: true,
-    cache: options.cache ?? defaultOptions.cache,
-    cacheLocation: path.resolve(
-      process.cwd(),
-      // maybe vite config cacheDir is better ?
-      './node_modules/.vite/vite-plugin-stylelint',
-    ),
-    config:
-      options.exclude ?? defaultOptions.exclude
-        ? {
-            ignoreFiles: options.exclude ?? defaultOptions.exclude,
-          }
-        : undefined,
-    files: options.include ?? defaultOptions.include,
-    fix: options.fix ?? defaultOptions.fix,
-    throwOnError: options.throwOnError ?? defaultOptions.throwOnError,
-    throwOnWarning: options.throwOnWarning ?? defaultOptions.throwOnWarning,
-  };
-  const filter = createFilter(
-    linterOptions.files,
-    linterOptions.config?.ignoreFiles || /node_modules/,
+  const cache = options?.cache ?? true;
+  const cacheLocation = path.resolve(
+    process.cwd(),
+    'node_modules',
+    '.vite',
+    'vite-plugin-stylelint',
   );
+  const fix = options?.fix ?? false;
+  const include = options?.include ?? /.*\.(vue|css|scss|sass|less|styl)/;
+  const exclude = options?.exclude ?? /node_modules/;
+  const formatter = options?.formatter ?? 'string';
+  const throwOnError = options?.throwOnError ?? true;
+  const throwOnWarning = options?.throwOnWarning ?? true;
+
+  const filter = createFilter(include, exclude);
 
   return {
     name: 'vite:stylelint',
     async transform(_, id) {
-      // const file = normalizePath(id);
+      const file = normalizePath(id);
 
-      if (
-        !filter(id) ||
-        // (await eslint.isPathIgnored(file)) ||
-        checkVueFile(id)
-      ) {
+      if (!filter(id)) {
         return null;
       }
 
       await stylelint
-        .lint(linterOptions)
+        .lint({
+          files: file,
+          allowEmptyInput: true,
+          cache,
+          cacheLocation,
+          fix,
+          formatter,
+        })
         .then(({ results }) => {
           results.forEach((result) => {
             const { source, ignored } = result;
             if (!ignored) {
               result.warnings.forEach((warning) => {
                 const { severity } = warning;
-                if (severity === 'error' && linterOptions.throwOnError) {
+                if (severity === 'error' && throwOnError) {
                   this.error(
                     `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
                     {
@@ -76,10 +54,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
                       line: warning.line,
                     },
                   );
-                } else if (
-                  severity === 'warning' &&
-                  linterOptions.throwOnWarning
-                ) {
+                } else if (severity === 'warning' && throwOnWarning) {
                   this.warn(
                     `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
                     {
