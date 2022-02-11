@@ -7,7 +7,6 @@ importers:
       '@commitlint/cli': ^16.1.0
       '@commitlint/config-conventional': ^16.0.0
       '@release-it/conventional-changelog': ^4.1.0
-      '@release-it/keep-a-changelog': ^2.3.0
       '@rollup/pluginutils': ^4.1.2
       '@types/eslint': ^8.4.1
       '@types/node': ^17.0.17
@@ -30,7 +29,6 @@ importers:
       '@commitlint/cli': 16.1.0_@types+node@17.0.17
       '@commitlint/config-conventional': 16.0.0
       '@release-it/conventional-changelog': 4.1.0_release-it@14.12.4
-      '@release-it/keep-a-changelog': 2.3.0_release-it@14.12.4
       '@rollup/pluginutils': 4.1.2
       '@types/eslint': 8.4.1
       '@types/node': 17.0.17
@@ -797,16 +795,6 @@ packages:
       conventional-changelog: 3.1.25
       conventional-recommended-bump: 6.1.0
       prepend-file: 2.0.1
-      release-it: 14.12.4
-    dev: true
-
-  /@release-it/keep-a-changelog/2.3.0_release-it@14.12.4:
-    resolution: {integrity: sha512-W3rzUsfT1BeDx9KDPJvpos7aQ+fModusP9X90VWYxOc/+tl5UUrH3Sjh2bemtG0okCtEFY/qnU3abbR5MK1wbg==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      release-it: ^14.8.0
-    dependencies:
-      detect-newline: 3.1.0
       release-it: 14.12.4
     dev: true
 
@@ -2185,11 +2173,6 @@ packages:
 
   /detect-indent/6.0.0:
     resolution: {integrity: sha512-oSyFlqaTHCItVRGK5RmrmjB+CmaMOW7IaNA/kdxqhoa6d17j/5ce9O9eWXmV/KEdRwqpQA+Vqe8a8Bsybu4YnA==}
-    engines: {node: '>=8'}
-    dev: true
-
-  /detect-newline/3.1.0:
-    resolution: {integrity: sha512-TLz+x/vEXm/Y7P7wn1EJFNLxYpUD4TgMosxY6fAVJUnJMbupHBOncxyWUG9OpTaH9EBD7uFI5LfEgmMOc54DsA==}
     engines: {node: '>=8'}
     dev: true
 
