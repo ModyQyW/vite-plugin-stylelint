@@ -27,7 +27,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup-node src/index.ts --dts --format esm,cjs",
+    "build": "tsup-node src/index.ts --dts --format esm,cjs --minify",
     "commit": "git-cz",
     "dev": "npm run build -- --watch src",
     "example:react-build": "pnpm run build --filter example-react",
