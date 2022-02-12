@@ -27,7 +27,14 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
     async transform(_, id) {
       const file = normalizePath(id);
 
-      if (!filter(id)) {
+      // if index.html has a style tag
+      // id will be similar to index.html?html-proxy&index=0.css
+      // file will be similar to index.html
+      // we don't need to lint it by default
+      // so use file rather than id here
+      // if (!filter(id)) {
+
+      if (!filter(file)) {
         return null;
       }
 
@@ -47,6 +54,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
               result.warnings.forEach((warning) => {
                 const { severity } = warning;
                 if (severity === 'error' && throwOnError) {
+                  console.log('');
                   this.error(
                     `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
                     {
@@ -55,6 +63,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
                     },
                   );
                 } else if (severity === 'warning' && throwOnWarning) {
+                  console.log('');
                   this.warn(
                     `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
                     {
