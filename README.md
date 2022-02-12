@@ -43,7 +43,7 @@ Auto fix source code.
 ### `include`
 
 - Type: `string | string[] | RegExp`
-- Default: `/.*\.(vue|css|scss|sass|less|styl)/`
+- Default: `/.*\.(vue|css|scss|sass|less|styl)$/`
 
 A single file, or array of files, to include when linting.
 
