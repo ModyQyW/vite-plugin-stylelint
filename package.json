@@ -27,15 +27,16 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup-node src/index.ts --dts --format esm,cjs --minify",
+    "build": "tsup src/index.ts --external stylelint,vite --format esm,cjs --dts --minify",
     "commit": "git-cz",
-    "dev": "npm run build -- --watch src",
+    "dev": "pnpm run build -- --watch src",
     "example:react-build": "pnpm run build --filter example-react",
     "example:react-dev": "pnpm run dev --filter example-react",
     "example:vue-build": "pnpm run build --filter example-vue",
     "example:vue-dev": "pnpm run dev --filter example-vue",
     "lint": "eslint src --fix && tsc src/** --noEmit",
     "prepare": "husky install",
+    "prepublishOnly": "pnpm run build",
     "release": "release-it"
   },
   "commitlint": {
@@ -82,8 +83,7 @@
       "tagName": "v${version}"
     },
     "hooks": {
-      "before:init": "pnpm install && pnpm run lint",
-      "after:bump": "pnpm run build"
+      "before:init": "pnpm install && pnpm run lint"
     }
   }
 }
