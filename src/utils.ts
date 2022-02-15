@@ -1,4 +1,4 @@
-import path from 'path';
+import * as path from 'path';
 import type { Formatter, FormatterType } from 'stylelint';
 
 export interface Options {

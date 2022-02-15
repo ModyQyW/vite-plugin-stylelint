@@ -1,6 +1,6 @@
-import path from 'path';
+import * as path from 'path';
 import type { Plugin } from 'vite';
-import stylelint from 'stylelint';
+import * as stylelint from 'stylelint';
 import { createFilter } from '@rollup/pluginutils';
 import { normalizePath, type Options } from './utils';
 
