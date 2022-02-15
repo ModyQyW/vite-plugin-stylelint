@@ -6,7 +6,8 @@
     "strict": true,
     "importHelpers": true,
     "declaration": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "allowSyntheticDefaultImports": true
   },
   "include": ["src/**/*.ts"]
 }
