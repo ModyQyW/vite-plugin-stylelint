@@ -13,6 +13,8 @@ npm install vite-plugin-stylelint --save-dev
 yarn add vite-plugin-stylelint --dev
 ```
 
+`vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
+
 ## Usage
 
 ```js
@@ -52,14 +54,14 @@ Auto fix source code.
 - Type: `string | string[] | RegExp`
 - Default: `/.*\.(vue|css|scss|sass|less|styl)$/`
 
-A single file, or array of files, to include when linting.
+A single file, array of files, or RegExp to include when linting.
 
 ### `exclude`
 
 - Type: `string | string[] | RegExp`
 - Default: `/node_modules/`
 
-A single file, or array of files, to exclude when linting.
+A single file, array of files, or RegExp to exclude when linting.
 
 ### `formatter`
 
