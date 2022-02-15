@@ -1,18 +1,19 @@
-import * as path from 'path';
+import path from 'path';
 import type { Plugin } from 'vite';
-import * as stylelint from 'stylelint';
+import stylelint from 'stylelint';
 import { createFilter } from '@rollup/pluginutils';
-
-import { normalizePath, Options } from './utils';
+import { normalizePath, type Options } from './utils';
 
 export default function StylelintPlugin(options: Options = {}): Plugin {
   const cache = options?.cache ?? true;
-  const cacheLocation = path.resolve(
-    process.cwd(),
-    'node_modules',
-    '.vite',
-    'vite-plugin-stylelint',
-  );
+  const cacheLocation =
+    options?.cacheLocation ??
+    path.resolve(
+      process.cwd(),
+      'node_modules',
+      '.vite',
+      'vite-plugin-stylelint',
+    );
   const fix = options?.fix ?? false;
   const include = options?.include ?? /.*\.(vue|css|scss|sass|less|styl)$/;
   const exclude = options?.exclude ?? /node_modules/;

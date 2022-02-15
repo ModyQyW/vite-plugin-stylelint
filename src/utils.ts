@@ -1,9 +1,11 @@
-import * as path from 'path';
+import path from 'path';
 import type { Formatter, FormatterType } from 'stylelint';
 
 export interface Options {
   /** The cache is enabled by default to decrease execution time */
   cache?: boolean;
+  /** Path to a file or directory for the cache location */
+  cacheLocation?: string;
   /** auto fix source code */
   fix?: boolean;
   /** A single file, or array of files, to include when linting */

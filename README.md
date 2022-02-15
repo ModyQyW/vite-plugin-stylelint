@@ -33,6 +33,13 @@ export default defineConfig({
 
 Decrease execution time.
 
+### `cacheLocation`
+
+- Type: `string`
+- Default: `path.resolve(process.cwd(), 'node_modules', '.vite', 'vite-plugin-stylelint')`
+
+Path to a file or directory for the cache location.
+
 ### `fix`
 
 - Type: `boolean`
