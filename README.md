@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Stylelint plugin for vite.
+Vite Stylelint plugin.
+
+You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-stylelint).
 
 ## Install
 
