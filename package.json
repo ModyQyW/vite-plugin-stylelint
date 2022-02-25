@@ -85,5 +85,9 @@
     "hooks": {
       "before:init": "pnpm install && pnpm run lint"
     }
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   }
 }
