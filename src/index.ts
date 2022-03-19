@@ -1,10 +1,12 @@
-import * as path from 'path';
+import path from 'path';
 import type { Plugin } from 'vite';
-import * as stylelint from 'stylelint';
+import type { PublicApi } from 'stylelint';
 import { createFilter } from '@rollup/pluginutils';
 import { normalizePath, type Options } from './utils';
 
 export default function StylelintPlugin(options: Options = {}): Plugin {
+  const stylelintPath = options.stylelintPath ?? 'stylelint';
+  let stylelint: PublicApi;
   const cache = options?.cache ?? true;
   const cacheLocation =
     options?.cacheLocation ??
@@ -37,6 +39,19 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
 
       if (!filter(file)) {
         return null;
+      }
+
+      if (!stylelint) {
+        await import(stylelintPath)
+          .then((module) => {
+            stylelint = module.default;
+          })
+          .catch(() => {
+            console.log('');
+            this.error(
+              `Failed to import stylelint. Have you installed stylelint and configured correctly?`,
+            );
+          });
       }
 
       await stylelint
