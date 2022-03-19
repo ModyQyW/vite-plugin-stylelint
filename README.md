@@ -57,7 +57,7 @@ export default defineConfig({
 - Type: `string`
 - Default: `'stylelint'`
 
-Path to stylelint instance that will be used for linting. You should read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
+Path to Stylelint instance that will be used for linting. You should read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
 
 ### `cache`
 

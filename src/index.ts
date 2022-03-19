@@ -49,7 +49,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
           .catch(() => {
             console.log('');
             this.error(
-              `Failed to import stylelint. Have you installed stylelint and configured correctly?`,
+              `Failed to import Stylelint. Have you installed Stylelint and configured correctly?`,
             );
           });
       }
