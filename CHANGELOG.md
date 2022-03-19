@@ -3,7 +3,7 @@
 ## 1.3.0-beta.0
 
 - feat: add `stylelintPath` option
--
+- chore: update deps
 
 ## 1.2.0
 
