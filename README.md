@@ -10,12 +10,30 @@ You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-styleli
 ## Install
 
 ```sh
-npm install vite-plugin-stylelint --save-dev
-# or
-yarn add vite-plugin-stylelint --dev
+npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
+
+<details>
+
+<summary>Stylelint@13</summary>
+
+```sh
+npm install stylelint@^13 @types/stylelint -D
+```
+
+</details>
+
+<details>
+
+<summary>Stylelint@14</summary>
+
+```sh
+npm install stylelint@^14 -D
+```
+
+</details>
 
 ## Usage
 
@@ -24,11 +42,22 @@ import { defineConfig } from 'vite';
 import StylelintPlugin from 'vite-plugin-stylelint';
 
 export default defineConfig({
-  plugins: [StylelintPlugin()],
+  plugins: [
+    StylelintPlugin({
+      // set options here
+    }),
+  ],
 });
 ```
 
 ## Options
+
+### `stylelintPath`
+
+- Type: `string`
+- Default: `'stylelint'`
+
+Path to stylelint instance that will be used for linting. You should read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
 
 ### `cache`
 
@@ -85,6 +114,10 @@ The warnings found will be emitted, default to true.
 - Default: `true`
 
 The errors found will be emitted, default to true.
+
+## CHANGELOG
+
+See [CHANGELOG.md](./CHANGELOG.md).
 
 ## License
 
