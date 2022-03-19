@@ -34,7 +34,7 @@
     "example:react-dev": "pnpm run dev --filter example-react",
     "example:vue-build": "pnpm run build --filter example-vue",
     "example:vue-dev": "pnpm run dev --filter example-vue",
-    "lint": "eslint src --fix && tsc src/** --noEmit",
+    "lint": "eslint src --fix && tsc --noEmit",
     "prepare": "husky install",
     "prepublishOnly": "pnpm run build",
     "release": "release-it"
