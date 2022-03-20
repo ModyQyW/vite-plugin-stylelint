@@ -10,12 +10,7 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
   const cache = options?.cache ?? true;
   const cacheLocation =
     options?.cacheLocation ??
-    path.resolve(
-      process.cwd(),
-      'node_modules',
-      '.vite',
-      'vite-plugin-stylelint',
-    );
+    path.join('node_modules', '.vite', 'vite-plugin-stylelint');
   const fix = options?.fix ?? false;
   const include = options?.include ?? /.*\.(vue|css|scss|sass|less|styl)$/;
   const exclude = options?.exclude ?? /node_modules/;

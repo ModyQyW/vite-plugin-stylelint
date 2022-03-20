@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.3.0-beta.1
+
+- fix: `cacheLocation` use relative path
+
 ## 1.3.0-beta.0
 
 - feat: add `stylelintPath` option
@@ -26,7 +30,7 @@
 
 ## 1.1.1-beta.0
 
-- fix: Fix internal parameter passing
+- fix: Fix internal parameter passing, closes [#1](https://github.com/ModyQyW/vite-plugin-stylelint/issues/1)
 - chore: add `package.json` exports
 - chore: update deps
 
