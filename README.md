@@ -20,7 +20,7 @@ npm install vite-plugin-stylelint -D
 <summary>Stylelint@13</summary>
 
 ```sh
-npm install stylelint@^13 @types/stylelint -D
+npm install stylelint@^13 @types/stylelint@^13 -D
 ```
 
 </details>
