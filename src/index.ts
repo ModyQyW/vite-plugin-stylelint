@@ -1,41 +1,55 @@
+import { createFilter, normalizePath } from '@rollup/pluginutils';
+import type Vite from 'vite';
+import type Stylelint from 'stylelint';
+import type { FilterPattern } from '@rollup/pluginutils';
 import path from 'path';
-import type { Plugin } from 'vite';
-import type { PublicApi } from 'stylelint';
-import { createFilter } from '@rollup/pluginutils';
-import { normalizePath, type Options } from './utils';
 
-export default function StylelintPlugin(options: Options = {}): Plugin {
-  const stylelintPath = options.stylelintPath ?? 'stylelint';
-  let stylelint: PublicApi;
+export interface Options extends Stylelint.LinterOptions {
+  cache?: boolean;
+  cacheLocation?: string;
+  include?: FilterPattern;
+  exclude?: FilterPattern;
+  stylelintPath?: string;
+  emitError?: boolean;
+  emitWarning?: boolean;
+}
+
+export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
   const cacheLocation =
     options?.cacheLocation ??
     path.join('node_modules', '.vite', 'vite-plugin-stylelint');
-  const fix = options?.fix ?? false;
-  const include = options?.include ?? /.*\.(vue|css|scss|sass|less|styl)$/;
-  const exclude = options?.exclude ?? /node_modules/;
-  const formatter = options?.formatter ?? 'string';
-  const throwOnError = options?.throwOnError ?? true;
-  const throwOnWarning = options?.throwOnWarning ?? true;
+  const include = options?.include ?? [/.*\.(vue|css|scss|sass|less|styl)$/];
+  let exclude = options?.exclude ?? [/node_modules/];
+  const stylelintPath = options?.stylelintPath ?? 'stylelint';
+  const emitError = options?.emitError ?? true;
+  const emitWarning = options?.emitWarning ?? true;
 
-  const filter = createFilter(include, exclude);
+  let filter: (id: string | unknown) => boolean;
+  let stylelint: Stylelint.PublicApi;
 
   return {
     name: 'vite:stylelint',
+    configResolved(config) {
+      // convert exclude to array
+      // push config.build.outDir into exclude
+      if (Array.isArray(exclude)) {
+        exclude.push(config.build.outDir);
+      } else {
+        exclude = [exclude as string | RegExp, config.build.outDir].filter(
+          (item) => !!item,
+        );
+      }
+      filter = createFilter(include, exclude);
+    },
     async transform(_, id) {
-      const file = normalizePath(id);
-
-      // if index.html has a style tag
-      // id will be similar to index.html?html-proxy&index=0.css
-      // file will be similar to index.html
-      // we don't need to lint it by default
-      // so use file rather than id here
-      // if (!filter(id)) {
-
-      if (!filter(file)) {
+      if (!filter(id)) {
         return null;
       }
 
+      const file = normalizePath(id).split('?')[0];
+
+      // initial stylelint
       if (!stylelint) {
         await import(stylelintPath)
           .then((module) => {
@@ -44,51 +58,38 @@ export default function StylelintPlugin(options: Options = {}): Plugin {
           .catch(() => {
             console.log('');
             this.error(
-              `Failed to import Stylelint. Have you installed Stylelint and configured correctly?`,
+              `Failed to import Stylelint. Have you installed and configured correctly?`,
             );
           });
       }
 
+      // actual lint
       await stylelint
         .lint({
-          files: file,
-          allowEmptyInput: true,
+          ...options,
           cache,
           cacheLocation,
-          fix,
-          formatter,
+          files: file,
         })
+        // catch config error
+        .catch((error) => {
+          this.error(`${error?.message ?? error}`);
+        })
+        // lint results
         .then(({ results }) => {
           results.forEach((result) => {
-            const { source, ignored } = result;
+            const { warnings, ignored } = result;
             if (!ignored) {
-              result.warnings.forEach((warning) => {
-                const { severity } = warning;
-                if (severity === 'error' && throwOnError) {
-                  console.log('');
-                  this.error(
-                    `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
-                    {
-                      column: warning.column,
-                      line: warning.line,
-                    },
-                  );
-                } else if (severity === 'warning' && throwOnWarning) {
-                  console.log('');
-                  this.warn(
-                    `${warning.text}\r\n    at ${source}:${warning.line}:${warning.column}`,
-                    {
-                      column: warning.column,
-                      line: warning.line,
-                    },
-                  );
+              warnings.forEach((warning) => {
+                const { severity, text } = warning;
+                if (severity === 'error' && emitError) {
+                  this.error(text);
+                } else if (severity === 'warning' && emitWarning) {
+                  this.warn(text);
                 }
               });
             }
           });
-        })
-        .catch((error) => {
-          console.error(error.stack);
         });
 
       return null;
