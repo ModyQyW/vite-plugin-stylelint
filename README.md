@@ -42,29 +42,22 @@ import { defineConfig } from 'vite';
 import StylelintPlugin from 'vite-plugin-stylelint';
 
 export default defineConfig({
-  plugins: [
-    StylelintPlugin({
-      // set options here
-    }),
-  ],
+  plugins: [StylelintPlugin(options)],
 });
 ```
 
 ## Options
 
-### `stylelintPath`
+You can pass Stylelint [shared options](https://stylelint.io/user-guide/usage/options) and [Node.js API options](https://stylelint.io/user-guide/usage/node-api) to the plugin.
 
-- Type: `string`
-- Default: `'stylelint'`
-
-Path to Stylelint instance that will be used for linting. You should read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
+Additional options and options with different default values are listed below.
 
 ### `cache`
 
 - Type: `boolean`
 - Default: `true`
 
-Decrease execution time.
+Store the results of processed files. This is enabled by default to improve speed.
 
 ### `cacheLocation`
 
@@ -73,47 +66,40 @@ Decrease execution time.
 
 Path to a file or directory for the cache location.
 
-### `fix`
-
-- Type: `boolean`
-- Default: `false`
-
-Auto fix source code.
-
 ### `include`
 
-- Type: `string | string[] | RegExp`
-- Default: `/.*\.(vue|css|scss|sass|less|styl)$/`
+- Type: `FilterPattern`
+- Default: `[/.*\.(vue|css|scss|sass|less|styl)$/]`
 
-A single file, array of files, or RegExp to include when linting.
+A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns. This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter).
 
 ### `exclude`
 
 - Type: `string | string[] | RegExp`
-- Default: `/node_modules/`
+- Default: `[/node_modules/, viteConfig.build.outDir]`
 
-A single file, array of files, or RegExp to exclude when linting.
+A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns. This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter).
 
-### `formatter`
+### `stylelintPath`
 
-- Type: `Formatter | FormatterType`
-- Default: `'string'`
+- Type: `string`
+- Default: `'stylelint'`
 
-Custom error formatter or the name of a built-in formatter.
+Path to Stylelint instance that will be used for linting. Read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
 
-### `throwOnWarning`
-
-- Type: `boolean`
-- Default: `true`
-
-The warnings found will be emitted, default to true.
-
-### `throwOnError`
+### `emitError`
 
 - Type: `boolean`
 - Default: `true`
 
-The errors found will be emitted, default to true.
+The errors found will be emitted by default.
+
+### `emitWarning`
+
+- Type: `boolean`
+- Default: `true`
+
+The warnings found will be emitted by default.
 
 ## CHANGELOG
 
