@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2.0.0-beta.0
+
+- feat: support Stylelint options
+
+### Breaking Changes
+
+- `throwOnError` -> `emitError`
+- `throwOnWarning` -> `emitWarning`
+
 ## 1.3.0-beta.1
 
 - fix: `cacheLocation` use relative path
