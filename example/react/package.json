@@ -32,6 +32,6 @@
     "typescript": "^4.6.2",
     "vite": "^2.8.6",
     "@modyqyw/vite-plugin-eslint": "^1.0.0",
-    "vite-plugin-stylelint": "workspace:^1.0.0"
+    "vite-plugin-stylelint": "workspace:*"
   }
 }
