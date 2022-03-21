@@ -37,7 +37,7 @@ npm install stylelint@^14 -D
 
 ## Usage
 
-```js
+```ts
 import { defineConfig } from 'vite';
 import StylelintPlugin from 'vite-plugin-stylelint';
 
@@ -50,7 +50,22 @@ export default defineConfig({
 
 You can pass Stylelint [shared options](https://stylelint.io/user-guide/usage/options) and [Node.js API options](https://stylelint.io/user-guide/usage/node-api) to the plugin.
 
-Additional options and options with different default values are listed below.
+```ts
+import { defineConfig } from 'vite';
+import StylelintPlugin from 'vite-plugin-stylelint';
+
+export default defineConfig({
+  plugins: [
+    StylelintPlugin({
+      fix: true,
+      quite: true,
+      ...,
+    }),
+  ],
+});
+```
+
+Additional options and explanations are listed below.
 
 ### `cache`
 
@@ -71,14 +86,18 @@ Path to a file or directory for the cache location.
 - Type: `FilterPattern`
 - Default: `[/.*\.(vue|css|scss|sass|less|styl)$/]`
 
-A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns. This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter).
+A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
+
+This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine `files` option, which means your `files` option will be overridden.
 
 ### `exclude`
 
 - Type: `string | string[] | RegExp`
 - Default: `[/node_modules/, viteConfig.build.outDir]`
 
-A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns. This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter).
+A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
+
+This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine `files` option, which means your `files` option will be overridden.
 
 ### `stylelintPath`
 
