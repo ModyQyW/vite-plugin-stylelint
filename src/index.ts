@@ -10,6 +10,10 @@ export interface Options extends Stylelint.LinterOptions {
   include?: FilterPattern;
   exclude?: FilterPattern;
   stylelintPath?: string;
+  /** @deprecated Recommend to use `emitError` */
+  throwOnError?: boolean;
+  /** @deprecated Recommend to use `emitWarning` */
+  throwOnWarning?: boolean;
   emitError?: boolean;
   emitWarning?: boolean;
 }
@@ -22,8 +26,8 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const include = options?.include ?? [/.*\.(vue|css|scss|sass|less|styl)$/];
   let exclude = options?.exclude ?? [/node_modules/];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
-  const emitError = options?.emitError ?? true;
-  const emitWarning = options?.emitWarning ?? true;
+  const emitError = options?.emitError ?? options?.throwOnError ?? true;
+  const emitWarning = options?.emitWarning ?? options?.throwOnWarning ?? true;
 
   let filter: (id: string | unknown) => boolean;
   let stylelint: Stylelint.PublicApi;
