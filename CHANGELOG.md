@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.1
+
+- fix: fix `FilterPattern` type may be lost
+
 ## 2.0.0
 
 - feat: bring back `throwOnError` and `throwOnWarning`
