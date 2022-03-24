@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 2.0.0
+
+- feat: bring back `throwOnError` and `throwOnWarning`
+
+The plugin recommends `emitError` / `emitWarning` instead of `throwOnError` / `throwOnWarning` now. However, you can stay with `throwOnError` / `throwOnWarning` safely. This is actually a backward-compatible version update.
+
 ## 2.0.0-beta.0
 
 - feat: support Stylelint options
