@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.0.2
+
+- fix: fix `index.html` dealing
+
 ## 2.0.1
 
 - fix: fix `FilterPattern` type may be lost
