@@ -58,6 +58,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
             stylelint = module.default;
           })
           .catch(() => {
+            console.log('');
             this.error(`Failed to import Stylelint. Have you installed and configured correctly?`);
           });
       }
@@ -72,6 +73,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
         })
         // catch config error
         .catch((error) => {
+          console.log('');
           this.error(`${error?.message ?? error}`);
         })
         // lint results
@@ -80,6 +82,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
             const { warnings, ignored } = result;
             if (!ignored) {
               warnings.forEach((warning) => {
+                console.log('');
                 const { severity, text } = warning;
                 if (severity === 'error' && emitError) {
                   this.error(text);
