@@ -30,13 +30,11 @@ The plugin recommends `emitError` / `emitWarning` instead of `throwOnError` / `t
 ## 1.3.0-beta.0
 
 - feat: add `stylelintPath` option
-- chore: update deps
 
 ## 1.2.0
 
 - feat: add `cacheLocation` option
 - fix: fix script
-- chore: update deps
 
 ## 1.1.3
 
@@ -44,7 +42,6 @@ The plugin recommends `emitError` / `emitWarning` instead of `throwOnError` / `t
 - fix: stricter `include`
 - fix: ignore `index.html` `<style>`
 - fix: fix vue example scripts
-- chore: update deps
 - chore: update workflow
 
 ## 1.1.2
@@ -55,7 +52,6 @@ The plugin recommends `emitError` / `emitWarning` instead of `throwOnError` / `t
 
 - fix: Fix internal parameter passing, closes [#1](https://github.com/ModyQyW/vite-plugin-stylelint/issues/1)
 - chore: add `package.json` exports
-- chore: update deps
 
 ## 1.1.0
 
@@ -74,13 +70,11 @@ The plugin recommends `emitError` / `emitWarning` instead of `throwOnError` / `t
 ## 1.0.2
 
 - chore: update example
-- chore: update deps
 - chore: update tsconfig
 
 ## 1.0.1
 
 - chore: update `package.json` keywords
-- chore: update deps
 
 ## 1.0.0
 
