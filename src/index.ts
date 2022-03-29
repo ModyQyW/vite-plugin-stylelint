@@ -21,8 +21,7 @@ export interface Options extends Stylelint.LinterOptions {
 export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
   const cacheLocation =
-    options?.cacheLocation ??
-    path.join('node_modules', '.vite', 'vite-plugin-stylelint');
+    options?.cacheLocation ?? path.join('node_modules', '.vite', 'vite-plugin-stylelint');
   const include = options?.include ?? [/.*\.(vue|css|scss|sass|less|styl)$/];
   let exclude = options?.exclude ?? [/node_modules/];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
@@ -40,9 +39,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
       if (Array.isArray(exclude)) {
         exclude.push(config.build.outDir);
       } else {
-        exclude = [exclude as string | RegExp, config.build.outDir].filter(
-          (item) => !!item,
-        );
+        exclude = [exclude as string | RegExp, config.build.outDir].filter((item) => !!item);
       }
       filter = createFilter(include, exclude);
     },
