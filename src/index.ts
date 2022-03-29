@@ -44,11 +44,12 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
       filter = createFilter(include, exclude);
     },
     async transform(_, id) {
-      if (!filter(id)) {
+      const file = normalizePath(id).split('?')[0];
+
+      // avoid /fake/vite/project/path/index.html?html-proxy&index=0.css
+      if (!filter(file)) {
         return null;
       }
-
-      const file = normalizePath(id).split('?')[0];
 
       // initial stylelint
       if (!stylelint) {
