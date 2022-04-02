@@ -1,8 +1,17 @@
 {
   "extends": [
     "stylelint-config-html",
-    "stylelint-config-standard",
+    "stylelint-config-recommended-scss",
+    "stylelint-config-recommended-vue/scss",
     "stylelint-config-recess-order",
     "stylelint-prettier/recommended"
-  ]
+  ],
+  "rules": {
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": ["tailwind", "value", "layer"]
+      }
+    ]
+  }
 }
