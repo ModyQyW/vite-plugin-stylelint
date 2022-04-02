@@ -68,14 +68,18 @@
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^7.0.4",
     "prettier": "^2.6.1",
-    "release-it": "^14.13.1",
+    "release-it": "^14.14.0",
     "stylelint": "^14.6.1",
-    "tsup": "^5.12.1",
+    "tsup": "^5.12.2",
     "typescript": "^4.6.3",
-    "vite": "^2.8.6"
+    "vite": "^2.9.1"
   },
   "peerDependencies": {
     "vite": "^2.0.0"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "release-it": {
     "git": {
@@ -86,9 +90,5 @@
       "before:init": "pnpm install && pnpm run lint",
       "after:bump": "pnpm run build"
     }
-  },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
   }
 }
