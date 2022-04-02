@@ -10,7 +10,8 @@
     "sourceType": "module"
   },
   "extends": [
-    "plugin:vue/vue3-essential",
+    "plugin:vue/vue3-recommended",
+    "plugin:vue-scoped-css/vue3-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ]
