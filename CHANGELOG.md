@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.0
+
+- feat: include `.svelte` files by default
+
 ## 2.1.0
 
 - perf: better output format
