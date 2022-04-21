@@ -84,7 +84,7 @@ Path to a file or directory for the cache location.
 ### `include`
 
 - Type: `FilterPattern`
-- Default: `[/.*\.(vue|css|scss|sass|less|styl)$/]`
+- Default: `[/.*\.(vue|css|scss|sass|less|styl|svelte)$/]`
 
 A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
 
@@ -133,6 +133,13 @@ The warnings found will be emitted when enabled. This is enabled by default.
 - Default: `false`
 
 The warnings found will be emitted as errors when enabled. This is disabled by default.
+
+## FAQ
+
+<details>
+  <summary>Facing caching problem?</summary>
+  Disable the <code>cache</code> option. Or delete the cache file (default <code>node_modules/.vite/vite-plugin-stylelint</code>) and restart Vite.
+</details>
 
 ## Examples
 
