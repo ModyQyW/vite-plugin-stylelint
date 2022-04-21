@@ -138,6 +138,10 @@ The warnings found will be emitted as errors when enabled. This is disabled by d
 
 See [CHANGELOG.md](./CHANGELOG.md).
 
+## Acknowledgements
+
+Initially forked from [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint).
+
 ## License
 
 MIT
