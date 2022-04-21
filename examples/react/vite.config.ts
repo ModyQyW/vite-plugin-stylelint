@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
-import reactRefresh from '@vitejs/plugin-react-refresh';
+import react from '@vitejs/plugin-react';
 import eslint from '@modyqyw/vite-plugin-eslint';
 import stylelint from 'vite-plugin-stylelint';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [reactRefresh(), eslint(), stylelint()],
+  plugins: [react(), eslint(), stylelint()],
 });

@@ -1,5 +1,5 @@
 {
-  "name": "example-react",
+  "name": "react",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -12,29 +12,29 @@
     "react-dom": "^18.0.0"
   },
   "devDependencies": {
-    "@modyqyw/vite-plugin-eslint": "^1.2.0",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "@typescript-eslint/eslint-plugin": "^5.17.0",
-    "@typescript-eslint/parser": "^5.17.0",
-    "@vitejs/plugin-react-refresh": "^1.3.6",
-    "eslint": "^8.12.0",
+    "@modyqyw/vite-plugin-eslint": "^1.3.0",
+    "@types/react": "^18.0.5",
+    "@types/react-dom": "^18.0.1",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "@vitejs/plugin-react": "^1.3.1",
+    "eslint": "^8.13.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "postcss": "^8.4.12",
-    "postcss-html": "^1.3.0",
+    "postcss-html": "^1.4.1",
     "postcss-preset-env": "^7.4.3",
-    "prettier": "^2.6.1",
-    "stylelint": "^14.6.1",
+    "prettier": "^2.6.2",
+    "stylelint": "^14.7.1",
     "stylelint-config-html": "^1.0.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recess-order": "^3.0.0",
     "stylelint-config-recommended-scss": "^6.0.0",
     "stylelint-prettier": "^2.0.0",
-    "tailwindcss": "^3.0.23",
+    "tailwindcss": "^3.0.24",
     "typescript": "^4.6.3",
-    "vite": "^2.9.1",
+    "vite": "^2.9.5",
     "vite-plugin-stylelint": "workspace:*"
   }
 }
