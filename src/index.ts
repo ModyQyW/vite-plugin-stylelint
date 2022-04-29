@@ -81,24 +81,24 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
           this.error(`${error?.message ?? error}`);
         })
         // lint results
-        .then(({ results }) => {
+        .then(({ results }: Stylelint.LinterResult) => {
           results.forEach((result) => {
             const { warnings, ignored } = result;
             if (!ignored) {
               warnings.forEach((warning) => {
                 console.log('');
-                const { severity, text } = warning;
+                const { severity, text, line, column } = warning;
                 if (severity === 'error' && emitError) {
                   if (emitErrorAsWarning) {
-                    this.warn(text);
+                    this.warn(text, { line, column });
                   } else {
-                    this.error(text);
+                    this.error(text, { line, column });
                   }
                 } else if (severity === 'warning' && emitWarning) {
                   if (emitWarningAsError) {
-                    this.error(text);
+                    this.error(text, { line, column });
                   } else {
-                    this.warn(text);
+                    this.warn(text, { line, column });
                   }
                 }
               });
