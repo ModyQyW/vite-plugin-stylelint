@@ -45,13 +45,27 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
       } else {
         exclude = [exclude as string | RegExp, config.build.outDir].filter((item) => !!item);
       }
+      // create filter
       filter = createFilter(include, exclude);
     },
     async transform(_, id) {
+      // id should be ignored: vite-plugin-eslint/examples/vue/index.html
+      // file should be ignored: vite-plugin-eslint/examples/vue/index.html
+
+      // id should be ignored: vite-plugin-eslint/examples/vue/index.html?html-proxy&index=0.css
+      // file should be ignored: vite-plugin-eslint/examples/vue/index.html
+
+      // id should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
+      // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
+
+      // id should be ignored: vite-plugin-eslint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
+      // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
+
+      const isBlock = id.includes('?');
       const file = normalizePath(id).split('?')[0];
 
-      // avoid /fake/vite/project/path/index.html?html-proxy&index=0.css
-      if (!filter(file)) {
+      // avoid double lint
+      if (!filter(file) || isBlock) {
         return null;
       }
 
