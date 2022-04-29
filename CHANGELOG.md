@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.2.1
+
+- fix: try to fix `warning` output
+- fix: fix regressions
+
 ## 2.2.0
 
 - feat: include `.svelte` files by default
