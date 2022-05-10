@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-stylelint",
-  "version": "2.2.1",
+  "version": "2.2.2",
   "description": "Stylelint plugin for vite.",
   "keywords": [
     "stylelint",
