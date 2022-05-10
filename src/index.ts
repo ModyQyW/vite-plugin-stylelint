@@ -1,8 +1,8 @@
 import { createFilter, normalizePath } from '@rollup/pluginutils';
-import type Vite from 'vite';
-import type Stylelint from 'stylelint';
+import type * as Vite from 'vite';
+import type * as Stylelint from 'stylelint';
 import type { FilterPattern } from '@rollup/pluginutils';
-import path from 'path';
+import * as path from 'path';
 
 export interface Options extends Stylelint.LinterOptions {
   cache?: boolean;
