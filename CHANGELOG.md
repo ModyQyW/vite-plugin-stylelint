@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.2
+
+- fix: remove `allowSyntheticDefaultImports` and `esModuleInterop` in `tsconfig.json`, closes [#5](https://github.com/ModyQyW/vite-plugin-stylelint/issues/5)
+
 ## 2.2.1
 
 - fix: try to fix `warning` output
