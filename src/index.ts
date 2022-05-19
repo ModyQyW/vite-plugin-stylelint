@@ -58,14 +58,14 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
       // id should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
       // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
 
-      // id should be ignored: vite-plugin-eslint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
+      // id should be ignored in first time but should not be ignored in HMR: vite-plugin-eslint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
       // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
 
-      const isBlock = id.includes('?');
       const file = normalizePath(id).split('?')[0];
 
-      // avoid double lint
-      if (!filter(file) || isBlock) {
+      // using filter(file) here may cause double lint
+      // PR is welcome
+      if (!filter(file)) {
         return null;
       }
 
