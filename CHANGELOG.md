@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 2.2.3
+
+- fix: revert [bee0a28](https://github.com/ModyQyW/vite-plugin-stylelint/commit/bee0a28b7691090e02d73e979bf62c27510a960d), closes [#8](https://github.com/ModyQyW/vite-plugin-stylelint/issues/8)
+
 ## 2.2.2
 
 - fix: remove `allowSyntheticDefaultImports` and `esModuleInterop` in `tsconfig.json`, closes [#5](https://github.com/ModyQyW/vite-plugin-stylelint/issues/5)
