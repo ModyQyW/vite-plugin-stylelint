@@ -85,7 +85,10 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
           this.error(`${error?.message ?? error}`);
         })
         // lint results
-        .then(({ results }: Stylelint.LinterResult) => {
+        .then((lintResults: Stylelint.LinterResult | void) => {
+          if (!lintResults) return;
+
+          const { results } = lintResults;
           results.forEach((result) => {
             const { warnings, ignored } = result;
             if (!ignored) {
