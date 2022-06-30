@@ -57,30 +57,30 @@
     "@rollup/pluginutils": "^4.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "^17.0.2",
-    "@commitlint/config-conventional": "^17.0.2",
-    "@commitlint/prompt": "^17.0.0",
+    "@commitlint/cli": "^17.0.3",
+    "@commitlint/config-conventional": "^17.0.3",
+    "@commitlint/prompt": "^17.0.3",
     "@release-it/conventional-changelog": "^5.0.0",
     "@tsconfig/node14": "^1.0.3",
     "@types/eslint": "^8.4.3",
     "@types/node": "^18.0.0",
-    "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
     "eslint": "^8.18.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.1",
     "prettier": "^2.7.1",
-    "release-it": "^15.0.0",
+    "release-it": "^15.1.1",
     "stylelint": "^14.9.1",
     "tsup": "^6.1.2",
     "typescript": "^4.7.4",
-    "vite": "^2.9.12"
+    "vite": "^2.9.13"
   },
   "peerDependencies": {
     "@types/stylelint": "^13.0.0",
     "stylelint": "^13.0.0 || ^14.0.0",
-    "vite": "^2.0.0"
+    "vite": "^2.0.0 || ^3.0.0-0"
   },
   "peerDependenciesMeta": {
     "@types/stylelint": {
