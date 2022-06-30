@@ -1,10 +1,10 @@
 # CHANGELOG
 
-## 3.0.0
+## 2.3.0
 
-- feat!: requires `node >= 14`
-- feat!: requires `vite >= 3`
-- feat!: remove `throwOnError` and `throwOnWarning` options
+- feat: support `vite@3`
+- feat: ignore virtual modules
+- perf: not to add `build.outDir` into `exclude`
 
 ## 2.2.3
 
