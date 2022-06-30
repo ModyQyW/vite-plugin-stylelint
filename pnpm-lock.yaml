@@ -9,7 +9,6 @@ importers:
       '@commitlint/prompt': ^17.0.3
       '@release-it/conventional-changelog': ^5.0.0
       '@rollup/pluginutils': ^4.2.1
-      '@tsconfig/node14': ^1.0.3
       '@tsconfig/node16': ^1.0.3
       '@types/eslint': ^8.4.3
       '@types/node': ^18.0.0
@@ -32,7 +31,6 @@ importers:
       '@commitlint/config-conventional': 17.0.3
       '@commitlint/prompt': 17.0.3
       '@release-it/conventional-changelog': 5.0.0_release-it@15.1.1
-      '@tsconfig/node14': 1.0.3
       '@tsconfig/node16': 1.0.3
       '@types/eslint': 8.4.3
       '@types/node': 18.0.0
