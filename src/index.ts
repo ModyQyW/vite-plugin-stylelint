@@ -26,29 +26,18 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const cacheLocation =
     options?.cacheLocation ?? path.join('node_modules', '.vite', 'vite-plugin-stylelint');
   const include = options?.include ?? [/.*\.(vue|css|scss|sass|less|styl|svelte)$/];
-  let exclude = options?.exclude ?? [/node_modules/];
+  const exclude = options?.exclude ?? [/node_modules/];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
   const emitError = options?.emitError ?? options?.throwOnError ?? true;
   const emitErrorAsWarning = options?.emitErrorAsWarning ?? false;
   const emitWarning = options?.emitWarning ?? options?.throwOnWarning ?? true;
   const emitWarningAsError = options?.emitWarningAsError ?? false;
 
-  let filter: (id: string | unknown) => boolean;
+  const filter = createFilter(include, exclude);
   let stylelint: Stylelint.PublicApi;
 
   return {
     name: 'vite:stylelint',
-    configResolved(config) {
-      // convert exclude to array
-      // push config.build.outDir into exclude
-      if (Array.isArray(exclude)) {
-        exclude.push(config.build.outDir);
-      } else {
-        exclude = [exclude as string | RegExp, config.build.outDir].filter((item) => !!item);
-      }
-      // create filter
-      filter = createFilter(include, exclude);
-    },
     async transform(_, id) {
       // id should be ignored: vite-plugin-eslint/examples/vue/index.html
       // file should be ignored: vite-plugin-eslint/examples/vue/index.html
