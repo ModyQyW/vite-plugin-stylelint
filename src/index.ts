@@ -1,4 +1,5 @@
 import { createFilter, normalizePath } from '@rollup/pluginutils';
+import fs from 'node:fs';
 import type * as Vite from 'vite';
 import type * as Stylelint from 'stylelint';
 import type { FilterPattern } from '@rollup/pluginutils';
@@ -65,7 +66,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
 
       // using filter(file) here may cause double lint
       // PR is welcome
-      if (!filter(file)) {
+      if (!filter(file) || !fs.existsSync(file)) {
         return null;
       }
 
