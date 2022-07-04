@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 2.3.1
+
+- fix: show error message when importing `stylelint` if possible
+- fix: include `shims` into `dist`
+
 ## 2.3.0
 
 - feat: support `vite@3`
