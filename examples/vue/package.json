@@ -11,7 +11,7 @@
     "vue": "^3.2.37"
   },
   "devDependencies": {
-    "@modyqyw/vite-plugin-eslint": "^1.4.0",
+    "@modyqyw/vite-plugin-eslint": "^1.4.1",
     "@types/eslint": "^8.4.5",
     "@typescript-eslint/eslint-plugin": "^5.30.4",
     "@typescript-eslint/parser": "^5.30.4",

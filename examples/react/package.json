@@ -12,7 +12,7 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@modyqyw/vite-plugin-eslint": "^1.4.0",
+    "@modyqyw/vite-plugin-eslint": "^1.4.1",
     "@types/eslint": "^8.4.5",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
