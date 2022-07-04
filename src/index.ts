@@ -65,9 +65,14 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
           .then((module) => {
             stylelint = module.default;
           })
-          .catch(() => {
+          .catch((error) => {
             console.log('');
-            this.error(`Failed to import Stylelint. Have you installed and configured correctly?`);
+            this.error(
+              `${
+                error?.message ??
+                'Failed to import Stylelint. Have you installed and configured correctly?'
+              }`,
+            );
           });
       }
 
