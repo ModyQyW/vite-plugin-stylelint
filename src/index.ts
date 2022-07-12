@@ -12,6 +12,7 @@ export interface VitePluginStylelintOptions extends Stylelint.LinterOptions {
   include?: FilterPattern;
   exclude?: FilterPattern;
   stylelintPath?: string;
+  lintOnStart?: boolean;
   emitError?: boolean;
   emitErrorAsWarning?: boolean;
   emitWarning?: boolean;
@@ -33,6 +34,7 @@ export default function StylelintPlugin(options: VitePluginStylelintOptions = {}
   ];
   const exclude = options?.exclude ?? ['node_modules', 'virtual:'];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
+  const lintOnStart = options?.lintOnStart ?? false;
   const emitError = options?.emitError ?? true;
   const emitErrorAsWarning = options?.emitErrorAsWarning ?? false;
   const emitWarning = options?.emitWarning ?? true;
@@ -42,9 +44,72 @@ export default function StylelintPlugin(options: VitePluginStylelintOptions = {}
   const isVirtualModule = (file: fs.PathLike) => !fs.existsSync(file);
 
   let stylelint: Stylelint.PublicApi;
+  let lintFiles: (files: FilterPattern) => Promise<void>;
 
   return {
     name: 'vite:stylelint',
+    async buildStart() {
+      // initial
+      if (!stylelint) {
+        try {
+          const module = await import(stylelintPath);
+          stylelint = module.default;
+          lintFiles = async (files) =>
+            await stylelint
+              .lint({
+                ...options,
+                allowEmptyInput: true,
+                cache,
+                cacheLocation,
+                files,
+              })
+              .then((lintResults: Stylelint.LinterResult | void) => {
+                if (!lintResults) return;
+
+                const { results } = lintResults;
+                results.forEach((result) => {
+                  const { warnings, ignored } = result;
+                  if (!ignored) {
+                    warnings.forEach((warning) => {
+                      console.log('');
+                      const { severity, text, line, column } = warning;
+                      if (severity === 'error' && emitError) {
+                        if (emitErrorAsWarning) {
+                          this.warn(text, { line, column });
+                        } else {
+                          this.error(text, { line, column });
+                        }
+                      } else if (severity === 'warning' && emitWarning) {
+                        if (emitWarningAsError) {
+                          this.error(text, { line, column });
+                        } else {
+                          this.warn(text, { line, column });
+                        }
+                      }
+                    });
+                  }
+                });
+              })
+              .catch((error) => {
+                console.log('');
+                this.error(`${error?.message ?? error}`);
+              });
+        } catch (error) {
+          console.log('');
+          this.error(
+            `${
+              (error as Error)?.message ??
+              'Failed to import Stylelint. Have you installed and configured correctly?'
+            }`,
+          );
+        }
+      }
+
+      // lint on start
+      if (lintOnStart) {
+        await lintFiles(include);
+      }
+    },
     async transform(_, id) {
       // id should be ignored: vite-plugin-eslint/examples/vue/index.html
       // file should be ignored: vite-plugin-eslint/examples/vue/index.html
@@ -66,62 +131,7 @@ export default function StylelintPlugin(options: VitePluginStylelintOptions = {}
         return null;
       }
 
-      // initial stylelint
-      if (!stylelint) {
-        await import(stylelintPath)
-          .then((module) => {
-            stylelint = module.default;
-          })
-          .catch((error) => {
-            console.log('');
-            this.error(
-              `${
-                error?.message ??
-                'Failed to import Stylelint. Have you installed and configured correctly?'
-              }`,
-            );
-          });
-      }
-
-      // actual lint
-      await stylelint
-        .lint({
-          ...options,
-          cache,
-          cacheLocation,
-          files: file,
-        })
-        .then((lintResults: Stylelint.LinterResult | void) => {
-          if (!lintResults) return;
-
-          const { results } = lintResults;
-          results.forEach((result) => {
-            const { warnings, ignored } = result;
-            if (!ignored) {
-              warnings.forEach((warning) => {
-                console.log('');
-                const { severity, text, line, column } = warning;
-                if (severity === 'error' && emitError) {
-                  if (emitErrorAsWarning) {
-                    this.warn(text, { line, column });
-                  } else {
-                    this.error(text, { line, column });
-                  }
-                } else if (severity === 'warning' && emitWarning) {
-                  if (emitWarningAsError) {
-                    this.error(text, { line, column });
-                  } else {
-                    this.warn(text, { line, column });
-                  }
-                }
-              });
-            }
-          });
-        })
-        .catch((error) => {
-          console.log('');
-          this.error(`${error?.message ?? error}`);
-        });
+      await lintFiles(file);
 
       return null;
     },
