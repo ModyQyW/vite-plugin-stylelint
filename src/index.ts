@@ -86,12 +86,6 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
           cacheLocation,
           files: file,
         })
-        // catch config error
-        .catch((error) => {
-          console.log('');
-          this.error(`${error?.message ?? error}`);
-        })
-        // lint results
         .then((lintResults: Stylelint.LinterResult | void) => {
           if (!lintResults) return;
 
@@ -118,6 +112,10 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
               });
             }
           });
+        })
+        .catch((error) => {
+          console.log('');
+          this.error(`${error?.message ?? error}`);
         });
 
       return null;
