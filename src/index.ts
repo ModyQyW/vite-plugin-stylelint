@@ -6,7 +6,7 @@ import * as path from 'path';
 
 export type FilterPattern = string | string[];
 
-export interface VitePluginStylelintOptions extends Stylelint.LinterOptions {
+export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   cache?: boolean;
   cacheLocation?: string;
   include?: FilterPattern;
@@ -19,7 +19,7 @@ export interface VitePluginStylelintOptions extends Stylelint.LinterOptions {
   emitWarningAsError?: boolean;
 }
 
-export default function StylelintPlugin(options: VitePluginStylelintOptions = {}): Vite.Plugin {
+export default function StylelintPlugin(options: StylelintPluginOptions = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
   const cacheLocation =
     options?.cacheLocation ?? path.join('node_modules', '.vite', 'vite-plugin-stylelint');
