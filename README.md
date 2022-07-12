@@ -83,8 +83,8 @@ Path to a file or directory for the cache location.
 
 ### `include`
 
-- Type: `FilterPattern`
-- Default: `[/.*\.(vue|css|scss|sass|less|styl|svelte)$/]`
+- Type: `string | string[]`
+- Default: `['src/**/*.css', 'src/**/*.scss', 'src/**/*.sass', 'src/**/*.less', 'src/**/*.styl', 'src/**/*.vue', 'src/**/*.svelte']`
 
 A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
 
@@ -92,8 +92,8 @@ This is used to [create a filter](https://github.com/rollup/plugins/blob/master/
 
 ### `exclude`
 
-- Type: `FilterPattern`
-- Default: `[/node_modules/]`
+- Type: `string | string[]`
+- Default: `['node_modules', 'virtual:']`
 
 A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
 
@@ -105,6 +105,13 @@ This is used to [create a filter](https://github.com/rollup/plugins/blob/master/
 - Default: `'stylelint'`
 
 Path to Stylelint instance that will be used for linting. Read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
+
+### `lintOnStart`
+
+- Type: `boolean`
+- Default: `false`
+
+Lint on start. Useful to check all codes, but slow down speed. This is disabled by default.
 
 ### `emitError`
 
@@ -144,6 +151,11 @@ The warnings found will be emitted as errors when enabled. This is disabled by d
     </li>
   </ul>
   This problem should only happens when starting Vite with Stylelint errors. Have a better solution? PR welcome. :)
+</details>
+
+<details>
+  <summary><code>Vite</code> is slow when using this plugin</summary>
+  <p>You can try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a>, or just run <code>Stylelint</code> besides <code>Vite</code>.</p>
 </details>
 
 ## Examples
