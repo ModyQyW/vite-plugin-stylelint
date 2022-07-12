@@ -2,8 +2,9 @@ import { createFilter, normalizePath } from '@rollup/pluginutils';
 import fs from 'node:fs';
 import type * as Vite from 'vite';
 import type * as Stylelint from 'stylelint';
-import type { FilterPattern } from '@rollup/pluginutils';
 import * as path from 'path';
+
+export type FilterPattern = string | string[];
 
 export interface Options extends Stylelint.LinterOptions {
   cache?: boolean;
@@ -21,8 +22,16 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
   const cacheLocation =
     options?.cacheLocation ?? path.join('node_modules', '.vite', 'vite-plugin-stylelint');
-  const include = options?.include ?? [/.*\.(vue|css|scss|sass|less|styl|svelte)$/];
-  const exclude = options?.exclude ?? [/node_modules/];
+  const include = options?.include ?? [
+    'src/**/*.css',
+    'src/**/*.scss',
+    'src/**/*.sass',
+    'src/**/*.less',
+    'src/**/*.styl',
+    'src/**/*.vue',
+    'src/**/*.svelte',
+  ];
+  const exclude = options?.exclude ?? ['node_modules'];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
   const emitError = options?.emitError ?? true;
   const emitErrorAsWarning = options?.emitErrorAsWarning ?? false;
