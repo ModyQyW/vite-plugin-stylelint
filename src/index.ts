@@ -31,7 +31,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
     'src/**/*.vue',
     'src/**/*.svelte',
   ];
-  const exclude = options?.exclude ?? ['node_modules'];
+  const exclude = options?.exclude ?? ['node_modules', 'virtual:'];
   const stylelintPath = options?.stylelintPath ?? 'stylelint';
   const emitError = options?.emitError ?? true;
   const emitErrorAsWarning = options?.emitErrorAsWarning ?? false;
