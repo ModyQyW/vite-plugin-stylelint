@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 3.0.0
+
+- feat!: remove `throwOnError` and `throwOnWarning` options (marked as `deprecated` before)
+- feat!: `include` and `exclude` options now accept `string | string[]` only to align with `stylelint.lint`
+- feat: add `lintOnStart` option
+- feat: exclude `virtual:` by default
+
 ## 2.3.1
 
 - fix: show error message when importing `stylelint` if possible
