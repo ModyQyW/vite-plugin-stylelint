@@ -34,6 +34,8 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
   const emitWarningAsError = options?.emitWarningAsError ?? false;
 
   const filter = createFilter(include, exclude);
+  const isVirtualModule = (file: fs.PathLike) => !fs.existsSync(file);
+
   let stylelint: Stylelint.PublicApi;
 
   return {
@@ -55,7 +57,7 @@ export default function StylelintPlugin(options: Options = {}): Vite.Plugin {
 
       // using filter(file) here may cause double lint
       // PR is welcome
-      if (!filter(file) || !fs.existsSync(file)) {
+      if (!filter(file) || isVirtualModule(file)) {
         return null;
       }
 
