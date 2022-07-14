@@ -1,10 +1,16 @@
 # CHANGELOG
 
+## 3.0.2
+
+Just update `peerDependencies` in `package.json`.
+
 ## 3.0.1
 
 - fix: fix type
 
 ## 3.0.0
+
+This version supports vite@2 and vite@3. The breaking changes are caused by aligning behaviors with `Stylelint` Node.js API.
 
 - feat!: remove `throwOnError` and `throwOnWarning` options (marked as `deprecated` before)
 - feat!: `include` and `exclude` options now accept `string | string[]` only to align with `stylelint.lint`
