@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- perf: import path from `node:path` instead of `path`
+
 ## 3.0.2
 
 Just update `peerDependencies` in `package.json`.
