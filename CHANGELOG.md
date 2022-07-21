@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.4
+
+- perf: warn when `lintOnStart` is true
+
 ## 3.0.3
 
 - perf: import path from `node:path` instead of `path`
