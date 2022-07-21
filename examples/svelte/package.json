@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "@modyqyw/vite-plugin-eslint": "^2.0.4",
+    "@modyqyw/vite-plugin-eslint": "^2.0.5",
     "@sveltejs/vite-plugin-svelte": "^1.0.1",
     "@tsconfig/svelte": "^3.0.0",
     "@types/eslint": "^8.4.5",
