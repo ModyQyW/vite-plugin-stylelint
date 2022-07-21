@@ -104,14 +104,14 @@ This is used to [create a filter](https://github.com/rollup/plugins/blob/master/
 - Type: `string`
 - Default: `'stylelint'`
 
-Path to Stylelint instance that will be used for linting. Read [vite server.fs options](https://vitejs.dev/config/#server-fs-strict) first.
+Path to Stylelint instance that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
 
 ### `lintOnStart`
 
 - Type: `boolean`
 - Default: `false`
 
-Lint on start. Useful to check all codes, but slow down speed. This is disabled by default.
+Lint on start (in `buildStart` hook). Useful to lint all files once to find potential errors, but significantly slow down Vite. This is disabled by default.
 
 ### `emitError`
 
