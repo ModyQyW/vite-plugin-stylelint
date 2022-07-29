@@ -108,8 +108,9 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
       // lint on start
       if (lintOnStart) {
         console.log('');
-        this.warn(`Stylelint is linting all files in the project because \`lintOnStart\` is true.`);
-        this.warn(`This will significantly slow down Vite.`);
+        this.warn(
+          `Stylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
+        );
         await lintFiles(include);
       }
     },
