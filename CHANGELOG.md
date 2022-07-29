@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.5
+
+- fix: warning styles
+
 ## 3.0.4
 
 - perf: warn when `lintOnStart` is true
