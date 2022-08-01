@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.0.6
+
+- fix: pass ctx to lintFiles method
+
 ## 3.0.5
 
 - fix: warning styles
