@@ -1,6 +1,7 @@
 import { createFilter, normalizePath } from '@rollup/pluginutils';
 import fs from 'node:fs';
 import path from 'node:path';
+import type { PluginContext } from 'rollup';
 import type * as Vite from 'vite';
 import type * as Stylelint from 'stylelint';
 
@@ -44,7 +45,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
   const isVirtualModule = (file: fs.PathLike) => !fs.existsSync(file);
 
   let stylelint: Stylelint.PublicApi;
-  let lintFiles: (files: FilterPattern) => Promise<void>;
+  let lintFiles: (ctx: PluginContext, files: FilterPattern) => Promise<void>;
 
   return {
     name: 'vite:stylelint',
@@ -54,7 +55,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
         try {
           const module = await import(stylelintPath);
           stylelint = module.default;
-          lintFiles = async (files) =>
+          lintFiles = async (ctx, files) =>
             await stylelint
               .lint({
                 ...options,
@@ -75,15 +76,15 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
                       const { severity, text, line, column } = warning;
                       if (severity === 'error' && emitError) {
                         if (emitErrorAsWarning) {
-                          this.warn(text, { line, column });
+                          ctx.warn(text, { line, column });
                         } else {
-                          this.error(text, { line, column });
+                          ctx.error(text, { line, column });
                         }
                       } else if (severity === 'warning' && emitWarning) {
                         if (emitWarningAsError) {
-                          this.error(text, { line, column });
+                          ctx.error(text, { line, column });
                         } else {
-                          this.warn(text, { line, column });
+                          ctx.warn(text, { line, column });
                         }
                       }
                     });
@@ -92,7 +93,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
               })
               .catch((error) => {
                 console.log('');
-                this.error(`${error?.message ?? error}`);
+                ctx.error(`${error?.message ?? error}`);
               });
         } catch (error) {
           console.log('');
@@ -111,7 +112,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
         this.warn(
           `Stylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
-        await lintFiles(include);
+        await lintFiles(this, include);
       }
     },
     async transform(_, id) {
@@ -135,7 +136,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
         return null;
       }
 
-      await lintFiles(file);
+      await lintFiles(this, file);
 
       return null;
     },
