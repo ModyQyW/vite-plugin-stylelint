@@ -22,8 +22,7 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
 
 export default function StylelintPlugin(options: StylelintPluginOptions = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
-  const cacheLocation =
-    options?.cacheLocation ?? path.join('node_modules', '.vite', 'vite-plugin-stylelint');
+  let cacheLocation = '';
   const include = options?.include ?? [
     'src/**/*.css',
     'src/**/*.scss',
@@ -49,6 +48,10 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
 
   return {
     name: 'vite:stylelint',
+    configResolved(config) {
+      cacheLocation =
+        options?.cacheLocation ?? path.resolve(config.cacheDir, 'vite-plugin-stylelint');
+    },
     async buildStart() {
       // initial
       if (!stylelint) {
@@ -116,17 +119,17 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
       }
     },
     async transform(_, id) {
-      // id should be ignored: vite-plugin-eslint/examples/vue/index.html
-      // file should be ignored: vite-plugin-eslint/examples/vue/index.html
+      // id should be ignored: vite-plugin-stylelint/examples/vue/index.html
+      // file should be ignored: vite-plugin-stylelint/examples/vue/index.html
 
-      // id should be ignored: vite-plugin-eslint/examples/vue/index.html?html-proxy&index=0.css
-      // file should be ignored: vite-plugin-eslint/examples/vue/index.html
+      // id should be ignored: vite-plugin-stylelint/examples/vue/index.html?html-proxy&index=0.css
+      // file should be ignored: vite-plugin-stylelint/examples/vue/index.html
 
-      // id should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
-      // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
+      // id should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
+      // file should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
 
-      // id should be ignored in first time but should not be ignored in HMR: vite-plugin-eslint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
-      // file should NOT be ignored: vite-plugin-eslint/examples/vue/src/app.vue
+      // id should be ignored in first time but should not be ignored in HMR: vite-plugin-stylelint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
+      // file should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
 
       const file = normalizePath(id).split('?')[0];
 
