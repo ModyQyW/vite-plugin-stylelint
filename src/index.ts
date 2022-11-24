@@ -4,21 +4,7 @@ import path from 'node:path';
 import type { PluginContext } from 'rollup';
 import type * as Vite from 'vite';
 import type * as Stylelint from 'stylelint';
-
-export type FilterPattern = string | string[];
-
-export interface StylelintPluginOptions extends Stylelint.LinterOptions {
-  cache?: boolean;
-  cacheLocation?: string;
-  include?: FilterPattern;
-  exclude?: FilterPattern;
-  stylelintPath?: string;
-  lintOnStart?: boolean;
-  emitError?: boolean;
-  emitErrorAsWarning?: boolean;
-  emitWarning?: boolean;
-  emitWarningAsError?: boolean;
-}
+import type { FilterPattern, StylelintPluginOptions } from './types';
 
 export default function StylelintPlugin(options: StylelintPluginOptions = {}): Vite.Plugin {
   const cache = options?.cache ?? true;
