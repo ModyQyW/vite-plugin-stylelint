@@ -52,7 +52,7 @@ importers:
 
   examples/react:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^2.0.11
+      '@modyqyw/vite-plugin-eslint': ^2.0.14
       '@types/eslint': ^8.4.10
       '@types/react': ^18.0.25
       '@types/react-dom': ^18.0.9
@@ -87,7 +87,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 2.0.11_yzrg3pcbap4cuavuqdarojpgfi
+      '@modyqyw/vite-plugin-eslint': 2.0.14_yzrg3pcbap4cuavuqdarojpgfi
       '@types/eslint': 8.4.10
       '@types/react': 18.0.25
       '@types/react-dom': 18.0.9
@@ -119,7 +119,7 @@ importers:
 
   examples/solid:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^2.0.11
+      '@modyqyw/vite-plugin-eslint': ^2.0.14
       '@types/eslint': ^8.4.10
       '@typescript-eslint/eslint-plugin': ^5.44.0
       '@typescript-eslint/parser': ^5.44.0
@@ -150,7 +150,7 @@ importers:
     dependencies:
       solid-js: 1.6.2
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 2.0.11_yzrg3pcbap4cuavuqdarojpgfi
+      '@modyqyw/vite-plugin-eslint': 2.0.14_yzrg3pcbap4cuavuqdarojpgfi
       '@types/eslint': 8.4.10
       '@typescript-eslint/eslint-plugin': 5.44.0_fnsv2sbzcckq65bwfk7a5xwslu
       '@typescript-eslint/parser': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
@@ -180,7 +180,7 @@ importers:
 
   examples/svelte:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^2.0.11
+      '@modyqyw/vite-plugin-eslint': ^2.0.14
       '@sveltejs/vite-plugin-svelte': ^1.3.1
       '@tsconfig/svelte': ^3.0.0
       '@types/eslint': ^8.4.10
@@ -189,7 +189,7 @@ importers:
       eslint: ^8.28.0
       eslint-config-prettier: ^8.5.0
       eslint-plugin-prettier: ^4.2.1
-      eslint-plugin-svelte: ^2.13.0
+      eslint-plugin-svelte: ^2.13.1
       less: ^4.1.3
       postcss: ^8.4.19
       postcss-html: ^1.5.0
@@ -205,7 +205,7 @@ importers:
       stylelint-prettier: ^2.0.0
       svelte: ^3.53.1
       svelte-check: ^2.9.2
-      svelte-eslint-parser: ^0.21.0
+      svelte-eslint-parser: ^0.22.0
       svelte-preprocess: ^4.10.7
       tailwindcss: ^3.2.4
       tslib: ^2.4.1
@@ -214,7 +214,7 @@ importers:
       vite-plugin-inspect: ^0.7.9
       vite-plugin-stylelint: workspace:*
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 2.0.11_yzrg3pcbap4cuavuqdarojpgfi
+      '@modyqyw/vite-plugin-eslint': 2.0.14_yzrg3pcbap4cuavuqdarojpgfi
       '@sveltejs/vite-plugin-svelte': 1.3.1_svelte@3.53.1+vite@3.2.4
       '@tsconfig/svelte': 3.0.0
       '@types/eslint': 8.4.10
@@ -223,7 +223,7 @@ importers:
       eslint: 8.28.0
       eslint-config-prettier: 8.5.0_eslint@8.28.0
       eslint-plugin-prettier: 4.2.1_cwlo2dingkvfydnaculr42urve
-      eslint-plugin-svelte: 2.13.0_xgu65rlhscpnxffotiaicv6m5i
+      eslint-plugin-svelte: 2.13.1_xgu65rlhscpnxffotiaicv6m5i
       less: 4.1.3
       postcss: 8.4.19
       postcss-html: 1.5.0
@@ -239,7 +239,7 @@ importers:
       stylelint-prettier: 2.0.0_gx7bxdqhns6mkagsrslabue4fy
       svelte: 3.53.1
       svelte-check: 2.9.2_tcosvqhl4uvzwguhas5kblviii
-      svelte-eslint-parser: 0.21.0_svelte@3.53.1
+      svelte-eslint-parser: 0.22.0_svelte@3.53.1
       svelte-preprocess: 4.10.7_u7d4p32cz7erkvkok7mpzdta3i
       tailwindcss: 3.2.4_postcss@8.4.19
       tslib: 2.4.1
@@ -250,7 +250,7 @@ importers:
 
   examples/vue:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^2.0.11
+      '@modyqyw/vite-plugin-eslint': ^2.0.14
       '@types/eslint': ^8.4.10
       '@typescript-eslint/eslint-plugin': ^5.44.0
       '@typescript-eslint/parser': ^5.44.0
@@ -286,7 +286,7 @@ importers:
     dependencies:
       vue: 3.2.45
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 2.0.11_yzrg3pcbap4cuavuqdarojpgfi
+      '@modyqyw/vite-plugin-eslint': 2.0.14_yzrg3pcbap4cuavuqdarojpgfi
       '@types/eslint': 8.4.10
       '@typescript-eslint/eslint-plugin': 5.44.0_fnsv2sbzcckq65bwfk7a5xwslu
       '@typescript-eslint/parser': 5.44.0_hsf322ms6xhhd4b5ne6lb74y4a
@@ -1271,8 +1271,8 @@ packages:
       '@jridgewell/sourcemap-codec': 1.4.14
     dev: true
 
-  /@modyqyw/vite-plugin-eslint/2.0.11_yzrg3pcbap4cuavuqdarojpgfi:
-    resolution: {integrity: sha512-fSBMYCmY4WxzPRDD0Eo7G61cC1sZha+RcMs78qBwBlMvbbmwevOyBAwN4PL3CmTZJrR0s0VA30uAqBtwLzGJmQ==}
+  /@modyqyw/vite-plugin-eslint/2.0.14_yzrg3pcbap4cuavuqdarojpgfi:
+    resolution: {integrity: sha512-R4AzYZWyrERH1lA5oprj3eKS+kyRyG3bBahT3RBBMHqBlPll5y4OO15ye/Tbmt0Mq5puz3A4thj4cntgF03IpQ==}
     engines: {node: '>=12.2'}
     peerDependencies:
       '@types/eslint': ^7.0.0 || ^8.0.0
@@ -3551,8 +3551,8 @@ packages:
       - typescript
     dev: true
 
-  /eslint-plugin-svelte/2.13.0_xgu65rlhscpnxffotiaicv6m5i:
-    resolution: {integrity: sha512-/lNRny2zZmvCqm5DPE7Yt7WaP6ESCcPhiUdeBA57r1SOaCgBGUk6eUX1LtnmV/L3dXMs5ammVG5iX0UpjWF0Kg==}
+  /eslint-plugin-svelte/2.13.1_xgu65rlhscpnxffotiaicv6m5i:
+    resolution: {integrity: sha512-PZ0h8mm9vdVndLNoCUVujYFuWpp+AmCT5GnhjZ1q4dR3zLgQdL+V7Ce0KI1EQ8/4D6GExLMYcOd8vgGUdxxOxg==}
     engines: {node: ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0-0
@@ -3571,7 +3571,7 @@ packages:
       postcss-safe-parser: 6.0.0_postcss@8.4.19
       sourcemap-codec: 1.4.8
       svelte: 3.53.1
-      svelte-eslint-parser: 0.21.0_svelte@3.53.1
+      svelte-eslint-parser: 0.22.0_svelte@3.53.1
     transitivePeerDependencies:
       - supports-color
       - ts-node
@@ -7480,8 +7480,8 @@ packages:
       - sugarss
     dev: true
 
-  /svelte-eslint-parser/0.21.0_svelte@3.53.1:
-    resolution: {integrity: sha512-RGUPcGPZxjA4xLBrdT5xkw/AdlFOOqRaizLGJLgpjowROfBkAZsPlnNQbAXzPuWnaELjCCQkYUlKaQ6SvzPS2w==}
+  /svelte-eslint-parser/0.22.0_svelte@3.53.1:
+    resolution: {integrity: sha512-KQut6bb5dPwQ1SYTN/m5rxCkEDWDXiZpOXl05afNKGnjCMC5ZpGVrJM7BtFGwV2kPFeIiwRW+ofY3GxfqFBNpw==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       svelte: ^3.37.0

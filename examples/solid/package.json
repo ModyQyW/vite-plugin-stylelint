@@ -11,7 +11,7 @@
     "solid-js": "^1.6.2"
   },
   "devDependencies": {
-    "@modyqyw/vite-plugin-eslint": "^2.0.11",
+    "@modyqyw/vite-plugin-eslint": "^2.0.14",
     "@types/eslint": "^8.4.10",
     "@typescript-eslint/eslint-plugin": "^5.44.0",
     "@typescript-eslint/parser": "^5.44.0",
