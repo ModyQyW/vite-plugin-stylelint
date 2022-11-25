@@ -84,7 +84,7 @@ Path to a file or directory for the cache location. See [config.cacheDir](https:
 ### `include`
 
 - Type: `string | string[]`
-- Default: `['src/**/*.css', 'src/**/*.scss', 'src/**/*.sass', 'src/**/*.less', 'src/**/*.styl', 'src/**/*.vue', 'src/**/*.svelte']`
+- Default: `['src/**/*.{css,scss,sass,less,styl,vue,svelte}']`
 
 A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) pattern, or array of patterns.
 
@@ -105,6 +105,15 @@ This is used to [create a filter](https://github.com/rollup/plugins/blob/master/
 - Default: `'stylelint'`
 
 Path to Stylelint instance that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
+
+### `formatter`
+
+- Type: `Stylelint.FormatterType | Stylelint.Formatter`
+- Default: `'string'`
+
+The name or the path of a formatter.
+
+This is used to [set a formatter](https://stylelint.io/user-guide/usage/options#formatter) in order to convert lint results to a human- or machine-readable string.
 
 ### `lintOnStart`
 
@@ -169,13 +178,6 @@ See [CHANGELOG.md](./CHANGELOG.md).
 ## Acknowledge
 
 Initially forked from [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint).
-
-## Plan for v4
-
-- Support vite@4, support vite@2 and vite@3 if possible
-- Support stylelint@15, support stylelint@13 and stylelint@14 if possible
-- Require node >= 14.16
-- Remove esm bundle banner (No need for node >= 14.16)
 
 ## License
 
