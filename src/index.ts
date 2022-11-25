@@ -1,107 +1,50 @@
-import { createFilter, normalizePath } from '@rollup/pluginutils';
-import fs from 'node:fs';
-import path from 'node:path';
-import type { PluginContext } from 'rollup';
+import { normalizePath } from '@rollup/pluginutils';
 import type * as Vite from 'vite';
-import type * as Stylelint from 'stylelint';
-import type { FilterPattern, StylelintPluginOptions } from './types';
+import {
+  getFilter,
+  getFinalOptions,
+  getLintFiles,
+  initialStylelint,
+  isVirtualModule,
+} from './utils';
+import type {
+  Filter,
+  LintFiles,
+  StylelintInstance,
+  StylelintFormatter,
+  StylelintPluginOptions,
+  StylelintPluginUserOptions,
+} from './types';
 
-export default function StylelintPlugin(options: StylelintPluginOptions = {}): Vite.Plugin {
-  const cache = options?.cache ?? true;
-  let cacheLocation = '';
-  const include = options?.include ?? [
-    'src/**/*.css',
-    'src/**/*.scss',
-    'src/**/*.sass',
-    'src/**/*.less',
-    'src/**/*.styl',
-    'src/**/*.vue',
-    'src/**/*.svelte',
-  ];
-  const exclude = options?.exclude ?? ['node_modules', 'virtual:'];
-  const stylelintPath = options?.stylelintPath ?? 'stylelint';
-  const lintOnStart = options?.lintOnStart ?? false;
-  const emitError = options?.emitError ?? true;
-  const emitErrorAsWarning = options?.emitErrorAsWarning ?? false;
-  const emitWarning = options?.emitWarning ?? true;
-  const emitWarningAsError = options?.emitWarningAsError ?? false;
-
-  const filter = createFilter(include, exclude);
-  const isVirtualModule = (file: fs.PathLike) => !fs.existsSync(file);
-
-  let stylelint: Stylelint.PublicApi;
-  let lintFiles: (ctx: PluginContext, files: FilterPattern) => Promise<void>;
+export default function StylelintPlugin(options: StylelintPluginUserOptions = {}): Vite.Plugin {
+  let opts: StylelintPluginOptions;
+  let filter: Filter;
+  let stylelint: StylelintInstance;
+  let formatter: StylelintFormatter;
+  let lintFiles: LintFiles;
 
   return {
     name: 'vite:stylelint',
     configResolved(config) {
-      cacheLocation =
-        options?.cacheLocation ?? path.resolve(config.cacheDir, 'vite-plugin-stylelint');
+      opts = getFinalOptions(options, config);
+      filter = getFilter(opts);
     },
     async buildStart() {
       // initial
       if (!stylelint) {
-        try {
-          const module = await import(stylelintPath);
-          stylelint = module.default;
-          lintFiles = async (ctx, files) =>
-            await stylelint
-              .lint({
-                ...options,
-                allowEmptyInput: true,
-                cache,
-                cacheLocation,
-                files,
-              })
-              .then((lintResults: Stylelint.LinterResult | void) => {
-                if (!lintResults) return;
-
-                const { results } = lintResults;
-                results.forEach((result) => {
-                  const { warnings, ignored } = result;
-                  if (!ignored) {
-                    warnings.forEach((warning) => {
-                      console.log('');
-                      const { severity, text, line, column } = warning;
-                      if (severity === 'error' && emitError) {
-                        if (emitErrorAsWarning) {
-                          ctx.warn(text, { line, column });
-                        } else {
-                          ctx.error(text, { line, column });
-                        }
-                      } else if (severity === 'warning' && emitWarning) {
-                        if (emitWarningAsError) {
-                          ctx.error(text, { line, column });
-                        } else {
-                          ctx.warn(text, { line, column });
-                        }
-                      }
-                    });
-                  }
-                });
-              })
-              .catch((error) => {
-                console.log('');
-                ctx.error(`${error?.message ?? error}`);
-              });
-        } catch (error) {
-          console.log('');
-          this.error(
-            `${
-              (error as Error)?.message ??
-              'Failed to import Stylelint. Have you installed and configured correctly?'
-            }`,
-          );
-        }
+        const result = await initialStylelint(opts, this);
+        stylelint = result.stylelint;
+        formatter = result.formatter;
+        lintFiles = getLintFiles(stylelint, formatter, opts);
       }
 
       // lint on start
-      if (lintOnStart) {
+      if (opts.lintOnStart) {
         console.log('');
         this.warn(
           `Stylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
-        await lintFiles(this, include);
+        await lintFiles(this, opts.include);
       }
     },
     async transform(_, id) {
@@ -121,9 +64,7 @@ export default function StylelintPlugin(options: StylelintPluginOptions = {}): V
 
       // using filter(file) here may cause double lint
       // PR is welcome
-      if (!filter(file) || isVirtualModule(file)) {
-        return null;
-      }
+      if (!filter(file) || isVirtualModule(id)) return null;
 
       await lintFiles(this, file);
 
