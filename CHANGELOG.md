@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.1.1 (2022-11-26)
+
+- fix: fix build
+
 ## 3.1.0 (2022-11-25)
 
 - refactor
