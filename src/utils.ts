@@ -8,7 +8,6 @@ import type {
   StylelintLinterResult,
   StylelintFormatter,
 } from './types';
-import { formatters } from 'stylelint';
 import type * as Vite from 'vite';
 import type * as Rollup from 'rollup';
 import { createFilter } from '@rollup/pluginutils';
@@ -64,7 +63,7 @@ export const initialStylelint = async (opts: StylelintPluginOptions, ctx: Rollup
     const module = await import(opts.stylelintPath);
     const stylelint = module.default as StylelintInstance;
     const formatter =
-      typeof opts.formatter === 'string' ? formatters[opts.formatter] : opts.formatter;
+      typeof opts.formatter === 'string' ? stylelint.formatters[opts.formatter] : opts.formatter;
     return { stylelint, formatter };
   } catch (error) {
     console.log('');
