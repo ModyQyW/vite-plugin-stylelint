@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.2.0 (2022-11-28)
+
+- feat: add `dev` and `build` option
+
 ## 3.1.1 (2022-11-26)
 
 - fix: fix build
