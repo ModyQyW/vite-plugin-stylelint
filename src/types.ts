@@ -18,7 +18,10 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   emitWarning: boolean;
   emitWarningAsError: boolean;
 }
-export type StylelintPluginUserOptions = Partial<StylelintPluginOptions>;
+export interface StylelintPluginUserOptions extends Partial<StylelintPluginOptions> {
+  dev?: boolean;
+  build?: boolean;
+}
 
 export type StylelintLinterOptions = Stylelint.LinterOptions;
 export type StylelintInstance = Stylelint.PublicApi;

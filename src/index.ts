@@ -17,6 +17,7 @@ import type {
 } from './types';
 
 export default function StylelintPlugin(options: StylelintPluginUserOptions = {}): Vite.Plugin {
+  const { dev = true, build = true } = options;
   let opts: StylelintPluginOptions;
   let filter: Filter;
   let stylelint: StylelintInstance;
@@ -25,6 +26,11 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
 
   return {
     name: 'vite:stylelint',
+    apply(_, { command }) {
+      if (command === 'serve' && dev) return true;
+      if (command === 'build' && build) return true;
+      return false;
+    },
     configResolved(config) {
       opts = getFinalOptions(options, config);
       filter = getFilter(opts);
