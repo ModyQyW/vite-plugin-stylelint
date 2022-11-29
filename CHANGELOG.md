@@ -1,8 +1,12 @@
 # CHANGELOG
 
+## 3.3.0 (2022-11-29)
+
+- feat: add `chokidar` option
+
 ## 3.2.0 (2022-11-28)
 
-- feat: add `dev` and `build` option
+- feat: add `dev` and `build` options
 
 ## 3.1.1 (2022-11-26)
 
