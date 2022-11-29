@@ -72,14 +72,14 @@ Additional options and explanations are listed below.
 - Type: `boolean`
 - Default: `true`
 
-Run `eslint` under `serve` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Run `stylelint` under `serve` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
 
 ### `build`
 
 - Type: `boolean`
 - Default: `true`
 
-Run `eslint` under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Run `stylelint` under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
 
 **ATTENTION: the default value will be `false` in next major release.**
 
@@ -137,6 +137,13 @@ This is used to [set a formatter](https://stylelint.io/user-guide/usage/options#
 - Default: `false`
 
 Lint on start (in `buildStart` hook). Useful to lint all files once to find potential errors, but significantly slow down Vite. This is disabled by default.
+
+### `chokidar`
+
+- Type: `boolean`
+- Default: `false`
+
+This plugin will try to run `stylelint` in `chokidar` `change` event instead of `transform` hook with this option enabled, which means linting style files imported by `@import` is possible. This is disabled by default. Recommend to enable `lintOnStart` too, if you enable this one.
 
 ### `emitError`
 
