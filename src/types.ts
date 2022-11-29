@@ -13,6 +13,7 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   stylelintPath: string;
   formatter: Stylelint.FormatterType | Stylelint.Formatter;
   lintOnStart: boolean;
+  chokidar: boolean;
   emitError: boolean;
   emitErrorAsWarning: boolean;
   emitWarning: boolean;

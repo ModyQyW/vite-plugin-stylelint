@@ -1,9 +1,11 @@
 import { normalizePath } from '@rollup/pluginutils';
 import type * as Vite from 'vite';
+import type { FSWatcher } from 'chokidar';
 import {
   getFilter,
   getFinalOptions,
   getLintFiles,
+  getWatcher,
   initialStylelint,
   isVirtualModule,
 } from './utils';
@@ -23,6 +25,7 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
   let stylelint: StylelintInstance;
   let formatter: StylelintFormatter;
   let lintFiles: LintFiles;
+  let watcher: FSWatcher;
 
   return {
     name: 'vite:stylelint',
@@ -52,6 +55,11 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
         );
         await lintFiles(this, opts.include);
       }
+
+      // chokidar
+      if (opts.chokidar) {
+        watcher = getWatcher(lintFiles, opts, this);
+      }
     },
     async transform(_, id) {
       // id should be ignored: vite-plugin-stylelint/examples/vue/index.html
@@ -66,6 +74,8 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
       // id should be ignored in first time but should not be ignored in HMR: vite-plugin-stylelint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
       // file should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
 
+      if (opts.chokidar) return null;
+
       const file = normalizePath(id).split('?')[0];
 
       // using filter(file) here may cause double lint
@@ -75,6 +85,12 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
       await lintFiles(this, file);
 
       return null;
+    },
+    async buildEnd() {
+      if (watcher?.close) await watcher.close();
+    },
+    async closeBundle() {
+      if (watcher?.close) await watcher.close();
     },
   };
 }

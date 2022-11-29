@@ -1,4 +1,6 @@
 import { resolve } from 'node:path';
+import chokidar from 'chokidar';
+import pico from 'picocolors';
 import type {
   StylelintPluginOptions,
   StylelintPluginUserOptions,
@@ -11,6 +13,8 @@ import type {
 import type * as Vite from 'vite';
 import type * as Rollup from 'rollup';
 import { createFilter } from '@rollup/pluginutils';
+
+export const cwd = process.cwd();
 
 // https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/importMetaGlob.ts
 // https://vitejs.dev/guide/api-plugin.html#virtual-modules-convention
@@ -26,6 +30,7 @@ export const getFinalOptions = (
     stylelintPath,
     formatter,
     lintOnStart,
+    chokidar,
     emitError,
     emitErrorAsWarning,
     emitWarning,
@@ -40,6 +45,7 @@ export const getFinalOptions = (
   stylelintPath: stylelintPath ?? 'stylelint',
   formatter: formatter ?? 'string',
   lintOnStart: lintOnStart ?? false,
+  chokidar: chokidar ?? false,
   emitError: emitError ?? true,
   emitErrorAsWarning: emitErrorAsWarning ?? false,
   emitWarning: emitWarning ?? true,
@@ -93,6 +99,11 @@ export const getLintFiles = (
         results.forEach((result) => {
           result.warnings.forEach(({ severity }) => {
             const text = formatter([result], linterResult);
+            if (opts.chokidar) {
+              const levelColor = severity === 'error' ? 'red' : 'yellow';
+              console.log(`${pico[levelColor](text)}  Plugin: ${pico.magenta('vite:stylelint')}`);
+              return;
+            }
             if (severity === 'error' && emitError) {
               if (emitErrorAsWarning) ctx.warn(text);
               else ctx.error(text);
@@ -108,4 +119,17 @@ export const getLintFiles = (
         console.log('');
         ctx.error(`${error?.message ?? error}`);
       });
+};
+
+export const getWatcher = (
+  lintFiles: LintFiles,
+  opts: StylelintPluginOptions,
+  ctx: Rollup.PluginContext,
+) => {
+  return chokidar.watch(opts.include, { ignored: opts.exclude }).on('change', async (path) => {
+    const fullPath = resolve(cwd, path);
+    console.log('==== chokidar ====');
+    console.log('fullPath', fullPath);
+    await lintFiles(ctx, fullPath);
+  });
 };
