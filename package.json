@@ -46,6 +46,9 @@
     "prepublishOnly": "pnpm run build",
     "release": "release-it"
   },
+  "dependencies": {
+    "chokidar": "^3.5.3"
+  },
   "devDependencies": {
     "@commitlint/cli": "^17.3.0",
     "@commitlint/config-conventional": "^17.3.0",
@@ -62,6 +65,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "husky": "^8.0.2",
     "npm-run-all": "^4.1.5",
+    "picocolors": "^1.0.0",
     "prettier": "^2.8.0",
     "release-it": "^15.5.0",
     "rollup": "^2.79.1",
