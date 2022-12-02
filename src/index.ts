@@ -3,11 +3,12 @@ import type * as Vite from 'vite';
 import type { FSWatcher } from 'chokidar';
 import {
   getFilter,
-  getFinalOptions,
+  getOptions,
   getLintFiles,
   getWatcher,
   initialStylelint,
   isVirtualModule,
+  pluginName,
 } from './utils';
 import type {
   Filter,
@@ -18,9 +19,9 @@ import type {
   StylelintPluginUserOptions,
 } from './types';
 
-export default function StylelintPlugin(options: StylelintPluginUserOptions = {}): Vite.Plugin {
-  const { dev = true, build = true } = options;
-  let opts: StylelintPluginOptions;
+export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
+  const { dev = true, build = true } = userOptions;
+  let options: StylelintPluginOptions;
   let filter: Filter;
   let stylelint: StylelintInstance;
   let formatter: StylelintFormatter;
@@ -28,62 +29,44 @@ export default function StylelintPlugin(options: StylelintPluginUserOptions = {}
   let watcher: FSWatcher;
 
   return {
-    name: 'vite:stylelint',
+    name: pluginName,
     apply(_, { command }) {
       if (command === 'serve' && dev) return true;
       if (command === 'build' && build) return true;
       return false;
     },
     configResolved(config) {
-      opts = getFinalOptions(options, config);
-      filter = getFilter(opts);
+      options = getOptions(userOptions, config);
+      filter = getFilter(options);
     },
     async buildStart() {
       // initial
       if (!stylelint) {
-        const result = await initialStylelint(opts, this);
+        const result = await initialStylelint(options, this);
         stylelint = result.stylelint;
         formatter = result.formatter;
-        lintFiles = getLintFiles(stylelint, formatter, opts);
+        lintFiles = getLintFiles(stylelint, formatter, options);
       }
-
       // lint on start
-      if (opts.lintOnStart) {
+      if (options.lintOnStart) {
         console.log('');
         this.warn(
           `Stylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
-        await lintFiles(this, opts.include);
+        await lintFiles(this, options.include, true);
       }
-
       // chokidar
-      if (opts.chokidar) {
-        watcher = getWatcher(lintFiles, opts, this);
+      if (options.chokidar) {
+        watcher = getWatcher(lintFiles, options, this);
       }
     },
     async transform(_, id) {
-      // id should be ignored: vite-plugin-stylelint/examples/vue/index.html
-      // file should be ignored: vite-plugin-stylelint/examples/vue/index.html
-
-      // id should be ignored: vite-plugin-stylelint/examples/vue/index.html?html-proxy&index=0.css
-      // file should be ignored: vite-plugin-stylelint/examples/vue/index.html
-
-      // id should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
-      // file should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
-
-      // id should be ignored in first time but should not be ignored in HMR: vite-plugin-stylelint/examples/vue/src/app.vue?vue&type=style&index=0&lang.css
-      // file should NOT be ignored: vite-plugin-stylelint/examples/vue/src/app.vue
-
-      if (opts.chokidar) return null;
-
+      // chokidar
+      if (options.chokidar) return null;
       const file = normalizePath(id).split('?')[0];
-
-      // using filter(file) here may cause double lint
-      // PR is welcome
+      // using filter(file) here may cause double lint, PR welcome
       if (!filter(file) || isVirtualModule(id)) return null;
-
       await lintFiles(this, file);
-
       return null;
     },
     async buildEnd() {

@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import chokidar from 'chokidar';
 import pico from 'picocolors';
+import type { Colors } from 'picocolors/types';
 import type {
   StylelintPluginOptions,
   StylelintPluginUserOptions,
@@ -9,6 +10,7 @@ import type {
   StylelintInstance,
   StylelintLinterResult,
   StylelintFormatter,
+  TextType,
 } from './types';
 import type * as Vite from 'vite';
 import type * as Rollup from 'rollup';
@@ -16,12 +18,76 @@ import { createFilter } from '@rollup/pluginutils';
 
 export const cwd = process.cwd();
 
+export const pluginName = 'vite:stylelint';
+
+export const colorMap: Record<TextType, keyof Omit<Colors, 'isColorSupported'>> = {
+  error: 'red',
+  warning: 'yellow',
+  plugin: 'magenta',
+};
+
 // https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/importMetaGlob.ts
 // https://vitejs.dev/guide/api-plugin.html#virtual-modules-convention
 export const isVirtualModule = (id: string) =>
   id.startsWith('virtual:') || id.startsWith('\0') || !id.includes('/');
 
-export const getFinalOptions = (
+export const colorize = (text: string, textType: TextType) => pico[colorMap[textType]](text);
+
+export const contextPrint = (
+  text: string,
+  textType: TextType,
+  { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError }: StylelintPluginOptions,
+  context: Rollup.PluginContext,
+) => {
+  if (textType === 'error' && emitError) {
+    if (emitErrorAsWarning) context.warn(text);
+    else context.error(text);
+  }
+  if (textType === 'warning' && emitWarning) {
+    if (emitWarningAsError) context.error(text);
+    else context.warn(text);
+  }
+};
+
+export const customPrint = (
+  text: string,
+  textType: TextType,
+  {
+    hasPluginName = false,
+    isColorized = false,
+  }: {
+    hasPluginName?: boolean;
+    isColorized?: boolean;
+  } = {},
+) => {
+  let t = text;
+  if (!hasPluginName) t += `  Plugin: ${colorize(pluginName, 'plugin')}\n`;
+  if (!isColorized) t = colorize(t, textType);
+  console.log(t);
+};
+
+export const print = (
+  text: string,
+  textType: TextType,
+  {
+    hasPluginName = false,
+    isColorized = false,
+    options,
+    context,
+  }: {
+    hasPluginName?: boolean;
+    isColorized?: boolean;
+    options?: StylelintPluginOptions;
+    context?: Rollup.PluginContext;
+  } = {},
+) => {
+  if (context && options) {
+    return contextPrint(text, textType, options, context);
+  }
+  return customPrint(text, textType, { hasPluginName, isColorized });
+};
+
+export const getOptions = (
   {
     cache,
     cacheLocation,
@@ -52,28 +118,32 @@ export const getFinalOptions = (
   emitWarningAsError: emitWarningAsError ?? false,
 });
 
-export const getFilter = (opts: StylelintPluginOptions) => createFilter(opts.include, opts.exclude);
+export const getFilter = (options: StylelintPluginOptions) =>
+  createFilter(options.include, options.exclude);
 
 export const getStylelintLinterOptions = (
-  opts: StylelintPluginOptions,
+  options: StylelintPluginOptions,
 ): StylelintLinterOptions => ({
-  ...opts,
+  ...options,
   allowEmptyInput: true,
-  cache: opts.cache,
-  cacheLocation: opts.cacheLocation,
-  files: opts.files,
+  cache: options.cache,
+  cacheLocation: options.cacheLocation,
+  files: options.files,
 });
 
-export const initialStylelint = async (opts: StylelintPluginOptions, ctx: Rollup.PluginContext) => {
+export const initialStylelint = async (
+  { stylelintPath, formatter }: StylelintPluginOptions,
+  context: Rollup.PluginContext,
+) => {
   try {
-    const module = await import(opts.stylelintPath);
+    const module = await import(stylelintPath);
     const stylelint = module.default as StylelintInstance;
-    const formatter =
-      typeof opts.formatter === 'string' ? stylelint.formatters[opts.formatter] : opts.formatter;
-    return { stylelint, formatter };
+    const loadedFormatter =
+      typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
+    return { stylelint, formatter: loadedFormatter };
   } catch (error) {
     console.log('');
-    ctx.error(
+    context.error(
       `${
         (error as Error)?.message ??
         'Failed to import Stylelint. Have you installed and configured correctly?'
@@ -85,12 +155,11 @@ export const initialStylelint = async (opts: StylelintPluginOptions, ctx: Rollup
 export const getLintFiles = (
   stylelint: StylelintInstance,
   formatter: StylelintFormatter,
-  opts: StylelintPluginOptions,
+  options: StylelintPluginOptions,
 ): LintFiles => {
-  const { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError } = opts;
-  return async (ctx, files) =>
+  return async (context, files, isLintedOnStart = false) =>
     await stylelint
-      .lint({ ...getStylelintLinterOptions(opts), files })
+      .lint({ ...getStylelintLinterOptions(options), files })
       .then(async (linterResult: StylelintLinterResult | void) => {
         if (!linterResult) return;
 
@@ -99,37 +168,24 @@ export const getLintFiles = (
         results.forEach((result) => {
           result.warnings.forEach(({ severity }) => {
             const text = formatter([result], linterResult);
-            if (opts.chokidar) {
-              const levelColor = severity === 'error' ? 'red' : 'yellow';
-              console.log(`${pico[levelColor](text)}  Plugin: ${pico.magenta('vite:stylelint')}`);
-              return;
-            }
-            if (severity === 'error' && emitError) {
-              if (emitErrorAsWarning) ctx.warn(text);
-              else ctx.error(text);
-            }
-            if (severity === 'warning' && emitWarning) {
-              if (emitWarningAsError) ctx.error(text);
-              else ctx.warn(text);
-            }
+            if (!isLintedOnStart && options.chokidar) return print(text, severity);
+            return print(text, severity, { options, context });
           });
         });
       })
       .catch((error) => {
         console.log('');
-        ctx.error(`${error?.message ?? error}`);
+        context.error(`${error?.message ?? error}`);
       });
 };
 
 export const getWatcher = (
   lintFiles: LintFiles,
-  opts: StylelintPluginOptions,
-  ctx: Rollup.PluginContext,
+  { include, exclude }: StylelintPluginOptions,
+  context: Rollup.PluginContext,
 ) => {
-  return chokidar.watch(opts.include, { ignored: opts.exclude }).on('change', async (path) => {
+  return chokidar.watch(include, { ignored: exclude }).on('change', async (path) => {
     const fullPath = resolve(cwd, path);
-    console.log('==== chokidar ====');
-    console.log('fullPath', fullPath);
-    await lintFiles(ctx, fullPath);
+    await lintFiles(context, fullPath);
   });
 };

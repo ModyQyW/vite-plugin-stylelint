@@ -29,4 +29,10 @@ export type StylelintInstance = Stylelint.PublicApi;
 export type StylelintFormatter = Stylelint.Formatter;
 export type StylelintLinterResult = Stylelint.LinterResult;
 
-export type LintFiles = (ctx: Rollup.PluginContext, files: FilterPattern) => Promise<void>;
+export type LintFiles = (
+  context: Rollup.PluginContext,
+  files: FilterPattern,
+  isLintedOnStart?: boolean,
+) => Promise<void>;
+
+export type TextType = 'error' | 'warning' | 'plugin';
