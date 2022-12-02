@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 3.3.1 (2022-12-02)
+
+- fix: fix wrong behavior when enable `lintOnStart` and `chokidar`
+- perf: split `print`, `contextPrint` and `customPrint` functions
+- perf: split `pluginName` variable
+- perf: improve naming
+
 ## 3.3.0 (2022-11-29)
 
 - feat: add `chokidar` option
