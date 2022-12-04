@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.3.2 (2022-12-04)
+
+- fix: fix Stylelint options lost
+
 ## 3.3.1 (2022-12-02)
 
 - fix: fix wrong behavior when enable `lintOnStart` and `chokidar`
