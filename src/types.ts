@@ -6,6 +6,8 @@ export type FilterPattern = string | string[];
 export type Filter = ReturnType<typeof createFilter>;
 
 export interface StylelintPluginOptions extends Stylelint.LinterOptions {
+  dev: boolean;
+  build: boolean;
   cache: boolean;
   cacheLocation: string;
   include: FilterPattern;
@@ -19,10 +21,7 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   emitWarning: boolean;
   emitWarningAsError: boolean;
 }
-export interface StylelintPluginUserOptions extends Partial<StylelintPluginOptions> {
-  dev?: boolean;
-  build?: boolean;
-}
+export type StylelintPluginUserOptions = Partial<StylelintPluginOptions>;
 
 export type StylelintLinterOptions = Stylelint.LinterOptions;
 export type StylelintInstance = Stylelint.PublicApi;

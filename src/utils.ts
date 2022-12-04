@@ -89,6 +89,8 @@ export const print = (
 
 export const getOptions = (
   {
+    dev,
+    build,
     cache,
     cacheLocation,
     include,
@@ -101,9 +103,12 @@ export const getOptions = (
     emitErrorAsWarning,
     emitWarning,
     emitWarningAsError,
+    ...stylelintOptions
   }: StylelintPluginUserOptions,
   { cacheDir }: Vite.ResolvedConfig,
 ): StylelintPluginOptions => ({
+  dev: dev ?? true,
+  build: build ?? true,
   cache: cache ?? true,
   cacheLocation: cacheLocation ?? resolve(cacheDir, 'vite-plugin-stylelint'),
   include: include ?? ['src/**/*.{css,scss,sass,less,styl,vue,svelte}'],
@@ -116,6 +121,7 @@ export const getOptions = (
   emitErrorAsWarning: emitErrorAsWarning ?? false,
   emitWarning: emitWarning ?? true,
   emitWarningAsError: emitWarningAsError ?? false,
+  ...stylelintOptions,
 });
 
 export const getFilter = (options: StylelintPluginOptions) =>
@@ -126,9 +132,6 @@ export const getStylelintLinterOptions = (
 ): StylelintLinterOptions => ({
   ...options,
   allowEmptyInput: true,
-  cache: options.cache,
-  cacheLocation: options.cacheLocation,
-  files: options.files,
 });
 
 export const initialStylelint = async (
