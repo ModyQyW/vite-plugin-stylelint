@@ -156,32 +156,28 @@ export const initialStylelint = async (
   }
 };
 
-export const getLintFiles = (
-  stylelint: StylelintInstance,
-  formatter: StylelintFormatter,
-  options: StylelintPluginOptions,
-): LintFiles => {
-  return async (context, files, isLintedOnStart = false) =>
+export const getLintFiles =
+  (
+    stylelint: StylelintInstance,
+    formatter: StylelintFormatter,
+    options: StylelintPluginOptions,
+  ): LintFiles =>
+  async (context, files, isLintedOnStart = false) =>
     await stylelint
       .lint({ ...getStylelintLinterOptions(options), files })
       .then(async (linterResult: StylelintLinterResult | void) => {
         if (!linterResult) return;
 
-        const results = linterResult.results.filter((result) => !result.ignored);
+        const results = linterResult.results.filter(
+          (result) => !result.ignored && result.warnings.length > 0,
+        );
+        if (results.length === 0) return;
+        const text = formatter(results, linterResult);
+        const textType = linterResult.errored ? 'error' : 'warning';
 
-        results.forEach((result) => {
-          result.warnings.forEach(({ severity }) => {
-            const text = formatter([result], linterResult);
-            if (!isLintedOnStart && options.chokidar) return print(text, severity);
-            return print(text, severity, { options, context });
-          });
-        });
-      })
-      .catch((error) => {
-        console.log('');
-        context.error(`${error?.message ?? error}`);
+        if (!isLintedOnStart && options.chokidar) return print(text, textType);
+        return print(text, textType, { options, context });
       });
-};
 
 export const getWatcher = (
   lintFiles: LintFiles,
