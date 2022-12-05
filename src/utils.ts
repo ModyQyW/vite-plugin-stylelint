@@ -81,6 +81,7 @@ export const print = (
     context?: Rollup.PluginContext;
   } = {},
 ) => {
+  console.log('');
   if (context && options) {
     return contextPrint(text, textType, options, context);
   }
