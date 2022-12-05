@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.3.3 (2022-12-05)
+
+- perf: improve output syntax
+
 ## 3.3.2 (2022-12-04)
 
 - fix: fix Stylelint options lost
