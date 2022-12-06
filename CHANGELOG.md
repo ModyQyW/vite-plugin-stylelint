@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## Unreleased
+
+- feat!: require `vite@^3.0.0` or `vite@^4.0.0-0`, will be `vite@^3.0.0` or `vite@^4.0.0` after `vite@4` released
+- feat!: require `node>=14.18`
+- feat!: require `stylelint@^14.0.0`
+- feat!: `build` option defaults to `false`
+- feat!: `cacheLocation` option defaults to `.stylelintcache`
+- feat: esm by default
+  - don't be afraid as commonjs is also supported
+
 ## 3.3.3 (2022-12-05)
 
 - perf: improve output syntax
