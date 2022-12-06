@@ -8,7 +8,6 @@ importers:
       '@commitlint/config-conventional': ^17.3.0
       '@commitlint/prompt': ^17.3.0
       '@release-it/conventional-changelog': ^5.1.1
-      '@rollup/pluginutils': ^5.0.2
       '@tsconfig/node18': ^1.0.1
       '@types/eslint': ^8.4.10
       '@types/node': ^18.11.11
@@ -35,7 +34,6 @@ importers:
       '@commitlint/config-conventional': 17.3.0
       '@commitlint/prompt': 17.3.0
       '@release-it/conventional-changelog': 5.1.1_release-it@15.5.1
-      '@rollup/pluginutils': 5.0.2_rollup@3.6.0
       '@tsconfig/node18': 1.0.1
       '@types/eslint': 8.4.10
       '@types/node': 18.11.11
@@ -1326,21 +1324,6 @@ packages:
       '@types/estree': 1.0.0
       estree-walker: 2.0.2
       picomatch: 2.3.1
-    dev: true
-
-  /@rollup/pluginutils/5.0.2_rollup@3.6.0:
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.0
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-      rollup: 3.6.0
     dev: true
 
   /@sindresorhus/is/5.3.0:
