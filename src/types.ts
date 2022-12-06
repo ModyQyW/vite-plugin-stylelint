@@ -1,9 +1,7 @@
-import { createFilter } from 'vite';
 import type * as Stylelint from 'stylelint';
 import type * as Rollup from 'rollup';
 
 export type FilterPattern = string | string[];
-export type Filter = ReturnType<typeof createFilter>;
 
 export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   dev: boolean;

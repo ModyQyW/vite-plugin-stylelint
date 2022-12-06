@@ -11,18 +11,15 @@ import {
   pluginName,
 } from './utils';
 import type {
-  Filter,
   LintFiles,
   StylelintInstance,
   StylelintFormatter,
-  StylelintPluginOptions,
   StylelintPluginUserOptions,
 } from './types';
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
-  const { dev = true, build = false } = userOptions;
-  let options: StylelintPluginOptions;
-  let filter: Filter;
+  const options = getOptions(userOptions);
+  const filter = getFilter(options);
   let stylelint: StylelintInstance;
   let formatter: StylelintFormatter;
   let lintFiles: LintFiles;
@@ -31,13 +28,9 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
   return {
     name: pluginName,
     apply(_, { command }) {
-      if (command === 'serve' && dev) return true;
-      if (command === 'build' && build) return true;
+      if (command === 'serve' && options.dev) return true;
+      if (command === 'build' && options.build) return true;
       return false;
-    },
-    configResolved(config) {
-      options = getOptions(userOptions, config);
-      filter = getFilter(options);
     },
     async buildStart() {
       // initial

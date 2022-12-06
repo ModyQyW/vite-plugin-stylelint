@@ -12,7 +12,6 @@ import type {
   StylelintFormatter,
   TextType,
 } from './types';
-import type * as Vite from 'vite';
 import type * as Rollup from 'rollup';
 import { createFilter } from 'vite';
 
@@ -88,30 +87,27 @@ export const print = (
   return customPrint(text, textType, { hasPluginName, isColorized });
 };
 
-export const getOptions = (
-  {
-    dev,
-    build,
-    cache,
-    cacheLocation,
-    include,
-    exclude,
-    stylelintPath,
-    formatter,
-    lintOnStart,
-    chokidar,
-    emitError,
-    emitErrorAsWarning,
-    emitWarning,
-    emitWarningAsError,
-    ...stylelintOptions
-  }: StylelintPluginUserOptions,
-  { cacheDir }: Vite.ResolvedConfig,
-): StylelintPluginOptions => ({
+export const getOptions = ({
+  dev,
+  build,
+  cache,
+  cacheLocation,
+  include,
+  exclude,
+  stylelintPath,
+  formatter,
+  lintOnStart,
+  chokidar,
+  emitError,
+  emitErrorAsWarning,
+  emitWarning,
+  emitWarningAsError,
+  ...stylelintOptions
+}: StylelintPluginUserOptions): StylelintPluginOptions => ({
   dev: dev ?? true,
   build: build ?? false,
   cache: cache ?? true,
-  cacheLocation: cacheLocation ?? resolve(cacheDir, 'vite-plugin-stylelint'),
+  cacheLocation: cacheLocation ?? '.stylelintcache',
   include: include ?? ['src/**/*.{css,scss,sass,less,styl,vue,svelte}'],
   exclude: exclude ?? ['node_modules', 'virtual:'],
   stylelintPath: stylelintPath ?? 'stylelint',
