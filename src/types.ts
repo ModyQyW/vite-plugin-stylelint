@@ -1,4 +1,4 @@
-import { createFilter } from '@rollup/pluginutils';
+import { createFilter } from 'vite';
 import type * as Stylelint from 'stylelint';
 import type * as Rollup from 'rollup';
 

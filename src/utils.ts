@@ -14,7 +14,7 @@ import type {
 } from './types';
 import type * as Vite from 'vite';
 import type * as Rollup from 'rollup';
-import { createFilter } from '@rollup/pluginutils';
+import { createFilter } from 'vite';
 
 export const cwd = process.cwd();
 
