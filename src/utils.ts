@@ -109,7 +109,7 @@ export const getOptions = (
   { cacheDir }: Vite.ResolvedConfig,
 ): StylelintPluginOptions => ({
   dev: dev ?? true,
-  build: build ?? true,
+  build: build ?? false,
   cache: cache ?? true,
   cacheLocation: cacheLocation ?? resolve(cacheDir, 'vite-plugin-stylelint'),
   include: include ?? ['src/**/*.{css,scss,sass,less,styl,vue,svelte}'],

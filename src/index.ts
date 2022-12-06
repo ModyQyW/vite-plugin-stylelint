@@ -20,7 +20,7 @@ import type {
 } from './types';
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
-  const { dev = true, build = true } = userOptions;
+  const { dev = true, build = false } = userOptions;
   let options: StylelintPluginOptions;
   let filter: Filter;
   let stylelint: StylelintInstance;
