@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Vite Stylelint plugin. Supports vite@2 and vite@3.
+Vite Stylelint plugin. Supports vite@3 and vite@4.
 
 You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-stylelint).
 
@@ -14,16 +14,6 @@ npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
-
-<details>
-
-<summary>Stylelint@13</summary>
-
-```sh
-npm install stylelint@^13 @types/stylelint@^13 -D
-```
-
-</details>
 
 <details>
 
@@ -77,11 +67,9 @@ Run `stylelint` under `serve` command. See [Command Line Interface](https://vite
 ### `build`
 
 - Type: `boolean`
-- Default: `true`
+- Default: `false`
 
 Run `stylelint` under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
-
-**ATTENTION: the default value will be `false` in next major release.**
 
 ### `cache`
 
@@ -93,9 +81,9 @@ Store the results of processed files when enabled. This is enabled by default to
 ### `cacheLocation`
 
 - Type: `string`
-- Default: `path.resolve(config.cacheDir, 'vite-plugin-stylelint')`
+- Default: `.stylelintcache`
 
-Path to a file or directory for the cache location. See [config.cacheDir](https://vitejs.dev/config/shared-options.html#cachedir) for more.
+Path to a file or directory for the cache location.
 
 ### `include`
 
