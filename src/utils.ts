@@ -13,7 +13,7 @@ import type {
   TextType,
 } from './types';
 import type * as Rollup from 'rollup';
-import { createFilter } from 'vite';
+import { createFilter } from '@rollup/pluginutils';
 
 export const cwd = process.cwd();
 

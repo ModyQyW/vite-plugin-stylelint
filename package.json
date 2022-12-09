@@ -76,10 +76,16 @@
     "vite": "^4.0.0"
   },
   "peerDependencies": {
-    "stylelint": "^14.0.0",
-    "vite": "^3.0.0 || ^4.0.0-0"
+    "@types/stylelint": "^13.0.0",
+    "stylelint": "^13.0.0 || ^14.0.0",
+    "vite": "^2.0.0 || ^3.0.0 || ^4.0.0"
   },
-  "packageManager": "pnpm@7.17.1",
+  "peerDependenciesMeta": {
+    "@types/stylelint": {
+      "optional": true
+    }
+  },
+  "packageManager": "pnpm@7.18.1",
   "engines": {
     "node": ">=14.18"
   },
