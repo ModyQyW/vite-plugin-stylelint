@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Vite Stylelint plugin. Supports vite@3 and vite@4.
+Vite Stylelint plugin. Supports vite v2, v3 and v4. Requires node >= 14.18.
 
 You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-stylelint).
 
@@ -14,6 +14,16 @@ npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
+
+<details>
+
+<summary>Stylelint@13</summary>
+
+```sh
+npm install stylelint@^13 @types/stylelint@^13 -D
+```
+
+</details>
 
 <details>
 
