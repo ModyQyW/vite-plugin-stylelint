@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.0.1 (2022-12-11)
+
+- fix: correct reading stylelint instance
+
 ## 4.0.0 (2022-12-09)
 
 - feat: support `vite@4`
