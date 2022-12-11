@@ -177,7 +177,7 @@ The warnings found will be emitted as errors when enabled. This is disabled by d
   <summary>Cache is broken</summary>
   <ul>
     <li>Disable <code>cache</code> option.</li>
-    <li>Or delete the cache file (default <code>.stylelint</code>), fix errors manully and restart Vite.
+    <li>Or delete the cache file (default <code>.stylelintcache</code>), fix errors manully and restart Vite.
     </li>
   </ul>
   This problem should only happens when starting Vite with Stylelint errors. Have a better solution? PR welcome. :)
