@@ -137,7 +137,7 @@ export const initialStylelint = async (
 ) => {
   try {
     const module = await import(stylelintPath);
-    const stylelint = module.default as StylelintInstance;
+    const stylelint = (module?.default ?? module) as StylelintInstance;
     const loadedFormatter =
       typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
     return { stylelint, formatter: loadedFormatter };
