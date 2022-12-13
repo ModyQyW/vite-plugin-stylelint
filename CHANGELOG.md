@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.0.2 (2022-12-13)
+
+- fix: fix build
+
 ## 4.0.1 (2022-12-11)
 
 - fix: correct reading stylelint instance
