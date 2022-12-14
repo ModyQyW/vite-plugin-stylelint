@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.0.4 (2022-12-14)
+
+- perf: improve code
+
 ## 4.0.3 (2022-12-14)
 
 - fix: fix build
