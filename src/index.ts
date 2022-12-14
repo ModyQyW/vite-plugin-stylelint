@@ -46,11 +46,11 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         this.warn(
           `Stylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
-        await lintFiles(this, options.include, true);
+        await lintFiles(options.include, { context: this, isLintedOnStart: true });
       }
       // chokidar
       if (options.chokidar) {
-        watcher = getWatcher(lintFiles, options, this);
+        watcher = getWatcher(lintFiles, options);
       }
     },
     async transform(_, id) {
@@ -59,7 +59,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       const file = normalizePath(id).split('?')[0];
       // using filter(file) here may cause double lint, PR welcome
       if (!filter(file) || isVirtualModule(id)) return null;
-      await lintFiles(this, file);
+      await lintFiles(file, { context: this });
       return null;
     },
     async buildEnd() {

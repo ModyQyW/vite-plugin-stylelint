@@ -158,7 +158,7 @@ export const getLintFiles =
     formatter: StylelintFormatter,
     options: StylelintPluginOptions,
   ): LintFiles =>
-  async (context, files, isLintedOnStart = false) =>
+  async (files, { context, isLintedOnStart = false } = {}) =>
     await stylelint
       .lint({ ...getStylelintLinterOptions(options), files })
       .then(async (linterResult: StylelintLinterResult | void) => {
@@ -175,13 +175,9 @@ export const getLintFiles =
         return print(text, textType, { options, context });
       });
 
-export const getWatcher = (
-  lintFiles: LintFiles,
-  { include, exclude }: StylelintPluginOptions,
-  context: Rollup.PluginContext,
-) => {
+export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) => {
   return chokidar.watch(include, { ignored: exclude }).on('change', async (path) => {
     const fullPath = resolve(cwd, path);
-    await lintFiles(context, fullPath);
+    await lintFiles(fullPath);
   });
 };

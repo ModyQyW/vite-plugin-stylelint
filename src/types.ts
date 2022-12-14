@@ -27,9 +27,11 @@ export type StylelintFormatter = Stylelint.Formatter;
 export type StylelintLinterResult = Stylelint.LinterResult;
 
 export type LintFiles = (
-  context: Rollup.PluginContext,
   files: FilterPattern,
-  isLintedOnStart?: boolean,
+  options?: {
+    context?: Rollup.PluginContext;
+    isLintedOnStart?: boolean;
+  },
 ) => Promise<void>;
 
 export type TextType = 'error' | 'warning' | 'plugin';
