@@ -35,7 +35,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
     async buildStart() {
       // initial
       if (!stylelint) {
-        const result = await initialStylelint(options, this);
+        const result = await initialStylelint(options);
         stylelint = result.stylelint;
         formatter = result.formatter;
         lintFiles = getLintFiles(stylelint, formatter, options);

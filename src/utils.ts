@@ -126,24 +126,13 @@ export const getStylelintLinterOptions = (
   allowEmptyInput: true,
 });
 
-export const initialStylelint = async (
-  { stylelintPath, formatter }: StylelintPluginOptions,
-  context: Rollup.PluginContext,
-) => {
-  try {
-    const module = await import(stylelintPath);
-    const stylelint = (module?.default ?? module) as StylelintInstance;
-    const loadedFormatter =
-      typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
-    return { stylelint, formatter: loadedFormatter };
-  } catch (error) {
-    context.error(
-      `\n${
-        (error as Error)?.message ??
-        'Failed to import Stylelint. Have you installed and configured correctly?'
-      }`,
-    );
-  }
+export const initialStylelint = async (options: StylelintPluginOptions) => {
+  const { stylelintPath, formatter } = options;
+  const module = await import(stylelintPath);
+  const stylelint = (module?.default ?? module) as StylelintInstance;
+  const loadedFormatter =
+    typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
+  return { stylelint, formatter: loadedFormatter };
 };
 
 export const getLintFiles =
