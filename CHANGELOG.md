@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- perf: output syntax
+
 ## 4.0.4 (2022-12-14)
 
 - perf: improve code
