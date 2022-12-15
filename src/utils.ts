@@ -51,13 +51,8 @@ export const contextPrint = (
 export const customPrint = (
   text: string,
   textType: TextType,
-  {
-    hasPluginName = false,
-    isColorized = false,
-  }: {
-    hasPluginName?: boolean;
-    isColorized?: boolean;
-  } = {},
+  hasPluginName = false,
+  isColorized = false,
 ) => {
   let t = text;
   if (!hasPluginName) t += `  Plugin: ${colorize(pluginName, 'plugin')}\n`;
@@ -84,7 +79,7 @@ export const print = (
   if (context && options) {
     return contextPrint(text, textType, options, context);
   }
-  return customPrint(text, textType, { hasPluginName, isColorized });
+  return customPrint(text, textType, hasPluginName, isColorized);
 };
 
 export const getOptions = ({
