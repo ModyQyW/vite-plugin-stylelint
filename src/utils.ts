@@ -142,9 +142,8 @@ export const initialStylelint = async (
       typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
     return { stylelint, formatter: loadedFormatter };
   } catch (error) {
-    console.log('');
     context.error(
-      `${
+      `\n${
         (error as Error)?.message ??
         'Failed to import Stylelint. Have you installed and configured correctly?'
       }`,
