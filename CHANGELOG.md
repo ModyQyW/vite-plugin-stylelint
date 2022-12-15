@@ -3,6 +3,7 @@
 ## Unreleased
 
 - perf: output syntax
+- perf: function params
 
 ## 4.0.4 (2022-12-14)
 
