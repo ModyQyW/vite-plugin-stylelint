@@ -1,9 +1,11 @@
 # CHANGELOG
 
-## Unreleased
+## 4.1.0 (2022-12-16)
 
+- feat: add `lintInWorker` option
 - perf: output syntax
-- perf: function params
+- perf: internal function params
+- perf: chokidar initial judgement
 
 ## 4.0.4 (2022-12-14)
 
