@@ -128,11 +128,17 @@ export const getStylelintLinterOptions = (
 
 export const initialStylelint = async (options: StylelintPluginOptions) => {
   const { stylelintPath, formatter } = options;
-  const module = await import(stylelintPath);
-  const stylelint = (module?.default ?? module) as StylelintInstance;
-  const loadedFormatter =
-    typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
-  return { stylelint, formatter: loadedFormatter };
+  try {
+    const module = await import(stylelintPath);
+    const stylelint = (module?.default ?? module) as StylelintInstance;
+    const loadedFormatter =
+      typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
+    return { stylelint, formatter: loadedFormatter };
+  } catch (error) {
+    throw new Error(
+      `Failed to import Stylelint. Have you installed and configured correctly? ${error}`,
+    );
+  }
 };
 
 export const getLintFiles =
