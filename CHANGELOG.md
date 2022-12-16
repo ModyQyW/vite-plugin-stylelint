@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- perf: internal function params
+
 ## 4.1.0 (2022-12-16)
 
 - feat: add `lintInWorker` option
