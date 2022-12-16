@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.1.3 (2022-12-16)
+
+- perf: remove extra console
+
 ## 4.1.2 (2022-12-16)
 
 - fix: fix wrong customPrint color
