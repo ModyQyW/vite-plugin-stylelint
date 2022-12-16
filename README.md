@@ -138,7 +138,7 @@ Lint in [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue
 
 When lint in worker, Vite build process will be faster. Vite build process will not be stopped, even with errors shown in terminal.
 
-It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) can show you errors in browsers.
+It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) can show you errors and warnings in browsers.
 
 ### `lintOnStart`
 
@@ -147,7 +147,7 @@ It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin
 
 Lint on start (in `buildStart` hook). Useful to lint all files once to find potential errors. This is disabled by default.
 
-This will significantly slow down Vite if you has no caches and don't enable `lintInWorker`.
+This will significantly slow down Vite first starting if you has no caches and don't enable `lintInWorker`.
 
 ### `chokidar`
 

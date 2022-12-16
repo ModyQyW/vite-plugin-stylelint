@@ -146,11 +146,9 @@ Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](http
 - 类型：`boolean`
 - 默认值：`false`
 
-在开始时校验（在 `buildStart` 钩子中）。
+在开始时校验（在 `buildStart` 钩子中）。校验所有文件一次以发现潜在的错误。默认禁用。
 
-校验所有的文件一次以发现潜在的错误。默认禁用。
-
-如果你没有缓存而且没有启用 `lintInWorker`，这将大大降低 Vite 的速度。
+如果你没有缓存而且没有启用 `lintInWorker`，这将大大降低 Vite 的初次启动速度。
 
 ### `chokidar`
 
