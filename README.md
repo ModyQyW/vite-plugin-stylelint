@@ -3,9 +3,9 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Vite Stylelint plugin. Supports vite v2, v3 and v4. Requires node >= 14.18.
+Vite Stylelint plugin. Supports Vite v2, v3 and v4. Requires node >= 14.18.
 
-You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-stylelint).
+You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-eslint).
 
 ## Install
 
@@ -57,8 +57,8 @@ import StylelintPlugin from 'vite-plugin-stylelint';
 export default defineConfig({
   plugins: [
     StylelintPlugin({
+      // recommend to enable auto fix
       fix: true,
-      quite: true,
       ...,
     }),
   ],
@@ -72,14 +72,14 @@ Additional options and explanations are listed below.
 - Type: `boolean`
 - Default: `true`
 
-Run `stylelint` under `serve` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Run Stylelint under `serve` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
 
 ### `build`
 
 - Type: `boolean`
 - Default: `false`
 
-Run `stylelint` under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Run Stylelint under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
 
 ### `cache`
 
@@ -93,7 +93,7 @@ Store the results of processed files when enabled. This is enabled by default to
 - Type: `string`
 - Default: `.stylelintcache`
 
-Path to a file or directory for the cache location.
+Path to a file or directory for the cache location. `.stylelintcache` is the default cache location of Stylelint.
 
 ### `include`
 
@@ -118,30 +118,45 @@ This is used to [create a filter](https://github.com/rollup/plugins/blob/master/
 - Type: `string`
 - Default: `'stylelint'`
 
-Path to Stylelint instance that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
+Path to Stylelint that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
 
 ### `formatter`
 
 - Type: `Stylelint.FormatterType | Stylelint.Formatter`
 - Default: `'string'`
 
-The name or the path of a formatter.
+The name, the path or the function implementation of a formatter.
 
 This is used to [set a formatter](https://stylelint.io/user-guide/usage/options#formatter) in order to convert lint results to a human- or machine-readable string.
+
+### `lintInWorker`
+
+- Type: `boolean`
+- Default: `false`
+
+Lint in [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran). This is disabled by default.
+
+When lint in worker, Vite build process will be faster. Vite build process will not be stopped, even with errors shown in terminal.
+
+It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) can show you errors in browsers.
 
 ### `lintOnStart`
 
 - Type: `boolean`
 - Default: `false`
 
-Lint on start (in `buildStart` hook). Useful to lint all files once to find potential errors, but significantly slow down Vite. This is disabled by default.
+Lint on start (in `buildStart` hook). Useful to lint all files once to find potential errors. This is disabled by default.
+
+This will significantly slow down Vite if you has no caches and don't enable `lintInWorker`.
 
 ### `chokidar`
 
 - Type: `boolean`
 - Default: `false`
 
-This plugin will try to run `stylelint` in `chokidar` `change` event instead of `transform` hook with this option enabled, which means linting style files imported by `@import` is possible. This is disabled by default. Recommend to enable `lintOnStart` too, if you enable this one.
+With this option enabled, this plugin will try to run Stylelint in Chokidar `change` event instead of `transform` hook. It makes linting style files imported by `@import` possible. This is disabled by default.
+
+Recommend to enable `lintOnStart` too, if you enable this one.
 
 ### `emitError`
 
@@ -185,7 +200,11 @@ The warnings found will be emitted as errors when enabled. This is disabled by d
 
 <details>
   <summary><code>Vite</code> is slow when using this plugin</summary>
-  <p>You can try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a>, or just run <code>Stylelint</code> besides <code>Vite</code>.</p>
+  <ul>
+    <li>Try enable <code>lintInWorker</code> option</li>
+    <li>Or try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a></li>
+    <li>Or run Stylelint directly besides Vite</li>
+  </ul>
 </details>
 
 ## Examples
