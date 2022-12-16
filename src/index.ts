@@ -41,7 +41,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         lintFiles = getLintFiles(stylelint, formatter, options);
       }
       // initial chokidar
-      if (options.chokidar) {
+      if (!watcher && options.chokidar) {
         watcher = getWatcher(lintFiles, options);
       }
       // lint on start
