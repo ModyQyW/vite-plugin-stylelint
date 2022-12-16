@@ -3,13 +3,13 @@ import chokidar from 'chokidar';
 import pico from 'picocolors';
 import type { Colors } from 'picocolors/types';
 import type {
+  LintFiles,
+  StylelintFormatter,
+  StylelintInstance,
+  StylelintLinterOptions,
+  StylelintLinterResult,
   StylelintPluginOptions,
   StylelintPluginUserOptions,
-  LintFiles,
-  StylelintLinterOptions,
-  StylelintInstance,
-  StylelintLinterResult,
-  StylelintFormatter,
   TextType,
 } from './types';
 import type * as Rollup from 'rollup';
@@ -51,35 +51,41 @@ export const contextPrint = (
 export const customPrint = (
   text: string,
   textType: TextType,
+  { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError }: StylelintPluginOptions,
   hasPluginName = false,
   isColorized = false,
 ) => {
   let t = text;
   if (!hasPluginName) t += `  Plugin: ${colorize(pluginName, 'plugin')}\n`;
-  if (!isColorized) t = colorize(t, textType);
-  console.log(t);
+  if (textType === 'error' && emitError) {
+    if (!isColorized) t = colorize(t, emitErrorAsWarning ? 'warning' : textType);
+    console.log(t);
+  }
+  if (textType === 'warning' && emitWarning) {
+    if (!isColorized) t = colorize(t, emitWarningAsError ? 'error' : textType);
+    console.log(t);
+  }
 };
 
 export const print = (
   text: string,
   textType: TextType,
+  options: StylelintPluginOptions,
   {
     hasPluginName = false,
     isColorized = false,
-    options,
     context,
   }: {
+    context?: Rollup.PluginContext;
     hasPluginName?: boolean;
     isColorized?: boolean;
-    options?: StylelintPluginOptions;
-    context?: Rollup.PluginContext;
   } = {},
 ) => {
   console.log('');
   if (context && options) {
     return contextPrint(text, textType, options, context);
   }
-  return customPrint(text, textType, hasPluginName, isColorized);
+  return customPrint(text, textType, options, hasPluginName, isColorized);
 };
 
 export const getOptions = ({
@@ -162,8 +168,8 @@ export const getLintFiles =
         const text = formatter(results, linterResult);
         const textType = linterResult.errored ? 'error' : 'warning';
 
-        if (context) return print(text, textType, { options, context });
-        return print(text, textType);
+        if (context) return print(text, textType, options, { context });
+        return print(text, textType, options);
       });
 
 export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) => {
