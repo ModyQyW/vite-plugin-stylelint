@@ -33,12 +33,16 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       return false;
     },
     async buildStart() {
-      // initial
+      // initial stylelint
       if (!stylelint) {
         const result = await initialStylelint(options);
         stylelint = result.stylelint;
         formatter = result.formatter;
         lintFiles = getLintFiles(stylelint, formatter, options);
+      }
+      // initial chokidar
+      if (options.chokidar) {
+        watcher = getWatcher(lintFiles, options);
       }
       // lint on start
       if (options.lintOnStart) {
@@ -46,10 +50,6 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
           `\nStylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
         await lintFiles(options.include, { context: this, isLintedOnStart: true });
-      }
-      // chokidar
-      if (options.chokidar) {
-        watcher = getWatcher(lintFiles, options);
       }
     },
     async transform(_, id) {
