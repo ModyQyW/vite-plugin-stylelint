@@ -5,8 +5,6 @@ import type { StylelintInstance, StylelintFormatter, LintFiles } from './types';
 
 const { options } = workerData;
 
-console.log('options', options);
-
 let stylelint: StylelintInstance;
 let formatter: StylelintFormatter;
 let lintFiles: LintFiles;
