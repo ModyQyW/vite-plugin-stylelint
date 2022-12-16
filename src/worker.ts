@@ -22,5 +22,5 @@ parentPort?.on('message', async (value) => {
   if (!watcher && options.chokidar) {
     watcher = getWatcher(lintFiles, options);
   }
-  lintFiles(value.files, { isLintedOnStart: value.isLintedOnStart });
+  lintFiles(value.files);
 });
