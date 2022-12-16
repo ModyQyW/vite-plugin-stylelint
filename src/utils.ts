@@ -149,7 +149,7 @@ export const getLintFiles =
     formatter: StylelintFormatter,
     options: StylelintPluginOptions,
   ): LintFiles =>
-  async (files, { context, isLintedOnStart = false } = {}) =>
+  async (files, context) =>
     await stylelint
       .lint({ ...getStylelintLinterOptions(options), files })
       .then(async (linterResult: StylelintLinterResult | void) => {
@@ -162,8 +162,8 @@ export const getLintFiles =
         const text = formatter(results, linterResult);
         const textType = linterResult.errored ? 'error' : 'warning';
 
-        if (!isLintedOnStart && options.chokidar) return print(text, textType);
-        return print(text, textType, { options, context });
+        if (context) return print(text, textType, { options, context });
+        return print(text, textType);
       });
 
 export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) => {

@@ -66,7 +66,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         this.warn(
           `\nStylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
         );
-        await lintFiles(options.include, { context: this, isLintedOnStart: true });
+        await lintFiles(options.include, this);
       }
     },
     async transform(_, id) {
@@ -76,7 +76,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       // using filter(file) here may cause double lint, PR welcome
       if (!filter(file) || isVirtualModule(id)) return null;
       if (worker) worker.postMessage({ files: file });
-      else await lintFiles(file, { context: this });
+      else await lintFiles(file, this);
       return null;
     },
     async buildEnd() {
