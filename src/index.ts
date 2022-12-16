@@ -45,7 +45,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         });
         // lint on start in worker
         if (options.lintOnStart) {
-          worker.postMessage({ files: options.include, isLintedOnStart: true });
+          worker.postMessage(options.include);
         }
         return;
       }
@@ -74,7 +74,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       const file = normalizePath(id).split('?')[0];
       // using filter(file) here may cause double lint, PR welcome
       if (!filter(file) || isVirtualModule(id)) return null;
-      if (worker) worker.postMessage({ files: file });
+      if (worker) worker.postMessage(file);
       else await lintFiles(file, this);
       return null;
     },
