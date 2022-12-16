@@ -12,6 +12,7 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   exclude: FilterPattern;
   stylelintPath: string;
   formatter: Stylelint.FormatterType | Stylelint.Formatter;
+  lintInWorker: boolean;
   lintOnStart: boolean;
   chokidar: boolean;
   emitError: boolean;

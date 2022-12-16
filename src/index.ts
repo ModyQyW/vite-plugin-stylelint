@@ -1,6 +1,6 @@
+import { Worker } from 'node:worker_threads';
+import { extname, resolve } from 'node:path';
 import { normalizePath } from '@rollup/pluginutils';
-import type * as Vite from 'vite';
-import type { FSWatcher } from 'chokidar';
 import {
   getFilter,
   getOptions,
@@ -10,12 +10,16 @@ import {
   isVirtualModule,
   pluginName,
 } from './utils';
+import type * as Vite from 'vite';
+import type { FSWatcher } from 'chokidar';
 import type {
   LintFiles,
   StylelintInstance,
   StylelintFormatter,
   StylelintPluginUserOptions,
 } from './types';
+
+const ext = extname(__filename);
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
   const options = getOptions(userOptions);
@@ -24,6 +28,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
   let formatter: StylelintFormatter;
   let lintFiles: LintFiles;
   let watcher: FSWatcher;
+  let worker: Worker;
 
   return {
     name: pluginName,
@@ -33,6 +38,18 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       return false;
     },
     async buildStart() {
+      // initial worker
+      if (!worker && options.lintInWorker) {
+        console.log(resolve(__dirname, `worker${ext}`));
+        worker = new Worker(resolve(__dirname, `worker${ext}`), {
+          workerData: { options },
+        });
+        // lint on start in worker
+        if (options.lintOnStart) {
+          worker.postMessage({ files: options.include, isLintedOnStart: true });
+        }
+        return;
+      }
       // initial stylelint
       if (!stylelint) {
         const result = await initialStylelint(options);
@@ -58,7 +75,8 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       const file = normalizePath(id).split('?')[0];
       // using filter(file) here may cause double lint, PR welcome
       if (!filter(file) || isVirtualModule(id)) return null;
-      await lintFiles(file, { context: this });
+      if (worker) worker.postMessage({ files: file });
+      else await lintFiles(file, { context: this });
       return null;
     },
     async buildEnd() {
