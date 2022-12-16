@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## Unreleased
+## 4.1.2 (2022-12-16)
+
+- fix: fix wrong customPrint color
+
+## 4.1.1 (2022-12-16)
 
 - perf: internal function params
 
