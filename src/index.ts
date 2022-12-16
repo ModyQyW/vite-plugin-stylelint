@@ -40,7 +40,6 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
     async buildStart() {
       // initial worker
       if (!worker && options.lintInWorker) {
-        console.log(resolve(__dirname, `worker${ext}`));
         worker = new Worker(resolve(__dirname, `worker${ext}`), {
           workerData: { options },
         });
