@@ -104,6 +104,42 @@ A valid [picomatch](https://github.com/micromatch/picomatch#globbing-features) p
 
 This is used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine `files` option, which means your `files` option will be overridden.
 
+You may want to change this option if you are using `nuxt`.
+
+<details>
+  <summary>nuxt example</summary>
+
+```typescript
+// nuxt.config.ts
+import viteStylelint from 'vite-plugin-stylelint';
+
+export default defineNuxtConfig({
+  vite: {
+    plugins: [
+      viteStylelint({
+        ...,
+        include: [
+          'assets/**/*.{css,less,scss,sass,vue}',
+          'components/**/*.{css,less,scss,sass,vue}',
+          'content/**/*.{css,less,scss,sass,vue}',
+          'layouts/**/*.{css,less,scss,sass,vue}',
+          'pages/**/*.{css,less,scss,sass,vue}',
+          'server/**/*.{css,less,scss,sass,vue}',
+          'src/**/*.{css,less,scss,sass,vue}',
+          'styles/**/*.{css,less,scss,sass,vue}',
+          'app.vue',
+          'App.vue',
+          'error.vue',
+          'Error.vue',
+        ],
+      }),
+    ],
+  },
+});
+```
+
+</details>
+
 ### `exclude`
 
 - Type: `string | string[]`
