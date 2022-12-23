@@ -78,7 +78,6 @@ export default defineConfig({
 
 - 类型：`boolean`
 - 默认值：`false`
--
 
 在 `build` 命令下运行 Stylelint。查看 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface) 了解更多。
 
@@ -104,6 +103,40 @@ export default defineConfig({
 一个有效的 [picomatch](https://github.com/micromatch/picomatch#globbing-features) 模式或模式数组。
 
 这用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定 `files` 选项，这意味着你的 `files` 选项将被覆盖。
+
+如果你正在使用 `nuxt`，你可能需要改变这个选项的值。
+
+<details>
+  <summary>nuxt 例子</summary>
+
+```typescript
+// nuxt.config.ts
+import viteStylelint from 'vite-plugin-stylelint';
+
+export default defineNuxtConfig({
+  vite: {
+    plugins: [
+      viteStylelint({
+        ...,
+        include: [
+          'assets/**/*.{css,less,scss,sass,vue}',
+          'components/**/*.{css,less,scss,sass,vue}',
+          'content/**/*.{css,less,scss,sass,vue}',
+          'layouts/**/*.{css,less,scss,sass,vue}',
+          'pages/**/*.{css,less,scss,sass,vue}',
+          'server/**/*.{css,less,scss,sass,vue}',
+          'src/**/*.{css,less,scss,sass,vue}',
+          'styles/**/*.{css,less,scss,sass,vue}',
+          'app.vue',
+          'App.vue',
+          'error.vue',
+          'Error.vue',
+        ],
+      }),
+    ],
+  },
+});
+```
 
 ### `exclude`
 
