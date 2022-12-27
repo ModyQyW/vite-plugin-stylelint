@@ -73,7 +73,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       if (options.chokidar) return null;
       const file = normalizePath(id).split('?')[0];
       // using filter(file) here may cause double lint, PR welcome
-      if (!filter(file) || isVirtualModule(id)) return null;
+      if (isVirtualModule(id) || !filter(file)) return null;
       if (worker) worker.postMessage(file);
       else await lintFiles(file, this);
       return null;
