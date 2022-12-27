@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.1.4 (2022-12-27)
+
+- fix: fix judge order
+
 ## 4.1.3 (2022-12-16)
 
 - perf: remove extra console
