@@ -3,7 +3,7 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Vite Stylelint 插件。支持 Vite v2、v3 和 v4。要求 node >= 14.18。
+Vite Stylelint 插件。支持 Vite v2、v3 和 v4。要求 `node >= 14.18`。
 
 你可能需要 [Vite ESLint 插件](https://github.com/ModyQyW/vite-plugin-eslint)。
 
