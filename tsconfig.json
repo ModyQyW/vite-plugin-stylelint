@@ -1,4 +1,11 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["ESNext"],
+    "module": "ESNext",
+    "target": "ESNext",
+    "resolveJsonModule": true
+  },
   "include": ["src/**/*.ts"]
 }
