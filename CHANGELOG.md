@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- build: switch to rollup
+
 ## 4.1.4 (2022-12-27)
 
 - fix: fix judge order
