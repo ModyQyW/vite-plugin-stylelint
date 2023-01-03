@@ -8,7 +8,7 @@ importers:
       '@commitlint/config-conventional': ^17.3.0
       '@commitlint/prompt': ^17.3.0
       '@modyqyw/fabric': ^5.14.0
-      '@modyqyw/utils': ^3.0.1
+      '@modyqyw/utils': ^3.0.2
       '@release-it/conventional-changelog': ^5.1.1
       '@rollup/pluginutils': ^5.0.2
       '@tsconfig/node18': ^1.0.1
@@ -39,7 +39,7 @@ importers:
       '@commitlint/config-conventional': 17.3.0
       '@commitlint/prompt': 17.3.0
       '@modyqyw/fabric': 5.14.0_ivhqgpiyr3gif6fmxq4omtuxau
-      '@modyqyw/utils': 3.0.1_typescript@4.9.4
+      '@modyqyw/utils': 3.0.2_typescript@4.9.4
       '@release-it/conventional-changelog': 5.1.1_release-it@15.6.0
       '@tsconfig/node18': 1.0.1
       '@types/eslint': 8.4.10
@@ -1617,8 +1617,8 @@ packages:
       - svelte
     dev: true
 
-  /@modyqyw/utils/3.0.1_typescript@4.9.4:
-    resolution: {integrity: sha512-jMWDoOHc/5RBF0pkxQXJN3EmXIxgXnCufT18Vr6AwZL7d3aICpcdJvSoGwFEUOQvxEPRKXLDBCK1FeZVVA7HDA==}
+  /@modyqyw/utils/3.0.2_typescript@4.9.4:
+    resolution: {integrity: sha512-/W+lVPkEs/ju0qdj78mCo/kKVraJfEYZb/B9mfSWsz7q0z56pr8p8lf/kVYycXkIyXblr9gNAHknzXFM69nZKg==}
     engines: {node: '>=14.18'}
     dependencies:
       '@rollup/plugin-commonjs': 24.0.0_rollup@3.9.0
