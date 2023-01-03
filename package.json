@@ -17,13 +17,13 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": "./dist/index.js",
+      "import": "./dist/index.mjs",
       "require": "./dist/index.cjs",
       "types": "./dist/index.d.ts"
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
+  "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
@@ -55,27 +55,27 @@
     "@commitlint/config-conventional": "^17.3.0",
     "@commitlint/prompt": "^17.3.0",
     "@modyqyw/fabric": "^5.14.0",
-    "@modyqyw/utils": "^3.0.2",
+    "@modyqyw/utils": "^3.0.5",
     "@release-it/conventional-changelog": "^5.1.1",
     "@tsconfig/node18": "^1.0.1",
     "@types/eslint": "^8.4.10",
     "@types/node": "^18.11.18",
-    "@typescript-eslint/eslint-plugin": "^5.47.1",
-    "@typescript-eslint/parser": "^5.47.1",
+    "@typescript-eslint/eslint-plugin": "^5.48.0",
+    "@typescript-eslint/parser": "^5.48.0",
     "eslint": "^8.31.0",
-    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.2",
+    "husky": "^8.0.3",
     "markdownlint-cli": "^0.32.2",
     "npm-run-all": "^4.1.5",
     "picocolors": "^1.0.0",
     "prettier": "^2.8.1",
     "release-it": "^15.6.0",
-    "rollup": "^3.9.0",
+    "rollup": "^3.9.1",
     "stylelint": "^14.16.1",
     "type-fest": "^3.5.0",
     "typescript": "^4.9.4",
-    "vite": "^4.0.3"
+    "vite": "^4.0.4"
   },
   "peerDependencies": {
     "@types/stylelint": "^13.0.0",
