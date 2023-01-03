@@ -1,6 +1,7 @@
 import { resolve } from 'node:path';
 import chokidar from 'chokidar';
 import pico from 'picocolors';
+import { createFilter } from '@rollup/pluginutils';
 import type { Colors } from 'picocolors/types';
 import type {
   LintFiles,
@@ -13,7 +14,6 @@ import type {
   TextType,
 } from './types';
 import type * as Rollup from 'rollup';
-import { createFilter } from '@rollup/pluginutils';
 
 export const cwd = process.cwd();
 
