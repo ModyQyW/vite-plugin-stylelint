@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## 4.2.0 (2023-01-04)
+## 4.1.5 (2023-01-04)
 
 - build: switch to rollup
 - fix: lint some files twice or more
