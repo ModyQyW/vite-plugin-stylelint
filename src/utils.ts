@@ -1,9 +1,10 @@
 import { resolve } from 'node:path';
 import chokidar from 'chokidar';
 import pico from 'picocolors';
-import { createFilter } from '@rollup/pluginutils';
+import { createFilter, normalizePath } from '@rollup/pluginutils';
 import type { Colors } from 'picocolors/types';
 import type {
+  Filter,
   LintFiles,
   StylelintFormatter,
   StylelintInstance,
@@ -19,6 +20,8 @@ export const cwd = process.cwd();
 
 export const pluginName = 'vite:stylelint';
 
+export const extnamesWithStyleBlock = ['.vue', '.svelte'];
+
 export const colorMap: Record<TextType, keyof Omit<Colors, 'isColorSupported'>> = {
   error: 'red',
   warning: 'yellow',
@@ -29,6 +32,18 @@ export const colorMap: Record<TextType, keyof Omit<Colors, 'isColorSupported'>> 
 // https://vitejs.dev/guide/api-plugin.html#virtual-modules-convention
 export const isVirtualModule = (id: string) =>
   id.startsWith('virtual:') || id.startsWith('\0') || !id.includes('/');
+
+export const getFileFromId = (id: string) => normalizePath(id).split('?')[0];
+
+export const shouldIgnore = (id: string, filter: Filter) => {
+  if (isVirtualModule(id)) return true;
+  if (!filter(id)) return true;
+  const file = getFileFromId(id);
+  if (extnamesWithStyleBlock.some((extname) => file.endsWith(extname))) {
+    return !(id.includes('?') && id.includes('type=style'));
+  }
+  return false;
+};
 
 export const colorize = (text: string, textType: TextType) => pico[colorMap[textType]](text);
 

@@ -1,14 +1,14 @@
 import { Worker } from 'node:worker_threads';
 import { extname, resolve } from 'node:path';
-import { normalizePath } from '@rollup/pluginutils';
 import {
   getFilter,
   getOptions,
   getLintFiles,
   getWatcher,
   initialStylelint,
-  isVirtualModule,
   pluginName,
+  shouldIgnore,
+  getFileFromId,
 } from './utils';
 import type * as Vite from 'vite';
 import type { FSWatcher } from 'chokidar';
@@ -71,9 +71,8 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
     async transform(_, id) {
       // chokidar
       if (options.chokidar) return null;
-      const file = normalizePath(id).split('?')[0];
-      // using filter(file) here may cause double lint, PR welcome
-      if (isVirtualModule(id) || !filter(file)) return null;
+      if (shouldIgnore(id, filter)) return null;
+      const file = getFileFromId(id);
       if (worker) worker.postMessage(file);
       else await lintFiles(file, this);
       return null;

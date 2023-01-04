@@ -1,7 +1,9 @@
 import type * as Stylelint from 'stylelint';
 import type * as Rollup from 'rollup';
+import type { CreateFilter } from '@rollup/pluginutils';
 
 export type FilterPattern = string | string[];
+export type Filter = ReturnType<CreateFilter>;
 
 export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   dev: boolean;
