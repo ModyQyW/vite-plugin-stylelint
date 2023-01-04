@@ -1,8 +1,9 @@
 # CHANGELOG
 
-## Unreleased
+## 4.2.0 (2023-01-04)
 
 - build: switch to rollup
+- fix: lint some files twice or more
 
 ## 4.1.4 (2022-12-27)
 
