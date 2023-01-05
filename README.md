@@ -37,12 +37,13 @@ npm install stylelint@^14 -D
 
 ## Usage
 
-```ts
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite';
-import StylelintPlugin from 'vite-plugin-stylelint';
+import stylelint from 'vite-plugin-stylelint';
 
 export default defineConfig({
-  plugins: [StylelintPlugin(options)],
+  plugins: [stylelint(options)],
 });
 ```
 
@@ -50,13 +51,14 @@ export default defineConfig({
 
 You can pass Stylelint [shared options](https://stylelint.io/user-guide/usage/options) and [Node.js API options](https://stylelint.io/user-guide/usage/node-api) to the plugin.
 
-```ts
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite';
-import StylelintPlugin from 'vite-plugin-stylelint';
+import stylelint from 'vite-plugin-stylelint';
 
 export default defineConfig({
   plugins: [
-    StylelintPlugin({
+    stylelint({
       // recommend to enable auto fix
       fix: true,
       ...,

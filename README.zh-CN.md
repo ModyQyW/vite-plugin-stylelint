@@ -37,12 +37,13 @@ npm install stylelint@^14 -D
 
 ## 使用
 
-```ts
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite';
-import StylelintPlugin from 'vite-plugin-stylelint';
+import stylelint from 'vite-plugin-stylelint';
 
 export default defineConfig({
-  plugins: [StylelintPlugin(options)],
+  plugins: [stylelint(options)],
 });
 ```
 
@@ -50,13 +51,14 @@ export default defineConfig({
 
 你可以给这个插件传递 Stylelint [shared options](https://stylelint.io/user-guide/usage/options) 和 [Node.js API options](https://stylelint.io/user-guide/usage/node-api)。
 
-```ts
+```typescript
+// vite.config.ts
 import { defineConfig } from 'vite';
-import StylelintPlugin from 'vite-plugin-stylelint';
+import stylelint from 'vite-plugin-stylelint';
 
 export default defineConfig({
   plugins: [
-    StylelintPlugin({
+    stylelint({
       // 推荐启用自动修复
       fix: true,
       ...,
