@@ -120,18 +120,6 @@ export const initialStylelint = async (options: StylelintPluginOptions) => {
   }
 };
 
-export const removeErrorResults = (results: StylelintLintResults) =>
-  results.map((r) => ({
-    ...r,
-    warnings: r.warnings.filter((w) => w.severity !== 'error'),
-  }));
-
-export const removeWarningResults = (results: StylelintLintResults) =>
-  results.map((r) => ({
-    ...r,
-    warnings: r.warnings.filter((w) => w.severity !== 'warning'),
-  }));
-
 export const getLintFiles =
   (
     stylelint: StylelintInstance,
@@ -151,11 +139,19 @@ export const getLintFiles =
         let results = linterResult.results.filter((r) => !r.ignored);
         // remove errors if emitError is false
         if (!emitError) {
-          results = removeErrorResults(results);
+          results = results.map((r) => ({
+            ...r,
+            warnings: r.warnings.filter((w) => w.severity !== 'error'),
+          }));
           result.errored = false;
         }
         // remove warnings if emitWarning is false
-        if (!emitWarning) results = removeWarningResults(results);
+        if (!emitWarning) {
+          results = results.map((r) => ({
+            ...r,
+            warnings: r.warnings.filter((w) => w.severity !== 'warning'),
+          }));
+        }
         // remove results without errors and warnings
         results = results.filter((r) => r.warnings.length === 0);
 

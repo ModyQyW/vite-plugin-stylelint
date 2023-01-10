@@ -28,8 +28,6 @@ export type StylelintLinterOptions = Stylelint.LinterOptions;
 export type StylelintInstance = Stylelint.PublicApi;
 export type StylelintFormatter = Stylelint.Formatter;
 export type StylelintLinterResult = Stylelint.LinterResult;
-export type StylelintLintResult = Stylelint.LintResult;
-export type StylelintLintResults = StylelintLintResult[];
 
 export type LintFiles = (files: FilterPattern, context?: Rollup.PluginContext) => Promise<void>;
 
