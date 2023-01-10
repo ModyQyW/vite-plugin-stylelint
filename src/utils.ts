@@ -10,6 +10,7 @@ import type {
   StylelintInstance,
   StylelintLinterOptions,
   StylelintLinterResult,
+  StylelintLintResults,
   StylelintPluginOptions,
   StylelintPluginUserOptions,
   TextType,
@@ -47,60 +48,15 @@ export const shouldIgnore = (id: string, filter: Filter) => {
 
 export const colorize = (text: string, textType: TextType) => pico[colorMap[textType]](text);
 
-export const contextPrint = (
-  text: string,
-  textType: TextType,
-  { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError }: StylelintPluginOptions,
-  context: Rollup.PluginContext,
-) => {
-  if (textType === 'error' && emitError) {
-    if (emitErrorAsWarning) context.warn(text);
-    else context.error(text);
-  }
-  if (textType === 'warning' && emitWarning) {
-    if (emitWarningAsError) context.error(text);
-    else context.warn(text);
-  }
-};
-
-export const customPrint = (
-  text: string,
-  textType: TextType,
-  { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError }: StylelintPluginOptions,
-  hasPluginName = false,
-  isColorized = false,
-) => {
-  let t = text;
-  if (!hasPluginName) t += `  Plugin: ${colorize(pluginName, 'plugin')}\r\n`;
-  if (textType === 'error' && emitError) {
-    if (!isColorized) t = colorize(t, emitErrorAsWarning ? 'warning' : textType);
-    console.log(t);
-  }
-  if (textType === 'warning' && emitWarning) {
-    if (!isColorized) t = colorize(t, emitWarningAsError ? 'error' : textType);
-    console.log(t);
-  }
-};
-
-export const print = (
-  text: string,
-  textType: TextType,
-  options: StylelintPluginOptions,
-  {
-    hasPluginName = false,
-    isColorized = false,
-    context,
-  }: {
-    context?: Rollup.PluginContext;
-    hasPluginName?: boolean;
-    isColorized?: boolean;
-  } = {},
-) => {
+export const print = (text: string, textType: TextType, context?: Rollup.PluginContext) => {
   console.log('');
-  if (context && options) {
-    return contextPrint(text, textType, options, context);
+  if (context) {
+    if (textType === 'error') context.error(text);
+    else if (textType === 'warning') context.warn(text);
+  } else {
+    const t = colorize(`${text}  Plugin: ${colorize(pluginName, 'plugin')}\r\n`, textType);
+    console.log(t);
   }
-  return customPrint(text, textType, options, hasPluginName, isColorized);
 };
 
 export const getOptions = ({
@@ -164,6 +120,18 @@ export const initialStylelint = async (options: StylelintPluginOptions) => {
   }
 };
 
+export const removeErrorResults = (results: StylelintLintResults) =>
+  results.map((r) => ({
+    ...r,
+    warnings: r.warnings.filter((w) => w.severity !== 'error'),
+  }));
+
+export const removeWarningResults = (results: StylelintLintResults) =>
+  results.map((r) => ({
+    ...r,
+    warnings: r.warnings.filter((w) => w.severity !== 'warning'),
+  }));
+
 export const getLintFiles =
   (
     stylelint: StylelintInstance,
@@ -174,17 +142,35 @@ export const getLintFiles =
     await stylelint
       .lint({ ...getStylelintLinterOptions(options), files })
       .then(async (linterResult: StylelintLinterResult | void) => {
-        if (!linterResult) return;
+        // do nothing when there are no results
+        if (!linterResult || linterResult.results.length === 0) return;
 
-        const results = linterResult.results.filter(
-          (result) => !result.ignored && result.warnings.length > 0,
-        );
+        const { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError } = options;
+
+        const result = { ...linterResult };
+        let results = linterResult.results.filter((r) => !r.ignored);
+        // remove errors if emitError is false
+        if (!emitError) {
+          results = removeErrorResults(results);
+          result.errored = false;
+        }
+        // remove warnings if emitWarning is false
+        if (!emitWarning) results = removeWarningResults(results);
+        // remove results without errors and warnings
+        results = results.filter((r) => r.warnings.length === 0);
+
+        // do nothing when there are no results after processed
         if (results.length === 0) return;
-        const text = formatter(results, linterResult);
-        const textType = linterResult.errored ? 'error' : 'warning';
 
-        if (context) return print(text, textType, options, { context });
-        return print(text, textType, options);
+        const text = formatter(results, result);
+        let textType: TextType;
+        if (result.errored) {
+          textType = emitErrorAsWarning ? 'warning' : 'error';
+        } else {
+          textType = emitWarningAsError ? 'error' : 'warning';
+        }
+
+        return print(text, textType, context);
       });
 
 export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) => {
