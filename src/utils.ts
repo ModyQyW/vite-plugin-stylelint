@@ -153,7 +153,8 @@ export const getLintFiles =
           }));
         }
         // remove results without errors and warnings
-        results = results.filter((r) => r.warnings.length === 0);
+        results = results.filter((r) => r.warnings.length !== 0);
+        result.results = results;
 
         // do nothing when there are no results after processed
         if (results.length === 0) return;
