@@ -63,7 +63,7 @@ importers:
 
   examples/react:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^3.1.5
+      '@modyqyw/vite-plugin-eslint': ^3.1.6
       '@types/eslint': ^8.4.10
       '@types/react': ^18.0.26
       '@types/react-dom': ^18.0.10
@@ -98,7 +98,7 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 3.1.5_tu3745nn3pdcofhmshtnv3nopq
+      '@modyqyw/vite-plugin-eslint': 3.1.6_tu3745nn3pdcofhmshtnv3nopq
       '@types/eslint': 8.4.10
       '@types/react': 18.0.26
       '@types/react-dom': 18.0.10
@@ -130,7 +130,7 @@ importers:
 
   examples/solid:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^3.1.5
+      '@modyqyw/vite-plugin-eslint': ^3.1.6
       '@types/eslint': ^8.4.10
       '@typescript-eslint/eslint-plugin': ^5.48.1
       '@typescript-eslint/parser': ^5.48.1
@@ -161,7 +161,7 @@ importers:
     dependencies:
       solid-js: 1.6.8
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 3.1.5_tu3745nn3pdcofhmshtnv3nopq
+      '@modyqyw/vite-plugin-eslint': 3.1.6_tu3745nn3pdcofhmshtnv3nopq
       '@types/eslint': 8.4.10
       '@typescript-eslint/eslint-plugin': 5.48.1_3jon24igvnqaqexgwtxk6nkpse
       '@typescript-eslint/parser': 5.48.1_iukboom6ndih5an6iafl45j2fe
@@ -191,7 +191,7 @@ importers:
 
   examples/vue:
     specifiers:
-      '@modyqyw/vite-plugin-eslint': ^3.1.5
+      '@modyqyw/vite-plugin-eslint': ^3.1.6
       '@types/eslint': ^8.4.10
       '@typescript-eslint/eslint-plugin': ^5.48.1
       '@typescript-eslint/parser': ^5.48.1
@@ -227,7 +227,7 @@ importers:
     dependencies:
       vue: 3.2.45
     devDependencies:
-      '@modyqyw/vite-plugin-eslint': 3.1.5_tu3745nn3pdcofhmshtnv3nopq
+      '@modyqyw/vite-plugin-eslint': 3.1.6_tu3745nn3pdcofhmshtnv3nopq
       '@types/eslint': 8.4.10
       '@typescript-eslint/eslint-plugin': 5.48.1_3jon24igvnqaqexgwtxk6nkpse
       '@typescript-eslint/parser': 5.48.1_iukboom6ndih5an6iafl45j2fe
@@ -1771,8 +1771,8 @@ packages:
       - typescript
     dev: true
 
-  /@modyqyw/vite-plugin-eslint/3.1.5_tu3745nn3pdcofhmshtnv3nopq:
-    resolution: {integrity: sha512-sgbtlPviKRqOQK7CdFutWJxi/H7qe45o7uCvywvMnbTKva/+EBA0bAsnuM/BVtrQ5E9qfd/7zPXErlnNr4E03g==}
+  /@modyqyw/vite-plugin-eslint/3.1.6_tu3745nn3pdcofhmshtnv3nopq:
+    resolution: {integrity: sha512-662bXt53tM5W9ZyoUTGAlcZevcpq/JGD/rSSbo66EQ44+Hz6BKD4tnTVrmqUNKix7HUgTwjWxV5kbMd0U8ikxA==}
     engines: {node: '>=14.18'}
     peerDependencies:
       '@types/eslint': ^7.0.0 || ^8.0.0
