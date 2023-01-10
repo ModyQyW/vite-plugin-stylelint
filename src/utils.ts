@@ -10,7 +10,6 @@ import type {
   StylelintInstance,
   StylelintLinterOptions,
   StylelintLinterResult,
-  StylelintLintResults,
   StylelintPluginOptions,
   StylelintPluginUserOptions,
   TextType,
