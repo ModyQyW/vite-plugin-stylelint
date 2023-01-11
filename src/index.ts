@@ -1,5 +1,6 @@
 import { Worker } from 'node:worker_threads';
 import { extname, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import {
   getFilter,
   getOptions,
@@ -19,6 +20,7 @@ import type {
   StylelintPluginUserOptions,
 } from './types';
 
+const __filename = fileURLToPath(import.meta.url);
 const ext = extname(__filename);
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
