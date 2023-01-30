@@ -5,9 +5,6 @@ import nodeResolve from '@rollup/plugin-node-resolve';
 import esbuild from 'rollup-plugin-esbuild';
 import commonjs from '@rollup/plugin-commonjs';
 import dts from 'rollup-plugin-dts';
-import terser from '@rollup/plugin-terser';
-// @ts-ignore
-import bundleSize from 'rollup-plugin-bundle-size';
 import clean from 'rollup-plugin-delete';
 import { getPackageJson } from '@modyqyw/utils';
 
@@ -48,8 +45,6 @@ export default defineConfig([
       nodeResolve({ preferBuiltins: true }),
       esbuild({ target: 'node14.18' }),
       commonjs(),
-      isDevelopment ? null : terser({ format: { ascii_only: true } }),
-      isDevelopment ? null : bundleSize(),
       clean({
         targets: [main, module],
         runOnce: isDevelopment,
@@ -69,7 +64,6 @@ export default defineConfig([
         compilerOptions: { preserveSymlinks: false },
         respectExternal: true,
       }),
-      isDevelopment ? null : bundleSize(),
       clean({
         targets: [types],
         runOnce: isDevelopment,
@@ -88,8 +82,6 @@ export default defineConfig([
       nodeResolve({ preferBuiltins: true }),
       esbuild({ target: 'node14.18' }),
       commonjs(),
-      isDevelopment ? null : terser({ format: { ascii_only: true } }),
-      isDevelopment ? null : bundleSize(),
       clean({
         targets: ['./dist/worker.cjs', './dist/worker.mjs'],
         runOnce: isDevelopment,
