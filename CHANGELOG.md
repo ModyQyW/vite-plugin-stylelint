@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## 4.1.7 (2023-01-30)
+
+- fix: use `__dirname` directly by accident
+- build: update minify and generate sourcemap
+
 ## 4.1.6 (2023-01-10)
 
 - perf: better emit handling
