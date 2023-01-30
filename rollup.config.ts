@@ -11,8 +11,8 @@ import { getPackageJson } from '@modyqyw/utils';
 const isDevelopment = !!process.env.ROLLUP_WATCH;
 
 const {
-  main = './dist/index.cjs',
-  module = './dist/index.mjs',
+  main: cjs = './dist/index.cjs',
+  module: esm = './dist/index.mjs',
   types = './dist/index.d.ts',
   dependencies = {},
   peerDependencies = {},
@@ -30,13 +30,13 @@ export default defineConfig([
     input: './src/index.ts',
     output: [
       {
-        file: main,
+        file: cjs,
         format: 'cjs',
         exports: 'named',
         footer: 'module.exports = Object.assign(exports.default || {}, exports)',
       },
       {
-        file: module,
+        file: esm,
         format: 'esm',
       },
     ],
@@ -46,7 +46,7 @@ export default defineConfig([
       esbuild({ target: 'node14.18' }),
       commonjs(),
       clean({
-        targets: [main, module],
+        targets: [cjs, esm],
         runOnce: isDevelopment,
       }),
     ],
