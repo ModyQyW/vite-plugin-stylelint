@@ -44,7 +44,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         worker = new Worker(resolve(__dirname, `worker${ext}`), {
           workerData: { options },
         });
-        // lint on start in worker
+        // initial stylelint, initial chokidar and lint on start in worker
         if (options.lintOnStart) {
           worker.postMessage(options.include);
         }
