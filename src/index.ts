@@ -1,6 +1,8 @@
 import { Worker } from 'node:worker_threads';
-import { extname, resolve } from 'node:path';
+import { extname, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import type * as Vite from 'vite';
+import type { FSWatcher } from 'chokidar';
 import {
   getFilter,
   getOptions,
@@ -11,8 +13,6 @@ import {
   shouldIgnore,
   getFileFromId,
 } from './utils';
-import type * as Vite from 'vite';
-import type { FSWatcher } from 'chokidar';
 import type {
   LintFiles,
   StylelintInstance,
@@ -21,6 +21,7 @@ import type {
 } from './types';
 
 const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const ext = extname(__filename);
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
@@ -35,9 +36,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
   return {
     name: pluginName,
     apply(_, { command }) {
-      if (command === 'serve' && options.dev) return true;
-      if (command === 'build' && options.build) return true;
-      return false;
+      return (command === 'serve' && options.dev) || (command === 'build' && options.build);
     },
     async buildStart() {
       // initial worker

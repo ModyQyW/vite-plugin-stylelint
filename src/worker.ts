@@ -1,6 +1,6 @@
 import { workerData, parentPort } from 'node:worker_threads';
-import { initialStylelint, getLintFiles, getWatcher } from './utils';
 import type { FSWatcher } from 'chokidar';
+import { initialStylelint, getLintFiles, getWatcher } from './utils';
 import type { StylelintInstance, StylelintFormatter, LintFiles } from './types';
 
 const { options } = workerData;

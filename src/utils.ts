@@ -3,6 +3,7 @@ import chokidar from 'chokidar';
 import pico from 'picocolors';
 import { createFilter, normalizePath } from '@rollup/pluginutils';
 import type { Colors } from 'picocolors/types';
+import type * as Rollup from 'rollup';
 import type {
   Filter,
   LintFiles,
@@ -14,7 +15,6 @@ import type {
   StylelintPluginUserOptions,
   TextType,
 } from './types';
-import type * as Rollup from 'rollup';
 
 export const cwd = process.cwd();
 
@@ -125,6 +125,7 @@ export const getLintFiles =
     formatter: StylelintFormatter,
     options: StylelintPluginOptions,
   ): LintFiles =>
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   async (files, context) =>
     await stylelint
       .lint({ ...getStylelintLinterOptions(options), files })
@@ -135,24 +136,24 @@ export const getLintFiles =
         const { emitError, emitErrorAsWarning, emitWarning, emitWarningAsError } = options;
 
         const result = { ...linterResult };
-        let results = linterResult.results.filter((r) => !r.ignored);
+        let results = linterResult.results.filter((result) => !result.ignored);
         // remove errors if emitError is false
         if (!emitError) {
-          results = results.map((r) => ({
-            ...r,
-            warnings: r.warnings.filter((w) => w.severity !== 'error'),
+          results = results.map((result) => ({
+            ...result,
+            warnings: result.warnings.filter((warning) => warning.severity !== 'error'),
           }));
           result.errored = false;
         }
         // remove warnings if emitWarning is false
         if (!emitWarning) {
-          results = results.map((r) => ({
-            ...r,
-            warnings: r.warnings.filter((w) => w.severity !== 'warning'),
+          results = results.map((result) => ({
+            ...result,
+            warnings: result.warnings.filter((warning) => warning.severity !== 'warning'),
           }));
         }
         // remove results without errors and warnings
-        results = results.filter((r) => r.warnings.length !== 0);
+        results = results.filter((result) => result.warnings.length > 0);
         result.results = results;
 
         // do nothing when there are no results after processed
