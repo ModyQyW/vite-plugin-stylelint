@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.1.8 (2023-01-31)
+
+- fix: fix worker initial and close
+
 ## 4.1.7 (2023-01-30)
 
 - fix: use `__dirname` directly by accident
