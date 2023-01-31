@@ -5,7 +5,7 @@
 
 Vite Stylelint plugin. Supports Vite v2, v3 and v4. Requires `node >= 14.18`.
 
-You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-eslint).
+You may want [Vite ESLint plugin](https://github.com/ModyQyW/vite-plugin-eslint2).
 
 ## Install
 
@@ -17,20 +17,20 @@ npm install vite-plugin-stylelint -D
 
 <details>
 
-<summary>Stylelint@13</summary>
+<summary>Stylelint@14</summary>
 
 ```sh
-npm install stylelint@^13 @types/stylelint@^13 -D
+npm install stylelint@^14 -D
 ```
 
 </details>
 
 <details>
 
-<summary>Stylelint@14</summary>
+<summary>Stylelint@13</summary>
 
 ```sh
-npm install stylelint@^14 -D
+npm install stylelint@^13 @types/stylelint@^13 -D
 ```
 
 </details>

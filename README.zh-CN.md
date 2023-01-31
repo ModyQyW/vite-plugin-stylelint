@@ -5,7 +5,7 @@
 
 Vite Stylelint 插件。支持 Vite v2、v3 和 v4。要求 `node >= 14.18`。
 
-你可能需要 [Vite ESLint 插件](https://github.com/ModyQyW/vite-plugin-eslint)。
+你可能需要 [Vite ESLint 插件](https://github.com/ModyQyW/vite-plugin-eslint2)。
 
 ## 安装
 
@@ -17,20 +17,20 @@ npm install vite-plugin-stylelint -D
 
 <details>
 
-<summary>Stylelint@13</summary>
+<summary>Stylelint@14</summary>
 
 ```sh
-npm install stylelint@^13 @types/stylelint@^13 -D
+npm install stylelint@^14 -D
 ```
 
 </details>
 
 <details>
 
-<summary>Stylelint@14</summary>
+<summary>Stylelint@13</summary>
 
 ```sh
-npm install stylelint@^14 -D
+npm install stylelint@^13 @types/stylelint@^13 -D
 ```
 
 </details>
