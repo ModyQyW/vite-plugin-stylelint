@@ -170,9 +170,8 @@ export const getLintFiles =
         return print(text, textType, context);
       });
 
-export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) => {
-  return chokidar.watch(include, { ignored: exclude }).on('change', async (path) => {
+export const getWatcher = (lintFiles: LintFiles, { include, exclude }: StylelintPluginOptions) =>
+  chokidar.watch(include, { ignored: exclude }).on('change', async (path) => {
     const fullPath = resolve(cwd, path);
     await lintFiles(fullPath);
   });
-};
