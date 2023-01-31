@@ -70,7 +70,6 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       }
     },
     async transform(_, id) {
-      // chokidar
       if (options.chokidar) return null;
       if (shouldIgnore(id, filter)) return null;
       const file = getFileFromId(id);
