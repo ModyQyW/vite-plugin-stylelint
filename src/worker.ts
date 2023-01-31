@@ -10,15 +10,24 @@ let formatter: StylelintFormatter;
 let lintFiles: LintFiles;
 let watcher: FSWatcher;
 
-parentPort?.on('message', async (files) => {
-  if (!stylelint) {
-    const result = await initialStylelint(options);
-    stylelint = result.stylelint;
-    formatter = result.formatter;
-    lintFiles = getLintFiles(stylelint, formatter, options);
-  }
-  if (!watcher && options.chokidar) {
+// this file needs to be compiled into cjs, which doesn't support top-level await
+// eslint-disable-next-line unicorn/prefer-top-level-await
+(async () => {
+  const result = await initialStylelint(options);
+  stylelint = result.stylelint;
+  formatter = result.formatter;
+  lintFiles = getLintFiles(stylelint, formatter, options);
+  if (options.chokidar) {
     watcher = getWatcher(lintFiles, options);
   }
+})();
+
+parentPort?.on('message', async (files) => {
   lintFiles(files);
+});
+
+parentPort?.on('close', async () => {
+  if (watcher?.close) {
+    await watcher.close();
+  }
 });
