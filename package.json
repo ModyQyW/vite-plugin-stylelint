@@ -1,6 +1,6 @@
 {
   "name": "vite-plugin-stylelint",
-  "version": "4.1.7",
+  "version": "4.1.8",
   "description": "Stylelint plugin for Vite.",
   "keywords": [
     "stylelint",
