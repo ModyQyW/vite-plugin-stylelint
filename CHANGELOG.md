@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Unreleased
+
+- build: switch to `unbuild`
+
 ## 4.1.8 (2023-01-31)
 
 - fix: fix worker initial and close
