@@ -111,7 +111,10 @@ export const initialStylelint = async (options: StylelintPluginOptions) => {
     const stylelint = (module?.default ?? module) as StylelintInstance;
     const loadedFormatter =
       typeof formatter === 'string' ? stylelint.formatters[formatter] : formatter;
-    return { stylelint, formatter: loadedFormatter };
+    return { stylelint, formatter: loadedFormatter } as {
+      stylelint: StylelintInstance;
+      formatter: StylelintFormatter;
+    };
   } catch (error) {
     throw new Error(
       `Failed to import Stylelint. Have you installed and configured correctly? ${error}`,

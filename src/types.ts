@@ -1,11 +1,21 @@
 import type * as Stylelint from 'stylelint';
+import stylelint from 'stylelint';
 import type * as Rollup from 'rollup';
 import type { CreateFilter } from '@rollup/pluginutils';
 
 export type FilterPattern = string | string[];
 export type Filter = ReturnType<CreateFilter>;
 
-export interface StylelintPluginOptions extends Stylelint.LinterOptions {
+export type StylelintLinterOptions = Partial<Stylelint.LinterOptions>;
+export type StylelintInstance = typeof stylelint;
+export type StylelintFormatter = Exclude<StylelintLinterOptions['formatter'], string | undefined>;
+export type StylelintFormatterType = Exclude<
+  StylelintLinterOptions['formatter'],
+  StylelintFormatter | undefined
+>;
+export type StylelintLinterResult = Stylelint.LinterResult;
+
+export interface StylelintPluginOptions extends StylelintLinterOptions {
   dev: boolean;
   build: boolean;
   cache: boolean;
@@ -13,7 +23,7 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   include: FilterPattern;
   exclude: FilterPattern;
   stylelintPath: string;
-  formatter: Stylelint.FormatterType | Stylelint.Formatter;
+  formatter: StylelintFormatterType | StylelintFormatter;
   lintInWorker: boolean;
   lintOnStart: boolean;
   chokidar: boolean;
@@ -23,11 +33,6 @@ export interface StylelintPluginOptions extends Stylelint.LinterOptions {
   emitWarningAsError: boolean;
 }
 export type StylelintPluginUserOptions = Partial<StylelintPluginOptions>;
-
-export type StylelintLinterOptions = Stylelint.LinterOptions;
-export type StylelintInstance = Stylelint.PublicApi;
-export type StylelintFormatter = Stylelint.Formatter;
-export type StylelintLinterResult = Stylelint.LinterResult;
 
 export type LintFiles = (files: FilterPattern, context?: Rollup.PluginContext) => Promise<void>;
 
