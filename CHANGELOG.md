@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## Unreleased
+## 4.2.0 (2023-02-10)
 
 - build: switch to `unbuild`
+- feat: support `stylelint@15`
+- feat: improve types
 
 ## 4.1.8 (2023-01-31)
 
