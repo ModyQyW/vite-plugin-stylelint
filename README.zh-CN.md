@@ -17,6 +17,16 @@ npm install vite-plugin-stylelint -D
 
 <details>
 
+<summary>Stylelint@15</summary>
+
+```sh
+npm install stylelint@^15 -D
+```
+
+</details>
+
+<details>
+
 <summary>Stylelint@14</summary>
 
 ```sh
@@ -158,7 +168,7 @@ Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](http
 
 ### `formatter`
 
-- 类型：`Stylelint.FormatterType | Stylelint.Formatter`
+- 类型：`StylelintFormatterType | StylelintFormatter`
 - 默认值：`'string'`
 
 格式化器的名称、路径或函数实现。

@@ -17,6 +17,16 @@ npm install vite-plugin-stylelint -D
 
 <details>
 
+<summary>Stylelint@15</summary>
+
+```sh
+npm install stylelint@^15 -D
+```
+
+</details>
+
+<details>
+
 <summary>Stylelint@14</summary>
 
 ```sh
@@ -160,7 +170,7 @@ Path to Stylelint that will be used for linting. Use [dynamic import](https://ja
 
 ### `formatter`
 
-- Type: `Stylelint.FormatterType | Stylelint.Formatter`
+- Type: `StylelintFormatterType | StylelintFormatter`
 - Default: `'string'`
 
 The name, the path or the function implementation of a formatter.
