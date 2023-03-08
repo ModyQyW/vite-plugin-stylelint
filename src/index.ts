@@ -24,6 +24,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ext = extname(__filename);
 
+export { StylelintPluginOptions, StylelintPluginUserOptions };
+
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
   const options = getOptions(userOptions);
   const filter = getFilter(options);
