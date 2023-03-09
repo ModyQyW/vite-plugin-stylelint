@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 4.3.0 (2023-03-09)
+
+- feat: export more types
+
 ## 4.2.0 (2023-02-10)
 
 - build: switch to `unbuild`
