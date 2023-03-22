@@ -237,21 +237,31 @@ The warnings found will be emitted as errors when enabled. This is disabled by d
 ## FAQ
 
 <details>
+  <summary>Do I need this plugin?</summary>
+  <p>In short, <strong>NO</strong>.</p>
+  <p>It is usual to use <a href="https://github.com/webpack-contrib/stylelint-webpack-plugin">stylelint-webpack-plugin</a> in <code>webpack</code>. And this plugin does almost the same in <code>vite</code>.</p>
+  <p>However, our IDE is already probably giving all the info we need. We only need to add <a href="https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint">Stylelint plugin</a> in VSCode. WebStorm already includes the functionality. We can also run Stylelint in CI to prevent someone else breaks things.</p>
+  <p>Since we have these ways to run Stylelint, it is unnecessary to run Stylelint in <code>vite</code>, which means we don't need this plugin.</p>
+  <p>If you really want some errors and warnings, try <code>lintInWorker</code> option, which prints in console.</p>
+  <p>Or try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a>, which prints in browser.
+</details>
+
+<details>
   <summary>Cache is broken</summary>
   <ul>
     <li>Disable <code>cache</code> option.</li>
     <li>Or delete the cache file (default <code>.stylelintcache</code>), fix errors manully and restart Vite.
     </li>
   </ul>
-  This problem should only happens when starting Vite with Stylelint errors. Have a better solution? PR welcome. :)
+  <p>This problem should only happens when starting Vite with Stylelint errors. Have a better solution? PR welcome. :)</p>
 </details>
 
 <details>
   <summary><code>Vite</code> is slow when using this plugin</summary>
   <ul>
-    <li>Try enable <code>lintInWorker</code> option</li>
-    <li>Or try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a></li>
-    <li>Or run Stylelint directly besides Vite</li>
+    <li>Try enable <code>lintInWorker</code> option.</li>
+    <li>Or try <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker.</a></li>
+    <li>Or run Stylelint directly besides Vite.</li>
   </ul>
 </details>
 
