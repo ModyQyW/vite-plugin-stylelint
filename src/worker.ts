@@ -1,33 +1,44 @@
 import { workerData, parentPort } from 'node:worker_threads';
-import type { FSWatcher } from 'chokidar';
-import { initialStylelint, getLintFiles, getWatcher } from './utils';
-import type { StylelintInstance, StylelintFormatter, LintFiles } from './types';
+import debugWrap from 'debug';
+import type { StylelintInstance, StylelintFormatter, StylelintPluginOptions } from './types';
+import { getFilter, initializeStylelint, lintFiles, shouldIgnoreModule } from './utils';
+import { PLUGIN_NAME } from './constants';
 
-const { options } = workerData;
+const debug = debugWrap(`${PLUGIN_NAME}:worker`);
 
-let stylelint: StylelintInstance;
+const options = workerData.options as StylelintPluginOptions;
+const filter = getFilter(options);
+let stylelintInstance: StylelintInstance;
 let formatter: StylelintFormatter;
-let lintFiles: LintFiles;
-let watcher: FSWatcher;
 
 // this file needs to be compiled into cjs, which doesn't support top-level await
-
+// so we use iife here
 (async () => {
-  const result = await initialStylelint(options);
-  stylelint = result.stylelint;
+  debug(`Initialize Stylelint`);
+  const result = await initializeStylelint(options);
+  stylelintInstance = result.stylelintInstance;
   formatter = result.formatter;
-  lintFiles = getLintFiles(stylelint, formatter, options);
-  if (options.chokidar) {
-    watcher = getWatcher(lintFiles, options);
+  if (options.lintOnStart) {
+    debug(`Lint on start`);
+    lintFiles({
+      files: options.include,
+      stylelintInstance,
+      formatter,
+      options,
+    }); // don't use context
   }
 })();
 
 parentPort?.on('message', async (files) => {
-  lintFiles(files);
-});
-
-parentPort?.on('close', async () => {
-  if (watcher?.close) {
-    await watcher.close();
-  }
+  debug(`==== message event ====`);
+  debug(`message: ${files}`);
+  const shouldIgnore = await shouldIgnoreModule(files, filter);
+  debug(`should ignore: ${shouldIgnore}`);
+  if (shouldIgnore) return;
+  lintFiles({
+    files: options.lintDirtyOnly ? files : options.include,
+    stylelintInstance,
+    formatter,
+    options,
+  }); // don't use context
 });

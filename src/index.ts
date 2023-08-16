@@ -3,84 +3,124 @@ import { extname, resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import type * as Vite from 'vite';
 import type { FSWatcher } from 'chokidar';
+import chokidar from 'chokidar';
+import debugWrap from 'debug';
 import {
   getFilter,
   getOptions,
-  getLintFiles,
-  getWatcher,
-  initialStylelint,
-  pluginName,
-  shouldIgnore,
-  getFileFromId,
+  shouldIgnoreModule,
+  initializeStylelint,
+  lintFiles,
+  getFilePath,
 } from './utils';
-import type {
-  LintFiles,
-  StylelintInstance,
-  StylelintFormatter,
-  StylelintPluginUserOptions,
-} from './types';
+import type { StylelintInstance, StylelintFormatter, StylelintPluginUserOptions } from './types';
+import { PLUGIN_NAME, CWD } from './constants';
 
+const debug = debugWrap(PLUGIN_NAME);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ext = extname(__filename);
 
 export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
   const options = getOptions(userOptions);
-  const filter = getFilter(options);
-  let stylelint: StylelintInstance;
-  let formatter: StylelintFormatter;
-  let lintFiles: LintFiles;
-  let watcher: FSWatcher;
+
   let worker: Worker;
+  let watcher: FSWatcher;
+
+  const filter = getFilter(options);
+  let stylelintInstance: StylelintInstance;
+  let formatter: StylelintFormatter;
 
   return {
-    name: pluginName,
+    name: PLUGIN_NAME,
     apply(_, { command }) {
-      return (command === 'serve' && options.dev) || (command === 'build' && options.build);
+      debug(`==== apply hook ====`);
+      const shouldApply =
+        (command === 'serve' && options.dev) || (command === 'build' && options.build);
+      debug(`should apply this plugin: ${shouldApply}`);
+      return shouldApply;
     },
     async buildStart() {
-      // initial worker
-      if (!worker && options.lintInWorker) {
-        worker = new Worker(resolve(__dirname, `worker${ext}`), {
-          workerData: { options },
-        });
-        // initial stylelint, initial chokidar and lint on start in worker
-        if (options.lintOnStart) {
-          worker.postMessage(options.include);
-        }
+      debug(`==== buildStart hook ====`);
+      // initialize worker
+      if (options.lintInWorker) {
+        if (worker) return;
+        debug(`Initialize worker`);
+        worker = new Worker(resolve(__dirname, `worker${ext}`), { workerData: { options } });
         return;
       }
-      // initial stylelint
-      if (!stylelint) {
-        const result = await initialStylelint(options);
-        stylelint = result.stylelint;
-        formatter = result.formatter;
-        lintFiles = getLintFiles(stylelint, formatter, options);
-      }
-      // initial chokidar
-      if (!watcher && options.chokidar) {
-        watcher = getWatcher(lintFiles, options);
-      }
-      // lint on start
+      // initialize Stylelint
+      debug(`Initial Stylelint`);
+      const result = await initializeStylelint(options);
+      stylelintInstance = result.stylelintInstance;
+      formatter = result.formatter;
+      // lint on start if needed
       if (options.lintOnStart) {
-        this.warn(
-          `\nStylelint is linting all files in the project because \`lintOnStart\` is true. This will significantly slow down Vite.`,
+        debug(`Lint on start`);
+        await lintFiles(
+          {
+            files: options.include,
+            stylelintInstance,
+            formatter,
+            options,
+          },
+          this, // use buildStart hook context
         );
-        await lintFiles(options.include, this);
       }
     },
     async transform(_, id) {
-      if (options.chokidar) return null;
-      if (shouldIgnore(id, filter)) return null;
-      const file = getFileFromId(id);
-      if (worker) worker.postMessage(file);
-      else await lintFiles(file, this);
-      return null;
+      debug('==== transform hook ====');
+      // initialize watcher
+      if (options.chokidar) {
+        if (watcher) return;
+        debug(`Initialize watcher`);
+        watcher = chokidar
+          .watch(options.include, { ignored: options.exclude })
+          .on('change', async (path) => {
+            debug(`==== change event ====`);
+            const fullPath = resolve(CWD, path);
+            // worker + watcher
+            if (worker) return worker.postMessage(fullPath);
+            // watcher only
+            const shouldIgnore = await shouldIgnoreModule(fullPath, filter);
+            debug(`should ignore: ${shouldIgnore}`);
+            if (shouldIgnore) return;
+            return await lintFiles(
+              {
+                files: options.lintDirtyOnly ? fullPath : options.include,
+                stylelintInstance,
+                formatter,
+                options,
+              },
+              // this, // TODO: use transform hook context will breaks build
+            );
+          });
+        return;
+      }
+      // no watcher
+      debug('id: ', id);
+      const filePath = getFilePath(id);
+      debug(`filePath`, filePath);
+      // worker
+      if (worker) return worker.postMessage(filePath);
+      // no worker
+      const shouldIgnore = await shouldIgnoreModule(id, filter);
+      debug(`should ignore: ${shouldIgnore}`);
+      if (shouldIgnore) return;
+      return await lintFiles(
+        {
+          files: options.lintDirtyOnly ? filePath : options.include,
+          stylelintInstance,
+          formatter,
+          options,
+        },
+        this, // use transform hook context
+      );
     },
     async buildEnd() {
-      if (watcher?.close) await watcher.close();
-    },
-    async closeBundle() {
+      debug('==== buildEnd ====');
+      debug('watcher', watcher);
+      debug('watcher?.close', watcher?.close);
       if (watcher?.close) await watcher.close();
     },
   };
