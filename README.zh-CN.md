@@ -3,7 +3,9 @@
 [![npm](https://img.shields.io/npm/v/vite-plugin-stylelint)](https://www.npmjs.com/package/vite-plugin-stylelint)
 [![GitHub license](https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint)](https://github.com/ModyQyW/vite-plugin-stylelint/blob/master/LICENSE)
 
-Vite Stylelint 插件。支持 Vite v2、v3 和 v4。要求 `node >= 14.18`。
+Vite Stylelint 插件，默认在 `transform` 生命周期中运行 Stylelint，支持自定义。
+
+支持 Vite v2、v3 和 v4。要求 `node >= 14.18`。
 
 你可能需要 [Vite ESLint 插件](https://github.com/ModyQyW/vite-plugin-eslint2)。
 
@@ -112,52 +114,24 @@ export default defineConfig({
 - 类型：`string | string[]`
 - 默认值：`['src/**/*.{css,scss,sass,less,styl,vue,svelte}']`
 
-一个有效的 [picomatch](https://github.com/micromatch/picomatch#globbing-features) 模式或模式数组。
+这个选项指定你想要校验的文件模式。在绝大部分情况下，你并不需要调整它，除非你正在使用 Nuxt 等框架，或者 `include` 和 `exclude` 范围有重合。
 
-这用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定 `files` 选项，这意味着你的 `files` 选项将被覆盖。
+如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。这意味着选项值需要满足 [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1) 的要求。
 
-如果你正在使用 `nuxt`，你可能需要改变这个选项的值。
+如果你启用了 `lintOnStart` 选项，插件还会在 `buildStart` 生命周期中调用 `stylelint.lint`。这个选项值不会用于创建过滤器，而是直接用作调用参数。这意味着这个选项值还需要满足 [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0) 的要求。
 
-<details>
-  <summary>nuxt 例子</summary>
-
-```typescript
-// nuxt.config.ts
-import viteStylelint from 'vite-plugin-stylelint';
-
-export default defineNuxtConfig({
-  vite: {
-    plugins: [
-      viteStylelint({
-        ...,
-        include: [
-          'assets/**/*.{css,less,scss,sass,vue}',
-          'components/**/*.{css,less,scss,sass,vue}',
-          'content/**/*.{css,less,scss,sass,vue}',
-          'layouts/**/*.{css,less,scss,sass,vue}',
-          'pages/**/*.{css,less,scss,sass,vue}',
-          'server/**/*.{css,less,scss,sass,vue}',
-          'src/**/*.{css,less,scss,sass,vue}',
-          'styles/**/*.{css,less,scss,sass,vue}',
-          'app.vue',
-          'App.vue',
-          'error.vue',
-          'Error.vue',
-        ],
-      }),
-    ],
-  },
-});
-```
+如果你禁用了 `lintDirtyOnly` 选项，插件每次调用 `stylelint.lint` 时都会将该选项值作为调用参数。这意味着这个选项值也需要满足 `globby@11.1.0` 的要求。
 
 ### `exclude`
 
 - 类型：`string | string[]`
 - 默认值：`['node_modules', 'virtual:']`
 
-一个有效的 [picomatch](https://github.com/micromatch/picomatch#globbing-features) 模式或模式数组。
+这个选项指定你不想要校验的文件模式。在绝大部分情况下，你并不需要调整它，除非你正在使用 Nuxt 等框架，或者 `include` 和 `exclude` 范围有重合。
 
-这用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定 `files` 选项，这意味着你的 `files` 选项将被覆盖。
+如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。这意味着选项值需要满足 [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1) 的要求。
+
+如果你启用了 `lintOnStart` 选项或者禁用了 `lintDirtyOnly` 选项，这个选项值不会生效。你需要调整 `include` 值以包含该选项值。
 
 ### `stylelintPath`
 
@@ -191,56 +165,67 @@ Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](http
 - 类型：`boolean`
 - 默认值：`false`
 
-在开始时校验（在 `buildStart` 钩子中）。校验所有文件一次以发现潜在的错误。默认禁用。
+在 `buildStart` 生命周期中校验 `include` 选项指定的文件一次以发现潜在的错误。默认禁用。
 
 如果你没有缓存而且没有启用 `lintInWorker`，这将大大降低 Vite 的初次启动速度。
+
+### `lintDirtyOnly`
+
+- 类型：`boolean`
+- 默认值：`true`
+
+在 `buildStart` 生命周期之外运行 Stylelint 时，只校验修改过的文件。默认启用。
+
+禁用时，会校验 `include` 选项值对应的文件。
 
 ### `chokidar`
 
 - 类型：`boolean`
 - 默认值：`false`
 
-启用时，插件会尝试在 Chokidar `change` 事件中运行 Stylelint，而不是在 `transform` 钩子中运行。它允许校验由 `@import` 导入的样式文件。默认禁用。
+在 Chokidar `change` 事件中而不是在 `transform` 生命周期中运行 Stylelint。默认禁用。
 
-如果你启用这个功能，建议同时启用 `lintOnStart`。
+启用后，可以校验通过 `@import` 导入的样式文件。
+
+如果你启用这个选项，建议也启用 `lintOnStart`。
 
 ### `emitError`
 
 - 类型：`boolean`
 - 默认值：`true`
 
-启用后，会输出发现的错误。默认启用。
+输出发现的错误。默认启用。
 
 ### `emitErrorAsWarning`
 
 - 类型：`boolean`
 - 默认值：`false`
 
-启用后，发现的错误会作为警告被输出。默认禁用，但你可能会在开发原型时启用这个。
+将发现的错误作为警告输出。默认禁用，但你可能会在开发原型时启用这个。
 
 ### `emitWarning`
 
 - 类型：`boolean`
 - 默认值：`true`
 
-启用后，会输出发现的警告。默认启用。
+输出发现的警告。默认启用。
 
 ### `emitWarningAsError`
 
 - 类型：`boolean`
 - 默认值：`false`
 
-启用后，发现的警告会作为错误被输出。默认禁用。
+将发现的警告作为错误输出。默认禁用。
 
 ## FAQ
 
 <details>
   <summary>我需要这个插件吗？</summary>
-  <p>长话短说，<strong>不需要</strong>。</p>
-  <p>在 <code>webpack</code> 使用 <a href="https://github.com/webpack-contrib/stylelint-webpack-plugin">stylelint-webpack-plugin</a> 是很常见的。而这个插件在 <code>vite</code> 中做着几乎一样的事情。</p>
-  <p>但是，我们的 IDE 可能已经提供了我们需要的所有信息。对于 VSCode，我们只需要添加 <a href="https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint">Stylelint 插件</a>。 WebStorm 已经内置了这个功能。我们也可以在 CI 中运行 Stylelint，阻止其它人破坏代码。</p>
-  <p>既然我们有这么多方法运行 Stylelint，那就没有必要在 <code>vite</code> 中运行 Stylelint 了，这也就意味着我们并不需要这个插件。</p>
-  <p>如果你真的很需要查看错误和警告，尝试一下 <code>lintInWorker</code> 选项，它会在 console 中打印信息。</p>
+  <p><strong>绝大部分情况下不需要</strong>。</p>
+  <p>在 Webpack 使用 <a href="https://github.com/webpack-contrib/stylelint-webpack-plugin">stylelint-webpack-plugin</a> 是很常见的，而这个插件在 Vite 中做着几乎一样的事情。</p>
+  <p>但是，我们的 IDE 可能已经提供了我们需要的所有信息。对于 VSCode，我们只需要添加 <a href="https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint">Stylelint 插件</a>。 WebStorm 已经内置了这个功能。我们也可以在命令行或者 CI 中运行 Stylelint。</p>
+  <p>我们有这么多方法运行 Stylelint，没有太大必要在 Vite 中运行 Stylelint，这也就意味着我们在绝大部分情况下不需要这个插件。</p>
+  <p>如果你真的很需要查看错误和警告，请尝试启用 <code>lintInWorker</code> 选项，它会在 console 中打印信息。</p>
   <p>或者尝试一下 <a href="https://github.com/fi3ework/vite-plugin-checker">vite-plugin-checker</a>，它会在浏览器中打印信息。
 </details>
 
