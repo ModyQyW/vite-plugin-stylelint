@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 5.0.0 (2023-08-16)
+
+I completely rewrote the plugin. It's still backward compatible, but there is still a possibility that the changes may affect some projects. So I bumped a major version.
+
+- feat: add `lintDirtyOnly` option
+- types: add descriptions
+- docs: update README
+- feat!: update **internal functions**
+
 ## 4.3.0 (2023-03-09)
 
 - feat: export more types
