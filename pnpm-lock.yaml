@@ -142,15 +142,18 @@ importers:
       stylelint:
         specifier: ^15.10.2
         version: 15.10.2
-      stylelint-config-clean-order:
-        specifier: ^5.2.0
-        version: 5.2.0(stylelint@15.10.2)
       stylelint-config-html:
         specifier: ^1.1.0
         version: 1.1.0(postcss-html@1.5.0)(stylelint@15.10.2)
+      stylelint-config-recess-order:
+        specifier: ^4.3.0
+        version: 4.3.0(stylelint@15.10.2)
       stylelint-config-recommended:
         specifier: ^13.0.0
         version: 13.0.0(stylelint@15.10.2)
+      stylelint-prettier:
+        specifier: ^4.0.2
+        version: 4.0.2(prettier@3.0.1)(stylelint@15.10.2)
       tailwindcss:
         specifier: ^3.3.3
         version: 3.3.3(ts-node@10.9.1)
@@ -200,12 +203,18 @@ importers:
       stylelint-config-html:
         specifier: ^1.1.0
         version: 1.1.0(postcss-html@1.5.0)(stylelint@15.10.2)
+      stylelint-config-recess-order:
+        specifier: ^4.3.0
+        version: 4.3.0(stylelint@15.10.2)
       stylelint-config-recommended:
         specifier: ^13.0.0
         version: 13.0.0(stylelint@15.10.2)
       stylelint-config-recommended-vue:
         specifier: ^1.5.0
         version: 1.5.0(postcss-html@1.5.0)(stylelint@15.10.2)
+      stylelint-prettier:
+        specifier: ^4.0.2
+        version: 4.0.2(prettier@3.0.1)(stylelint@15.10.2)
       tailwindcss:
         specifier: ^3.3.3
         version: 3.3.3(ts-node@10.9.1)
@@ -4824,7 +4833,7 @@ packages:
   /estree-walker@3.0.3:
     resolution: {integrity: sha512-7RUKfXgSMMkzt6ZuXmqapOurLGPPfgj6l9uRZ7lRGolvk0y2yocc35LdcxKC5PQZdn2DMqioAQ2NoWcrTKmm6g==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
     dev: true
 
   /esutils@2.0.3:
@@ -5839,7 +5848,7 @@ packages:
   /is-reference@3.0.1:
     resolution: {integrity: sha512-baJJdQLiYaJdvFbJqXrcGv3WU3QCzBlUcI5QhbesIm6/xPsvmO+2CDoi/GMOFBQEQm+PXkwOPrp9KK5ozZsp2w==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
     dev: true
 
   /is-regex@1.1.4:
@@ -7446,7 +7455,7 @@ packages:
   /periscopic@3.1.0:
     resolution: {integrity: sha512-vKiQ8RRtkl9P+r/+oefh25C3fhybptkHKCZSPlcXiJux2tJF55GnEj3BVn4A5gKfq9NWWXXrxkHBwVPUfH0opw==}
     dependencies:
-      '@types/estree': 1.0.0
+      '@types/estree': 1.0.1
       estree-walker: 3.0.3
       is-reference: 3.0.1
     dev: true
@@ -8932,15 +8941,6 @@ packages:
       inline-style-parser: 0.1.1
     dev: true
 
-  /stylelint-config-clean-order@5.2.0(stylelint@15.10.2):
-    resolution: {integrity: sha512-eAB9ftPa8txPFY2oh4NIE3DFkNzqVEBIALUZhSXP0+6CISPjZPBoOV24shjC9DgOKr7rNPY52DAXBXIBI//Mhg==}
-    peerDependencies:
-      stylelint: '>=14'
-    dependencies:
-      stylelint: 15.10.2
-      stylelint-order: 6.0.3(stylelint@15.10.2)
-    dev: true
-
   /stylelint-config-html@1.1.0(postcss-html@1.5.0)(stylelint@15.10.2):
     resolution: {integrity: sha512-IZv4IVESjKLumUGi+HWeb7skgO6/g4VMuAYrJdlqQFndgbj6WJAXPhaysvBiXefX79upBdQVumgYcdd17gCpjQ==}
     engines: {node: ^12 || >=14}
@@ -9015,6 +9015,18 @@ packages:
     dependencies:
       postcss: 8.4.27
       postcss-sorting: 8.0.2(postcss@8.4.27)
+      stylelint: 15.10.2
+    dev: true
+
+  /stylelint-prettier@4.0.2(prettier@3.0.1)(stylelint@15.10.2):
+    resolution: {integrity: sha512-EoHnR2PiaWgpGtoI4VW7AzneMfwmwQsNwQ+3/E2k/a+ju5yO6rfPfop4vzPQKcJN4ZM1YbspEOPu88D8538sbg==}
+    engines: {node: ^14.17.0 || >=16.0.0}
+    peerDependencies:
+      prettier: '>=3.0.0'
+      stylelint: '>=15.8.0'
+    dependencies:
+      prettier: 3.0.1
+      prettier-linter-helpers: 1.0.0
       stylelint: 15.10.2
     dev: true
 
@@ -9186,7 +9198,7 @@ packages:
       estree-walker: 3.0.3
       is-reference: 3.0.1
       locate-character: 3.0.0
-      magic-string: 0.30.0
+      magic-string: 0.30.2
       periscopic: 3.1.0
     dev: true
 

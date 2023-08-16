@@ -1,3 +1,17 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+
+defineOptions({
+  name: 'HelloWorld',
+});
+
+defineProps<{
+  msg: string;
+}>();
+
+const count = ref(0);
+</script>
+
 <template>
   <h1>{{ msg }}</h1>
 
@@ -23,32 +37,15 @@
   </p>
 </template>
 
-<script lang="ts">
-import { ref, defineComponent } from 'vue';
-export default defineComponent({
-  name: 'HelloWorld',
-  props: {
-    msg: {
-      type: String,
-      required: true,
-    },
-  },
-  setup: () => {
-    const count = ref(0);
-    return { count };
-  },
-});
-</script>
-
 <style scoped>
 a {
   color: #42b983;
 }
 
 code {
-  background-color: #eee;
   padding: 2px 4px;
-  border-radius: 4px;
   color: #304455;
+  background-color: #eee;
+  border-radius: 4px;
 }
 </style>
