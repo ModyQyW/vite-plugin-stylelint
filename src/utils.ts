@@ -31,6 +31,7 @@ export const getOptions = ({
   emitErrorAsWarning,
   emitWarning,
   emitWarningAsError,
+  failOnError,
   ...stylelintOptions
 }: StylelintPluginUserOptions): StylelintPluginOptions => ({
   dev: dev ?? true,
@@ -49,6 +50,7 @@ export const getOptions = ({
   emitErrorAsWarning: emitErrorAsWarning ?? false,
   emitWarning: emitWarning ?? true,
   emitWarningAsError: emitWarningAsError ?? false,
+  failOnError: failOnError ?? false,
   ...stylelintOptions,
 });
 
@@ -127,6 +129,16 @@ export const lintFiles: LintFiles = async (
       // filter result
       const result = { ...linterResult };
       let results = linterResult.results.filter((item) => !item.ignored);
+
+      let hasErrors = false;
+      if (options.failOnError) {
+        for (const result of results) {
+          for (const warning of result.warnings) {
+            hasErrors = hasErrors || warning.severity === STYLELINT_SEVERITY.ERROR;
+          }
+        }
+      }
+
       if (!options.emitError) {
         results = results.map((item) => ({
           ...item,
@@ -148,6 +160,10 @@ export const lintFiles: LintFiles = async (
       if (results.length === 0) return;
 
       result.results = results;
+      if (hasErrors) {
+        result.errored = true;
+      }
+
       const formattedText = formatter(results, result);
       const formattedTextType: TextType = result.errored
         ? options.emitErrorAsWarning

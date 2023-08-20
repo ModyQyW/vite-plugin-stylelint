@@ -217,6 +217,13 @@ Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](http
 
 将发现的警告作为错误输出。默认禁用。
 
+### `failOnError`
+
+- 类型：`boolean`
+- 默认值：`false`
+
+出现任何错误时构建失败。默认禁用。
+
 ## FAQ
 
 <details>

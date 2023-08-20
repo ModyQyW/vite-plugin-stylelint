@@ -226,6 +226,14 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    * @default false
    */
   emitWarningAsError: boolean;
+  /**
+   * Fail build when there are any errors. This is disabled by default.
+   *
+   * 出现任何错误时构建失败。默认禁用。
+   *
+   * @default false
+   */
+  failOnError: boolean;
 }
 export type StylelintPluginUserOptions = Partial<StylelintPluginOptions>;
 

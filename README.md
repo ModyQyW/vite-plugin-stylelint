@@ -217,6 +217,13 @@ Emit found warnings. This is enabled by default.
 
 Emit found warnings as errors when enabled. This is disabled by default.
 
+### `failOnError`
+
+- Type: `boolean`
+- Default: `false`
+
+Fail build when there are any errors. This is disabled by default.
+
 ## FAQ
 
 <details>
