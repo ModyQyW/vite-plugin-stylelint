@@ -33,8 +33,9 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
 
   return {
     name: PLUGIN_NAME,
-    apply(_, { command }) {
+    apply(config, { command }) {
       debug(`==== apply hook ====`);
+      if (config.mode === 'test' || process.env.VITEST) return options.test;
       const shouldApply =
         (command === 'serve' && options.dev) || (command === 'build' && options.build);
       debug(`should apply this plugin: ${shouldApply}`);

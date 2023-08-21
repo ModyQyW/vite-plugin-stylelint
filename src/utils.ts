@@ -15,6 +15,7 @@ import type {
 import { COLOR_MAPPING, PLUGIN_NAME, STYLELINT_SEVERITY } from './constants';
 
 export const getOptions = ({
+  test,
   dev,
   build,
   cache,
@@ -33,6 +34,7 @@ export const getOptions = ({
   emitWarningAsError,
   ...stylelintOptions
 }: StylelintPluginUserOptions): StylelintPluginOptions => ({
+  test: test ?? false,
   dev: dev ?? true,
   build: build ?? false,
   cache: cache ?? true,
