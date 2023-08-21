@@ -1,6 +1,8 @@
 # CHANGELOG
 
-## 5.1.0 (2023-08-21)
+## 5.0.1 (2023-08-21)
+
+I want to publish `5.1.0` but sorry 😅
 
 - feat: add `test` option
 
@@ -9,6 +11,7 @@
 I completely rewrote the plugin. It's still backward compatible, but there is still a possibility that the changes may affect some projects. So I bumped a major version.
 
 - feat: add `lintDirtyOnly` option
+- feat: add `debug`
 - types: add descriptions
 - docs: update README
 - feat!: update **internal functions**
