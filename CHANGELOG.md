@@ -1,5 +1,6 @@
 # CHANGELOG
 
+## 5.1.0 (2023-08-21)
 ## 5.0.1 (2023-08-21)
 
 I want to publish `5.1.0` but sorry 😅
