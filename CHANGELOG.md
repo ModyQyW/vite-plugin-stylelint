@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.1.0 (2023-08-21)
+
+- feat: add `test` option
+
 ## 5.0.0 (2023-08-16)
 
 I completely rewrote the plugin. It's still backward compatible, but there is still a possibility that the changes may affect some projects. So I bumped a major version.
