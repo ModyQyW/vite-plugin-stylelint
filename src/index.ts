@@ -83,7 +83,7 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
             // worker + watcher
             if (worker) return worker.postMessage(fullPath);
             // watcher only
-            const shouldIgnore = await shouldIgnoreModule(fullPath, filter);
+            const shouldIgnore = await shouldIgnoreModule(fullPath, filter, true);
             debug(`should ignore: ${shouldIgnore}`);
             if (shouldIgnore) return;
             return await lintFiles(
@@ -120,8 +120,6 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
     },
     async buildEnd() {
       debug('==== buildEnd ====');
-      debug('watcher', watcher);
-      debug('watcher?.close', watcher?.close);
       if (watcher?.close) await watcher.close();
     },
   };

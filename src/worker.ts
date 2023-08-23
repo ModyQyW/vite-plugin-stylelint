@@ -32,7 +32,7 @@ let formatter: StylelintFormatter;
 parentPort?.on('message', async (files) => {
   debug(`==== message event ====`);
   debug(`message: ${files}`);
-  const shouldIgnore = await shouldIgnoreModule(files, filter);
+  const shouldIgnore = await shouldIgnoreModule(files, filter, options.chokidar);
   debug(`should ignore: ${shouldIgnore}`);
   if (shouldIgnore) return;
   lintFiles({

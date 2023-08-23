@@ -91,14 +91,15 @@ export const isVirtualModule = (id: string) =>
 
 export const getFilePath = (id: string) => normalizePath(id).split('?')[0];
 
-export const shouldIgnoreModule = async (id: string, filter: Filter) => {
+export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = false) => {
   // virtual module
   if (isVirtualModule(id)) return true;
   // not included
   if (!filter(id)) return true;
-  // xxx.vue?type=style or yyy.svelte?type=style style modules
+  // not chokidar: should only include xxx.vue?type=style or yyy.svelte?type=style style modules
+  // chokidar: should include xxx.vue or yyy.svelte
   const filePath = getFilePath(id);
-  if (['.vue', '.svelte'].some((extname) => filePath.endsWith(extname))) {
+  if (!chokidar && ['.vue', '.svelte'].some((extname) => filePath.endsWith(extname))) {
     return !(id.includes('?') && id.includes('type=style'));
   }
   return false;
