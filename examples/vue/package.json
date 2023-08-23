@@ -19,6 +19,7 @@
     "postcss-preset-env": "^9.1.1",
     "prettier": "^3.0.1",
     "prettier-plugin-tailwindcss": "^0.5.2",
+    "sass": "^1.66.1",
     "stylelint": "^15.10.2",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^4.3.0",
