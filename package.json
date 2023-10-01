@@ -67,7 +67,7 @@
     "eslint": "^8.47.0",
     "is-ci": "^3.0.1",
     "lint-staged": "^13.3.0",
-    "markdownlint-cli": "^0.35.0",
+    "markdownlint-cli": "^0.37.0",
     "picocolors": "^1.0.0",
     "postcss": "^8.4.28",
     "prettier": "^3.0.2",
