@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.2.0 (2023-10-23)
+
+- feat: support `rollup@4` and `vite@5`, **ATTENTION**: `rollup@4` is supported since `vite@5.0.0-beta.10`
+
 ## 5.1.1 (2023-08-23)
 
 - fix: fix wrong ignored when enable `chokidar`
