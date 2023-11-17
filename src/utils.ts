@@ -157,7 +157,7 @@ export const lintFiles: LintFiles = async (
           ? 'warning'
           : 'error'
         : options.emitWarningAsError
-        ? 'error'
-        : 'warning';
+          ? 'error'
+          : 'warning';
       return log(formattedText, formattedTextType, context);
     });
