@@ -19,6 +19,16 @@ npm install vite-plugin-stylelint -D
 
 <details>
 
+<summary>Stylelint@16</summary>
+
+```sh
+npm install stylelint@^15 -D
+```
+
+</details>
+
+<details>
+
 <summary>Stylelint@15</summary>
 
 ```sh
@@ -274,6 +284,6 @@ MIT
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/ModyQyW/sponsors/sponsorkit/sponsors.svg">
-    <img src="https://cdn.jsdelivr.net/gh/ModyQyW/sponsors/sponsorkit/sponsors.svg"/>
+    <img alt="sponsors" src="https://cdn.jsdelivr.net/gh/ModyQyW/sponsors/sponsorkit/sponsors.svg"/>
   </a>
 </p>
