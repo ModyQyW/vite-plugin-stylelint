@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.3.0 (2023-12-09)
+
+- feat: support stylelint@16
+
 ## 5.2.1 (2023-11-17)
 
 - chore: update `peerDependencies`
