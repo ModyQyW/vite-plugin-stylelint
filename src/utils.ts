@@ -63,7 +63,7 @@ export const initializeStylelint = async (options: StylelintPluginOptions) => {
     const module = await import(stylelintPath);
     const stylelintInstance = (module?.default ?? module) as StylelintInstance;
     const loadedFormatter: StylelintFormatter =
-      typeof formatter === 'string' ? stylelintInstance.formatters[formatter] : formatter;
+      typeof formatter === 'string' ? await stylelintInstance.formatters[formatter] : formatter;
     // use as here to avoid typescript error
     // src/utils.ts(58,14): error TS2742: The inferred type of 'initializeStylelint' cannot be named without a reference to '.pnpm/postcss@8.4.27/node_modules/postcss'. This is likely not portable. A type annotation is necessary.
     return { stylelintInstance, formatter: loadedFormatter } as {
