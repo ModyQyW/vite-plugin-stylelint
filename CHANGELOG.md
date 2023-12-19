@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 5.3.1 (2023-12-19)
+
+- fix: remove linterResult spread to avoid annoying warnings
+
 ## 5.3.0 (2023-12-09)
 
 - feat: support stylelint@16
@@ -17,6 +21,7 @@
 - fix: fix wrong ignored when enable `chokidar`
 
 ## 5.1.0 (2023-08-21)
+
 ## 5.0.1 (2023-08-21)
 
 I want to publish `5.1.0` but sorry 😅
