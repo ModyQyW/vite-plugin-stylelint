@@ -127,8 +127,6 @@ export const lintFiles: LintFiles = async (
     .then(async (linterResult: StylelintLinterResult | void) => {
       // do nothing when there are no results
       if (!linterResult || linterResult.results.length === 0) return;
-      // filter result
-      const result = { ...linterResult };
       let results = linterResult.results.filter((item) => !item.ignored);
       if (!options.emitError) {
         results = results.map((item) => ({
@@ -137,7 +135,7 @@ export const lintFiles: LintFiles = async (
             (warning) => warning.severity !== STYLELINT_SEVERITY.ERROR,
           ),
         }));
-        result.errored = false;
+        linterResult.errored = false;
       }
       if (!options.emitWarning) {
         results = results.map((item) => ({
@@ -150,9 +148,9 @@ export const lintFiles: LintFiles = async (
       results = results.filter((item) => item.warnings.length > 0);
       if (results.length === 0) return;
 
-      result.results = results;
-      const formattedText = formatter(results, result);
-      const formattedTextType: TextType = result.errored
+      linterResult.results = results;
+      const formattedText = formatter(results, linterResult);
+      const formattedTextType: TextType = linterResult.errored
         ? options.emitErrorAsWarning
           ? 'warning'
           : 'error'
