@@ -91,7 +91,7 @@ export const isVirtualModule = (id: string) =>
 
 export const getFilePath = (id: string) => normalizePath(id).split('?')[0];
 
-export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = false) => {
+export const shouldIgnoreModule = (id: string, filter: Filter) => {
   // virtual module
   if (isVirtualModule(id)) return true;
   // not included
@@ -99,7 +99,7 @@ export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = 
   // not chokidar: should only include xxx.vue?type=style or yyy.svelte?type=style style modules
   // chokidar: should include xxx.vue or yyy.svelte
   const filePath = getFilePath(id);
-  if (!chokidar && ['.vue', '.svelte'].some((extname) => filePath.endsWith(extname))) {
+  if (['.vue', '.svelte'].some((extname) => filePath.endsWith(extname))) {
     return !(id.includes('?') && id.includes('type=style'));
   }
   return false;
@@ -108,10 +108,10 @@ export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = 
 export const colorize = (text: string, textType: TextType) => pico[COLOR_MAPPING[textType]](text);
 
 export const log = (text: string, textType: TextType, context?: Rollup.PluginContext) => {
-  console.log('');
   if (context) {
-    if (textType === 'error') context.error(text);
-    else if (textType === 'warning') context.warn(text);
+    if (textType === 'error') {
+      context.error(text);
+    } else if (textType === 'warning') context.warn(text);
   } else {
     const t = colorize(`${text}  Plugin: ${colorize(PLUGIN_NAME, 'plugin')}\r\n`, textType);
     console.log(t);
@@ -157,5 +157,8 @@ export const lintFiles: LintFiles = async (
         : options.emitWarningAsError
           ? 'error'
           : 'warning';
-      return log(formattedText, formattedTextType, context);
+      // log out errors or warnings info in the terminal.
+      log(formattedText, formattedTextType, context);
+      // trigger we.send error in hotmodule update without context
+      if (linterResult.errored && !context) throw new Error(linterResult.report);
     });

@@ -5,5 +5,5 @@ import inspect from 'vite-plugin-inspect';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue(), stylelint(), inspect()],
+  plugins: [vue(), stylelint({ lintOnStart: true }), inspect()],
 });

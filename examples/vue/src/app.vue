@@ -12,6 +12,7 @@ defineOptions({
 </template>
 
 <style lang="scss">
+@import './testStyleImport.scss';
 #app {
   margin-top: 60px;
   font-family: Avenir, Helvetica, Arial, sans-serif;
