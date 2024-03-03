@@ -18,7 +18,6 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
   const options = getOptions(userOptions);
 
   let worker: Worker;
-  let watcher: FSWatcher;
 
   const filter = getFilter(options);
   let stylelintInstance: StylelintInstance;
@@ -62,14 +61,9 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         );
       }
     },
-    async buildEnd() {
-      debug('==== buildEnd ====');
-      if (watcher?.close) await watcher.close();
-    },
     // this hook will be called before built-in transform, such as scss => css transformation, so we can lint scss code in  this hook.
     async handleHotUpdate(ctx) {
       const fileName = ctx.file;
-      console.log(ctx);
       const shouldIgnore = shouldIgnoreModule(fileName, filter);
       if (shouldIgnore) return;
       if (worker) {
