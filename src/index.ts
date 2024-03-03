@@ -3,7 +3,6 @@ import { extname, resolve, dirname } from 'node:path';
 
 import { fileURLToPath } from 'node:url';
 import type * as Vite from 'vite';
-import type { FSWatcher } from 'chokidar';
 import debugWrap from 'debug';
 import { getFilter, getOptions, shouldIgnoreModule, initializeStylelint, lintFiles } from './utils';
 import type { StylelintInstance, StylelintFormatter, StylelintPluginUserOptions } from './types';
