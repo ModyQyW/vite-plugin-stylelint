@@ -177,3 +177,7 @@ dist_ssg
 
 # Android
 *.keystore
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
