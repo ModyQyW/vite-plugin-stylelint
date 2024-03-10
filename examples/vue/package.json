@@ -6,14 +6,19 @@
   "scripts": {
     "build": "vue-tsc --noEmit && vite build",
     "dev": "vite",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "playwright test main.spec.ts"
   },
   "dependencies": {
+    "lodash": "^4.17.21",
     "vue": "^3.3.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.42.1",
+    "@types/node": "^20.10.5",
     "@vitejs/plugin-vue": "^4.5.2",
     "@vue/compiler-sfc": "^3.3.12",
+    "magicast": "^0.3.3",
     "postcss": "^8.4.32",
     "postcss-html": "^1.5.0",
     "postcss-preset-env": "^9.3.0",

@@ -153,7 +153,6 @@ dist_ssg
 .vscode-test
 .vscode/**
 !.vscode/extensions.json
-!.vscode/settings.json
 *.vsix
 .idea
 .hbuilder
@@ -178,3 +177,7 @@ dist_ssg
 
 # Android
 *.keystore
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
