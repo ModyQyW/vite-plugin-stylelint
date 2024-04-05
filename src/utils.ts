@@ -160,5 +160,6 @@ export const lintFiles: LintFiles = async (
       // log out errors or warnings info in the terminal.
       log(formattedText, formattedTextType, context);
       // trigger we.send error in hotmodule update without context
-      if (linterResult.errored && !context) throw new Error(linterResult.report);
+      if (linterResult.errored && !context)
+        throw new Error(`Linting failed without a plugin context: ${linterResult.report}`);
     });
