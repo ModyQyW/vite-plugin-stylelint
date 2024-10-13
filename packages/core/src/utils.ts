@@ -1,6 +1,7 @@
-import pico from 'picocolors';
-import { createFilter, normalizePath } from '@rollup/pluginutils';
-import type * as Rollup from 'rollup';
+import { createFilter, normalizePath } from "@rollup/pluginutils";
+import pico from "picocolors";
+import type * as Rollup from "rollup";
+import { COLOR_MAPPING, PLUGIN_NAME, STYLELINT_SEVERITY } from "./constants";
 import type {
   Filter,
   LintFiles,
@@ -11,8 +12,7 @@ import type {
   StylelintPluginOptions,
   StylelintPluginUserOptions,
   TextType,
-} from './types';
-import { COLOR_MAPPING, PLUGIN_NAME, STYLELINT_SEVERITY } from './constants';
+} from "./types";
 
 export const getOptions = ({
   test,
@@ -38,11 +38,11 @@ export const getOptions = ({
   dev: dev ?? true,
   build: build ?? false,
   cache: cache ?? true,
-  cacheLocation: cacheLocation ?? '.stylelintcache',
-  include: include ?? ['src/**/*.{css,scss,sass,less,styl,vue,svelte}'],
-  exclude: exclude ?? ['node_modules', 'virtual:'],
-  stylelintPath: stylelintPath ?? 'stylelint',
-  formatter: formatter ?? 'string',
+  cacheLocation: cacheLocation ?? ".stylelintcache",
+  include: include ?? ["src/**/*.{css,scss,sass,less,styl,vue,svelte}"],
+  exclude: exclude ?? ["node_modules", "virtual:"],
+  stylelintPath: stylelintPath ?? "stylelint",
+  formatter: formatter ?? "string",
   lintInWorker: lintInWorker ?? false,
   lintOnStart: lintOnStart ?? false,
   lintDirtyOnly: lintDirtyOnly ?? true,
@@ -63,7 +63,9 @@ export const initializeStylelint = async (options: StylelintPluginOptions) => {
     const module = await import(stylelintPath);
     const stylelintInstance = (module?.default ?? module) as StylelintInstance;
     const loadedFormatter: StylelintFormatter =
-      typeof formatter === 'string' ? await stylelintInstance.formatters[formatter] : formatter;
+      typeof formatter === "string"
+        ? await stylelintInstance.formatters[formatter]
+        : formatter;
     // use as here to avoid typescript error
     // src/utils.ts(58,14): error TS2742: The inferred type of 'initializeStylelint' cannot be named without a reference to '.pnpm/postcss@8.4.27/node_modules/postcss'. This is likely not portable. A type annotation is necessary.
     return { stylelintInstance, formatter: loadedFormatter } as {
@@ -87,11 +89,15 @@ export const getStylelintLinterOptions = (
 // https://github.com/vitejs/vite/blob/main/packages/vite/src/node/plugins/importMetaGlob.ts
 // https://vitejs.dev/guide/api-plugin.html#virtual-modules-convention
 export const isVirtualModule = (id: string) =>
-  id.startsWith('virtual:') || id[0] === '\0' || !id.includes('/');
+  id.startsWith("virtual:") || id[0] === "\0" || !id.includes("/");
 
-export const getFilePath = (id: string) => normalizePath(id).split('?')[0];
+export const getFilePath = (id: string) => normalizePath(id).split("?")[0];
 
-export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = false) => {
+export const shouldIgnoreModule = async (
+  id: string,
+  filter: Filter,
+  chokidar = false,
+) => {
   // virtual module
   if (isVirtualModule(id)) return true;
   // not included
@@ -99,21 +105,32 @@ export const shouldIgnoreModule = async (id: string, filter: Filter, chokidar = 
   // not chokidar: should only include xxx.vue?type=style or yyy.svelte?type=style style modules
   // chokidar: should include xxx.vue or yyy.svelte
   const filePath = getFilePath(id);
-  if (!chokidar && ['.vue', '.svelte'].some((extname) => filePath.endsWith(extname))) {
-    return !(id.includes('?') && id.includes('type=style'));
+  if (
+    !chokidar &&
+    [".vue", ".svelte"].some((extname) => filePath.endsWith(extname))
+  ) {
+    return !(id.includes("?") && id.includes("type=style"));
   }
   return false;
 };
 
-export const colorize = (text: string, textType: TextType) => pico[COLOR_MAPPING[textType]](text);
+export const colorize = (text: string, textType: TextType) =>
+  pico[COLOR_MAPPING[textType]](text);
 
-export const log = (text: string, textType: TextType, context?: Rollup.PluginContext) => {
-  console.log('');
+export const log = (
+  text: string,
+  textType: TextType,
+  context?: Rollup.PluginContext,
+) => {
+  console.log("");
   if (context) {
-    if (textType === 'error') context.error(text);
-    else if (textType === 'warning') context.warn(text);
+    if (textType === "error") context.error(text);
+    else if (textType === "warning") context.warn(text);
   } else {
-    const t = colorize(`${text}  Plugin: ${colorize(PLUGIN_NAME, 'plugin')}\r\n`, textType);
+    const t = colorize(
+      `${text}  Plugin: ${colorize(PLUGIN_NAME, "plugin")}\r\n`,
+      textType,
+    );
     console.log(t);
   }
 };
@@ -124,7 +141,7 @@ export const lintFiles: LintFiles = async (
 ) =>
   await stylelintInstance
     .lint({ ...getStylelintLinterOptions(options), files })
-    .then(async (linterResult: StylelintLinterResult | void) => {
+    .then(async (linterResult: StylelintLinterResult) => {
       // do nothing when there are no results
       if (!linterResult || linterResult.results.length === 0) return;
       let results = linterResult.results.filter((item) => !item.ignored);
@@ -152,10 +169,10 @@ export const lintFiles: LintFiles = async (
       const formattedText = formatter(results, linterResult);
       const formattedTextType: TextType = linterResult.errored
         ? options.emitErrorAsWarning
-          ? 'warning'
-          : 'error'
+          ? "warning"
+          : "error"
         : options.emitWarningAsError
-          ? 'error'
-          : 'warning';
+          ? "error"
+          : "warning";
       return log(formattedText, formattedTextType, context);
     });

@@ -1,16 +1,19 @@
-import type * as Stylelint from 'stylelint';
-import stylelint from 'stylelint';
-import type * as Rollup from 'rollup';
-import type { CreateFilter } from '@rollup/pluginutils';
+import type { CreateFilter } from "@rollup/pluginutils";
+import type * as Rollup from "rollup";
+import type * as Stylelint from "stylelint";
+import type stylelint from "stylelint";
 
 export type FilterPattern = string | string[];
 export type Filter = ReturnType<CreateFilter>;
 
 export type StylelintLinterOptions = Partial<Stylelint.LinterOptions>;
 export type StylelintInstance = typeof stylelint;
-export type StylelintFormatter = Exclude<StylelintLinterOptions['formatter'], string | undefined>;
+export type StylelintFormatter = Exclude<
+  StylelintLinterOptions["formatter"],
+  string | undefined
+>;
 export type StylelintFormatterType = Exclude<
-  StylelintLinterOptions['formatter'],
+  StylelintLinterOptions["formatter"],
   StylelintFormatter | undefined
 >;
 export type StylelintLinterResult = Stylelint.LinterResult;
@@ -250,4 +253,4 @@ export type LintFiles = (
   context?: Rollup.PluginContext,
 ) => Promise<void>;
 
-export type TextType = 'error' | 'warning' | 'plugin';
+export type TextType = "error" | "warning" | "plugin";

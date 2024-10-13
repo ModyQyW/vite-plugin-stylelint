@@ -1,8 +1,17 @@
-import { workerData, parentPort } from 'node:worker_threads';
-import debugWrap from 'debug';
-import type { StylelintInstance, StylelintFormatter, StylelintPluginOptions } from './types';
-import { getFilter, initializeStylelint, lintFiles, shouldIgnoreModule } from './utils';
-import { PLUGIN_NAME } from './constants';
+import { parentPort, workerData } from "node:worker_threads";
+import debugWrap from "debug";
+import { PLUGIN_NAME } from "./constants";
+import type {
+  StylelintFormatter,
+  StylelintInstance,
+  StylelintPluginOptions,
+} from "./types";
+import {
+  getFilter,
+  initializeStylelint,
+  lintFiles,
+  shouldIgnoreModule,
+} from "./utils";
 
 const debug = debugWrap(`${PLUGIN_NAME}:worker`);
 
@@ -14,12 +23,13 @@ let formatter: StylelintFormatter;
 // this file needs to be compiled into cjs, which doesn't support top-level await
 // so we use iife here
 (async () => {
-  debug(`Initialize Stylelint`);
+  debug("==== worker start ====");
+  debug("Initialize Stylelint");
   const result = await initializeStylelint(options);
   stylelintInstance = result.stylelintInstance;
   formatter = result.formatter;
   if (options.lintOnStart) {
-    debug(`Lint on start`);
+    debug("Lint on start");
     lintFiles({
       files: options.include,
       stylelintInstance,
@@ -29,10 +39,14 @@ let formatter: StylelintFormatter;
   }
 })();
 
-parentPort?.on('message', async (files) => {
-  debug(`==== message event ====`);
+parentPort?.on("message", async (files) => {
+  debug("==== message event ====");
   debug(`message: ${files}`);
-  const shouldIgnore = await shouldIgnoreModule(files, filter, options.chokidar);
+  const shouldIgnore = await shouldIgnoreModule(
+    files,
+    filter,
+    options.chokidar,
+  );
   debug(`should ignore: ${shouldIgnore}`);
   if (shouldIgnore) return;
   lintFiles({

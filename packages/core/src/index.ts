@@ -1,27 +1,33 @@
-import { Worker } from 'node:worker_threads';
-import { extname, resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import type * as Vite from 'vite';
-import type { FSWatcher } from 'chokidar';
-import chokidar from 'chokidar';
-import debugWrap from 'debug';
+import { dirname, extname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { Worker } from "node:worker_threads";
+import type { FSWatcher } from "chokidar";
+import chokidar from "chokidar";
+import debugWrap from "debug";
+import type * as Vite from "vite";
+import { CWD, PLUGIN_NAME } from "./constants";
+import type {
+  StylelintFormatter,
+  StylelintInstance,
+  StylelintPluginUserOptions,
+} from "./types";
 import {
+  getFilePath,
   getFilter,
   getOptions,
-  shouldIgnoreModule,
   initializeStylelint,
   lintFiles,
-  getFilePath,
-} from './utils';
-import type { StylelintInstance, StylelintFormatter, StylelintPluginUserOptions } from './types';
-import { PLUGIN_NAME, CWD } from './constants';
+  shouldIgnoreModule,
+} from "./utils";
 
 const debug = debugWrap(PLUGIN_NAME);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ext = extname(__filename);
 
-export default function StylelintPlugin(userOptions: StylelintPluginUserOptions = {}): Vite.Plugin {
+export default function StylelintPlugin(
+  userOptions: StylelintPluginUserOptions = {},
+): Vite.Plugin {
   const options = getOptions(userOptions);
 
   let worker: Worker;
@@ -34,30 +40,33 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
   return {
     name: PLUGIN_NAME,
     apply(config, { command }) {
-      debug(`==== apply hook ====`);
-      if (config.mode === 'test' || process.env.VITEST) return options.test;
+      debug("==== apply hook ====");
+      if (config.mode === "test" || process.env.VITEST) return options.test;
       const shouldApply =
-        (command === 'serve' && options.dev) || (command === 'build' && options.build);
+        (command === "serve" && options.dev) ||
+        (command === "build" && options.build);
       debug(`should apply this plugin: ${shouldApply}`);
       return shouldApply;
     },
     async buildStart() {
-      debug(`==== buildStart hook ====`);
+      debug("==== buildStart hook ====");
       // initialize worker
       if (options.lintInWorker) {
         if (worker) return;
-        debug(`Initialize worker`);
-        worker = new Worker(resolve(__dirname, `worker${ext}`), { workerData: { options } });
+        debug("Initialize worker");
+        worker = new Worker(resolve(__dirname, `worker${ext}`), {
+          workerData: { options },
+        });
         return;
       }
       // initialize Stylelint
-      debug(`Initial Stylelint`);
+      debug("Initial Stylelint");
       const result = await initializeStylelint(options);
       stylelintInstance = result.stylelintInstance;
       formatter = result.formatter;
       // lint on start if needed
       if (options.lintOnStart) {
-        debug(`Lint on start`);
+        debug("Lint on start");
         await lintFiles(
           {
             files: options.include,
@@ -70,20 +79,24 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       }
     },
     async transform(_, id) {
-      debug('==== transform hook ====');
+      debug("==== transform hook ====");
       // initialize watcher
       if (options.chokidar) {
         if (watcher) return;
-        debug(`Initialize watcher`);
+        debug("Initialize watcher");
         watcher = chokidar
           .watch(options.include, { ignored: options.exclude })
-          .on('change', async (path) => {
-            debug(`==== change event ====`);
+          .on("change", async (path) => {
+            debug("==== change event ====");
             const fullPath = resolve(CWD, path);
             // worker + watcher
             if (worker) return worker.postMessage(fullPath);
             // watcher only
-            const shouldIgnore = await shouldIgnoreModule(fullPath, filter, true);
+            const shouldIgnore = await shouldIgnoreModule(
+              fullPath,
+              filter,
+              true,
+            );
             debug(`should ignore: ${shouldIgnore}`);
             if (shouldIgnore) return;
             return await lintFiles(
@@ -99,9 +112,9 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
         return;
       }
       // no watcher
-      debug('id: ', id);
+      debug("id: ", id);
       const filePath = getFilePath(id);
-      debug(`filePath`, filePath);
+      debug("filePath", filePath);
       // worker
       if (worker) return worker.postMessage(filePath);
       // no worker
@@ -119,10 +132,13 @@ export default function StylelintPlugin(userOptions: StylelintPluginUserOptions 
       );
     },
     async buildEnd() {
-      debug('==== buildEnd ====');
+      debug("==== buildEnd ====");
       if (watcher?.close) await watcher.close();
     },
   };
 }
 
-export { type StylelintPluginOptions, type StylelintPluginUserOptions } from './types';
+export {
+  type StylelintPluginOptions,
+  type StylelintPluginUserOptions,
+} from "./types";
