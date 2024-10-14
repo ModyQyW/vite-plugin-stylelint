@@ -134,6 +134,7 @@ export default function StylelintPlugin(
     async buildEnd() {
       debug("==== buildEnd ====");
       if (watcher?.close) await watcher.close();
+      if (worker) await worker.terminate();
     },
   };
 }
