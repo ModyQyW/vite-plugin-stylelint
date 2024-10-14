@@ -20,7 +20,7 @@ export default defineConfig({
       "script",
       {
         async: "",
-        src: "https://www.googletagmanager.com/gtag/js?id=G-GBE9KNFWLS",
+        src: "https://www.googletagmanager.com/gtag/js?id=G-1WT0NZVS5X",
       },
     ],
     [
@@ -29,7 +29,7 @@ export default defineConfig({
       `window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', 'G-GBE9KNFWLS');`,
+      gtag('config', 'G-1WT0NZVS5X');`,
     ],
     // Google AdSense
     [
