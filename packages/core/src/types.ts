@@ -55,8 +55,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * This option specifies the files you want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
    *
-   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, which means that the
-   * option value needs to fulfill the requirements of [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1).
+   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, which means that the option value needs to fulfill the requirements of [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1).
    *
    * If you enable the `lintOnStart` option, the plugin will also call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. The option value will not be used to create a filter, but will be used directly as the call parameter, which means that the option value also needs to fulfill the [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0) requirement.
    *
@@ -106,10 +105,9 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   formatter: StylelintFormatterType | StylelintFormatter;
   /**
-   * Lint in [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran). This is
-   * disabled by default.
+   * Lint in [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran). This is disabled by default.
    *
-   *When lint in worker, Vite build process will be faster. You will not see Vite error overlay, Vite build process will not be stopped, even with errors shown in terminal.
+   * When lint in worker, Vite build process will be faster. You will not see Vite error overlay, Vite build process will not be stopped, even with errors shown in terminal.
    *
    * It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but vite-plugin-checker can show you errors and warnings in browsers.
    *
@@ -117,8 +115,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    *
    * 在 worker 中校验时，Vite 的构建过程会更快。即使终端显示了 Stylelint 校验错误，你也不会看到 Vite 错误遮罩层，Vite 构建也不会停止。
    *
-   * 这与 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 类似，但
-   * [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 可以在浏览器中显示错误。
+   * 这与 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 类似，但 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 可以在浏览器中显示错误。
    *
    * @default false
    */
