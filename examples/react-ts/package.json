@@ -16,7 +16,6 @@
     "@types/react": "^18.3.10",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
-    "sass": "^1.79.5",
     "stylelint": "^16.10.0",
     "stylelint-config-recommended": "^14.0.1",
     "stylelint-config-recommended-scss": "^14.1.0",
