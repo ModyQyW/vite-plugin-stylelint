@@ -8,7 +8,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introductions
 
-`vite-plugin-stylelint` is a project providing ESLint plugin for Vite with several sub packages:
+`vite-plugin-stylelint` is a project providing Stylelint plugin for Vite with several sub packages:
 
 | Name                                                                                | Description                                               |
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------- |
