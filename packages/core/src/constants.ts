@@ -6,8 +6,6 @@ export const STYLELINT_SEVERITY = {
   WARNING: "warning",
 } as const;
 
-export const CWD = process.cwd();
-
 export const PLUGIN_NAME = "vite:stylelint";
 
 export const COLOR_MAPPING: Record<

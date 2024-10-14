@@ -1,11 +1,9 @@
 import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Worker } from "node:worker_threads";
-import type { FSWatcher } from "chokidar";
-import chokidar from "chokidar";
 import debugWrap from "debug";
 import type * as Vite from "vite";
-import { CWD, PLUGIN_NAME } from "./constants";
+import { PLUGIN_NAME } from "./constants";
 import type {
   StylelintFormatter,
   StylelintInstance,
@@ -31,7 +29,6 @@ export default function StylelintPlugin(
   const options = getOptions(userOptions);
 
   let worker: Worker;
-  let watcher: FSWatcher;
 
   const filter = getFilter(options);
   let stylelintInstance: StylelintInstance;
@@ -80,50 +77,33 @@ export default function StylelintPlugin(
     },
     async transform(_, id) {
       debug("==== transform hook ====");
-      // initialize watcher
-      if (options.chokidar) {
-        if (watcher) return;
-        debug("Initialize watcher");
-        watcher = chokidar
-          .watch(options.include, { ignored: options.exclude })
-          .on("change", async (path) => {
-            debug("==== change event ====");
-            const fullPath = resolve(CWD, path);
-            // worker + watcher
-            if (worker) return worker.postMessage(fullPath);
-            // watcher only
-            const shouldIgnore = await shouldIgnoreModule(
-              fullPath,
-              filter,
-              true,
-            );
-            debug(`should ignore: ${shouldIgnore}`);
-            if (shouldIgnore) return;
-            return await lintFiles(
-              {
-                files: options.lintDirtyOnly ? fullPath : options.include,
-                stylelintInstance,
-                formatter,
-                options,
-              },
-              // this, // TODO: use transform hook context will breaks build
-            );
-          });
+      // current file
+      const filePath = getFilePath(id);
+      debug(`id: ${id}`);
+      debug(`filePath: ${filePath}`);
+      // related files
+      const watchFiles = this.getWatchFiles();
+      const watchFilePaths = watchFiles.map((f) => getFilePath(f));
+      debug(`watchFilePaths: ${watchFilePaths}`);
+      // all files
+      const paths = [filePath, ...watchFilePaths];
+      // worker
+      if (worker) {
+        for (const p of paths) {
+          worker.postMessage(p);
+        }
         return;
       }
-      // no watcher
-      debug("id: ", id);
-      const filePath = getFilePath(id);
-      debug("filePath", filePath);
-      // worker
-      if (worker) return worker.postMessage(filePath);
       // no worker
-      const shouldIgnore = await shouldIgnoreModule(id, filter);
+      // filtered
+      const filtered = paths.filter((p) => !shouldIgnoreModule(p, filter));
+      debug(`filtered: ${filtered}`);
+      const shouldIgnore = filtered.length === 0;
       debug(`should ignore: ${shouldIgnore}`);
       if (shouldIgnore) return;
       return await lintFiles(
         {
-          files: options.lintDirtyOnly ? filePath : options.include,
+          files: options.lintDirtyOnly ? filtered : options.include,
           stylelintInstance,
           formatter,
           options,
@@ -133,7 +113,6 @@ export default function StylelintPlugin(
     },
     async buildEnd() {
       debug("==== buildEnd hook ====");
-      if (watcher?.close) await watcher.close();
       if (worker) await worker.terminate();
     },
   };

@@ -26,7 +26,6 @@ export const getOptions = ({
   lintInWorker,
   lintOnStart,
   lintDirtyOnly,
-  chokidar,
   emitError,
   emitErrorAsWarning,
   emitWarning,
@@ -44,7 +43,6 @@ export const getOptions = ({
   lintInWorker: lintInWorker ?? false,
   lintOnStart: lintOnStart ?? false,
   lintDirtyOnly: lintDirtyOnly ?? true,
-  chokidar: chokidar ?? false,
   emitError: emitError ?? true,
   emitErrorAsWarning: emitErrorAsWarning ?? false,
   emitWarning: emitWarning ?? true,
@@ -91,22 +89,14 @@ export const isVirtualModule = (id: string) =>
 
 export const getFilePath = (id: string) => normalizePath(id).split("?")[0];
 
-export const shouldIgnoreModule = async (
-  id: string,
-  filter: Filter,
-  chokidar = false,
-) => {
+export const shouldIgnoreModule = (id: string, filter: Filter) => {
   // virtual module
   if (isVirtualModule(id)) return true;
   // not included
   if (!filter(id)) return true;
-  // not chokidar: should only include xxx.vue?type=style or yyy.svelte?type=style style modules
-  // chokidar: should include xxx.vue or yyy.svelte
+  // // xxx.vue?type=style or yyy.svelte?type=style style modules
   const filePath = getFilePath(id);
-  if (
-    !chokidar &&
-    [".vue", ".svelte"].some((extname) => filePath.endsWith(extname))
-  ) {
+  if ([".vue", ".svelte"].some((extname) => filePath.endsWith(extname))) {
     return !(id.includes("?") && id.includes("type=style"));
   }
   return false;

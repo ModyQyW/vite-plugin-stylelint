@@ -145,21 +145,6 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   lintDirtyOnly: boolean;
   /**
-   * Run Stylelint in Chokidar `change` event instead of `transform` hook. This is disabled by
-   * default.
-   *
-   * This plugin can lint style files imported by `@import` when enable this option.
-   *
-   * Recommend to enable `lintOnStart` if you enable this one.
-   *
-   * 在 Chokidar `change` 事件中而不是在 `transform` 生命周期中运行 Stylelint。默认禁用。
-   *
-   * 启用后，可以校验通过 `@import` 导入的样式文件。
-   *
-   * 如果你启用这个选项，建议也启用 `lintOnStart`。
-   */
-  chokidar: boolean;
-  /**
    * Emit found errors. This is enabled by default.
    *
    * 输出发现的错误。默认启用。

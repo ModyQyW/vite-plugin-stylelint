@@ -49,11 +49,7 @@ parentPort?.on("message", async (files) => {
   if (!stylelintInstance) await initPromise;
   debug("==== message event ====");
   debug(`message: ${files}`);
-  const shouldIgnore = await shouldIgnoreModule(
-    files,
-    filter,
-    options.chokidar,
-  );
+  const shouldIgnore = shouldIgnoreModule(files, filter);
   debug(`should ignore: ${shouldIgnore}`);
   if (shouldIgnore) return;
   lintFiles({
