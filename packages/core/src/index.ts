@@ -132,7 +132,7 @@ export default function StylelintPlugin(
       );
     },
     async buildEnd() {
-      debug("==== buildEnd ====");
+      debug("==== buildEnd hook ====");
       if (watcher?.close) await watcher.close();
       if (worker) await worker.terminate();
     },
