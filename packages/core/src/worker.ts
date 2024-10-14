@@ -20,14 +20,19 @@ const filter = getFilter(options);
 let stylelintInstance: StylelintInstance;
 let formatter: StylelintFormatter;
 
+const initPromise = initializeStylelint(options).then((result) => {
+  stylelintInstance = result.stylelintInstance;
+  formatter = result.formatter;
+  return result;
+});
+
 // this file needs to be compiled into cjs, which doesn't support top-level await
 // so we use iife here
 (async () => {
   debug("==== worker start ====");
   debug("Initialize Stylelint");
-  const result = await initializeStylelint(options);
-  stylelintInstance = result.stylelintInstance;
-  formatter = result.formatter;
+  // remove this line will cause ts2454
+  const { stylelintInstance, formatter } = await initPromise;
   if (options.lintOnStart) {
     debug("Lint on start");
     lintFiles({
@@ -40,6 +45,8 @@ let formatter: StylelintFormatter;
 })();
 
 parentPort?.on("message", async (files) => {
+  // make sure stylelintInstance is initialized
+  if (!stylelintInstance) await initPromise;
   debug("==== message event ====");
   debug(`message: ${files}`);
   const shouldIgnore = await shouldIgnoreModule(
