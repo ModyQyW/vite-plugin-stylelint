@@ -6,7 +6,7 @@
   "bugs": {
     "url": "https://github.com/ModyQyW/vite-plugin-stylelint/issues"
   },
-  "repository": "git+https://github.com:ModyQyW/vite-plugin-stylelint.git",
+  "repository": "git+https://github.com/ModyQyW/vite-plugin-stylelint.git",
   "license": "MIT",
   "author": {
     "name": "ModyQyW",
