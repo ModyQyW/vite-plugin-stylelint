@@ -118,7 +118,7 @@ export default function StylelintPlugin(
   };
 }
 
-export {
-  type StylelintPluginOptions,
-  type StylelintPluginUserOptions,
+export type {
+  StylelintPluginOptions,
+  StylelintPluginUserOptions,
 } from "./types";
