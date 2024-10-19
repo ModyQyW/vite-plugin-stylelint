@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.0-beta.1](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.0.0-beta.0...v6.0.0-beta.1) (2024-10-19)
+
+**Note:** Version bump only for package vite-plugin-stylelint
+
 ## [6.0.0-beta.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v5.3.1...v6.0.0-beta.0) (2024-10-14)
 
 ### ⚠ BREAKING CHANGES
