@@ -77,33 +77,29 @@ export default function StylelintPlugin(
     },
     async transform(_, id) {
       debug("==== transform hook ====");
-      // current file
-      const filePath = getFilePath(id);
       debug(`id: ${id}`);
-      debug(`filePath: ${filePath}`);
-      // related files
-      const watchFiles = this.getWatchFiles();
-      const watchFilePaths = watchFiles.map((f) => getFilePath(f));
-      debug(`watchFilePaths: ${watchFilePaths}`);
-      // all files
-      const paths = [filePath, ...watchFilePaths];
+      const watchIds = this.getWatchFiles();
+      debug(`watchIds: ${watchIds}`);
+      const ids = [id, ...watchIds];
+      debug(`ids: ${ids}`);
       // worker
       if (worker) {
-        for (const p of paths) {
-          worker.postMessage(p);
+        for (const id of ids) {
+          worker.postMessage(id);
         }
         return;
       }
       // no worker
       // filtered
-      const filtered = paths.filter((p) => !shouldIgnoreModule(p, filter));
-      debug(`filtered: ${filtered}`);
-      const shouldIgnore = filtered.length === 0;
+      const filteredIds = ids.filter((id) => !shouldIgnoreModule(id, filter));
+      debug(`filteredIds: ${filteredIds}`);
+      const shouldIgnore = filteredIds.length === 0;
       debug(`should ignore: ${shouldIgnore}`);
       if (shouldIgnore) return;
+      const filePaths = filteredIds.map((id) => getFilePath(id));
       return await lintFiles(
         {
-          files: options.lintDirtyOnly ? filtered : options.include,
+          files: options.lintDirtyOnly ? filePaths : options.include,
           stylelintInstance,
           formatter,
           options,

@@ -7,6 +7,7 @@ import type {
   StylelintPluginOptions,
 } from "./types";
 import {
+  getFilePath,
   getFilter,
   initializeStylelint,
   lintFiles,
@@ -44,16 +45,18 @@ const initPromise = initializeStylelint(options).then((result) => {
   }
 })();
 
-parentPort?.on("message", async (files) => {
+parentPort?.on("message", async (id) => {
   // make sure stylelintInstance is initialized
   if (!stylelintInstance) await initPromise;
   debug("==== message event ====");
-  debug(`message: ${files}`);
-  const shouldIgnore = shouldIgnoreModule(files, filter);
+  debug(`id: ${id}`);
+  const shouldIgnore = shouldIgnoreModule(id, filter);
   debug(`should ignore: ${shouldIgnore}`);
   if (shouldIgnore) return;
+  const filePath = getFilePath(id);
+  debug(`filePath: ${filePath}`);
   lintFiles({
-    files: options.lintDirtyOnly ? files : options.include,
+    files: options.lintDirtyOnly ? filePath : options.include,
     stylelintInstance,
     formatter,
     options,
