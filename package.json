@@ -46,6 +46,7 @@
     "@lerna-lite/version": "^3.10.0",
     "@types/node": "^22.9.0",
     "@vitest/coverage-v8": "^2.1.4",
+    "concurrently": "^9.1.0",
     "conventional-changelog-conventionalcommits": "^7.0.2",
     "git-branch-is": "^4.0.0",
     "is-ci": "^3.0.1",
