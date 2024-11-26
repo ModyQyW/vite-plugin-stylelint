@@ -2,7 +2,7 @@
 
 ## Overview
 
-`vite-plugin-stylelint` is a project providing Stylelint plugin for Vite. Supports Vite v2 ~ v5 and Stylelint v13 ~ v16. Requires `node>=18`.
+`vite-plugin-stylelint` is a project providing Stylelint plugin for Vite. Supports Vite v2 ~ v6 and Stylelint v13 ~ v16. Requires `node>=18`.
 
 > For Nuxt projects, please use [@nuxtjs/stylelint-module](https://github.com/nuxt-modules/stylelint).
 

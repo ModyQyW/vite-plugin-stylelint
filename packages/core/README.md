@@ -16,7 +16,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-Stylelint plugin for Vite. Supports Vite v2 ~ v5 and Stylelint v13 ~ v16. Requires `node>=18`.
+Stylelint plugin for Vite. Supports Vite v2 ~ v6 and Stylelint v13 ~ v16. Requires `node>=18`.
 
 👇 See the documentation for specific usage and examples.
 

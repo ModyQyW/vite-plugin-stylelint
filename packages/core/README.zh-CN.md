@@ -16,7 +16,7 @@
 
 ## 介绍
 
-Vite Stylelint 插件。支持 Vite v2 ~ v5 和 Stylelint v13 ~ v16。要求 `node>=18`。
+Vite Stylelint 插件。支持 Vite v2 ~ v6 和 Stylelint v13 ~ v16。要求 `node>=18`。
 
 👇 请查看文档了解具体用法和示例。
 
