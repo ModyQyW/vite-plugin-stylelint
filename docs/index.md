@@ -3,8 +3,9 @@
 layout: home
 
 hero:
-  name: "vite-plugin-stylelint"
-  tagline: "Stylelint plugin for Vite"
+  name: vite-plugin-stylelint
+  text: Stylelint plugin for Vite
+  tagline: Integrate Stylelint into Vite in minutes! 🚀
   actions:
     - theme: brand
       text: Get Started →
@@ -15,9 +16,9 @@ hero:
     - theme: alt
       text: View on GitHub
       link: https://github.com/ModyQyW/vite-plugin-stylelint
-  # image:
-  #   src: /logo.png
-  #   alt: _repo_
+  image:
+    src: /vite-plugin-stylelint.svg
+    alt: vite-plugin-stylelint
 # features:
 #   - title: "_feature_"
 #     details: _feature-details_

@@ -3,8 +3,9 @@
 layout: home
 
 hero:
-  name: "vite-plugin-stylelint"
-  tagline: "Vite Stylelint 插件"
+  name: vite-plugin-stylelint
+  text: Vite Stylelint 插件
+  tagline: 只需几分钟即可将 Stylelint 集成到 Vite 中！🚀
   actions:
     - theme: brand
       text: 起步 →
@@ -15,9 +16,9 @@ hero:
     - theme: alt
       text: 在 GitHub 查看
       link: https://github.com/ModyQyW/vite-plugin-stylelint
-  # image:
-  #   src: /logo.png
-  #   alt: _repo_
+  image:
+    src: /vite-plugin-stylelint.svg
+    alt: vite-plugin-stylelint
 # features:
 #   - title: "_特性_"
 #     details: _特性细节_

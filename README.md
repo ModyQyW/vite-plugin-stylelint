@@ -1,5 +1,7 @@
 # vite-plugin-stylelint
 
+![LOGO](vite-plugin-stylelint.svg)
+
 English | [简体中文](./README.zh-CN.md)
 
 👇 See the documentation for specific usage and examples.

@@ -47,6 +47,7 @@ export default defineConfig({
       label: "English",
       description: "Stylelint plugin for Vite.",
       themeConfig: {
+        logo: "/vite-plugin-stylelint.svg",
         nav: [
           {
             text: "Guide",
@@ -88,8 +89,9 @@ export default defineConfig({
     "zh-Hans": {
       lang: "zh-Hans",
       label: "简体中文",
-      description: "_description_",
+      description: "Vite Stylelint 插件",
       themeConfig: {
+        logo: "/vite-plugin-stylelint.svg",
         nav: [
           {
             text: "指南",
