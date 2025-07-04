@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.0.0...v6.0.1) (2025-07-04)
+
+### Bug Fixes
+
+* support vite 7 ([52fb9c3](https://github.com/ModyQyW/vite-plugin-stylelint/commit/52fb9c322ddbb14d46cd584c0919f75ad2fcc68b)) - by @
+
 ## [6.0.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.0.0-beta.2...v6.0.0) (2024-11-26)
 
 **Note:** Version bump only for package monorepo
