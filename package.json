@@ -30,7 +30,7 @@
     "test": "vitest run --passWithNoTests",
     "test:coverage": "vitest run --passWithNoTests --coverage",
     "type-check": "tsc --noEmit",
-    "preversion": "git-branch-is main && conc \"pnpm:check\" \"pnpm:type-check\" \"pnpm:test\""
+    "preversion": "git-branch-is main && conc \"pnpm:fix\" \"pnpm:type-check\" \"pnpm:test\""
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.11",
