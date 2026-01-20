@@ -21,22 +21,24 @@
   "type": "module",
   "exports": {
     ".": {
-      "types": {
-        "import": "./dist/index.d.ts",
-        "require": "./dist/index.d.cts"
+      "import": {
+        "type": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
       },
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs"
+      "require": {
+        "type": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
     }
   },
   "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.mts",
   "typesVersions": {
     "*": {
       "*": [
         "./dist/*",
-        "./dist/index.d.ts"
+        "./dist/index.d.mts"
       ]
     }
   },
@@ -45,26 +47,27 @@
   ],
   "scripts": {
     "build": "tsdown",
+    "build-post": "exit 0",
     "prepublishOnly": "pnpm build",
     "dev": "tsdown --watch"
   },
   "dependencies": {
-    "@rollup/pluginutils": "^5.2.0",
-    "debug": "^4.4.1"
+    "@rollup/pluginutils": "^5.3.0",
+    "debug": "^4.4.3"
   },
   "devDependencies": {
     "@types/debug": "^4.1.12",
     "picocolors": "^1.1.1",
     "postcss": "^8.5.6",
-    "rollup": "^4.44.1",
-    "typescript": "^5.8.3",
-    "vite": "^7.0.2"
+    "rollup": "^4.55.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1"
   },
   "peerDependencies": {
     "@types/stylelint": "^13.0.0",
     "postcss": "^7.0.0 || ^8.0.0",
     "rollup": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "stylelint": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0",
+    "stylelint": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0",
     "vite": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "peerDependenciesMeta": {
@@ -78,7 +81,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.12.4",
+  "packageManager": "pnpm@10.28.1",
   "engines": {
     "node": ">=18"
   },

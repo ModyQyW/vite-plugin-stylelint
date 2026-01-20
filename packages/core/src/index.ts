@@ -38,7 +38,9 @@ export default function StylelintPlugin(
     name: PLUGIN_NAME,
     apply(config, { command }) {
       debug("==== apply hook ====");
-      if (config.mode === "test" || process.env.VITEST) return options.test;
+      if (config.mode === "test" || process.env.VITEST) {
+        return options.test;
+      }
       const shouldApply =
         (command === "serve" && options.dev) ||
         (command === "build" && options.build);
@@ -49,7 +51,9 @@ export default function StylelintPlugin(
       debug("==== buildStart hook ====");
       // initialize worker
       if (options.lintInWorker) {
-        if (worker) return;
+        if (worker) {
+          return;
+        }
         debug("Initialize worker");
         worker = new Worker(resolve(__dirname, `worker${ext}`), {
           workerData: { options },
@@ -95,7 +99,9 @@ export default function StylelintPlugin(
       debug(`filteredIds: ${filteredIds}`);
       const shouldIgnore = filteredIds.length === 0;
       debug(`should ignore: ${shouldIgnore}`);
-      if (shouldIgnore) return;
+      if (shouldIgnore) {
+        return;
+      }
       const filePaths = filteredIds.map((id) => getFilePath(id));
       return await lintFiles(
         {
@@ -109,7 +115,9 @@ export default function StylelintPlugin(
     },
     async buildEnd() {
       debug("==== buildEnd hook ====");
-      if (worker) await worker.terminate();
+      if (worker) {
+        await worker.terminate();
+      }
     },
   };
 }

@@ -47,12 +47,16 @@ const initPromise = initializeStylelint(options).then((result) => {
 
 parentPort?.on("message", async (id) => {
   // make sure stylelintInstance is initialized
-  if (!stylelintInstance) await initPromise;
+  if (!stylelintInstance) {
+    await initPromise;
+  }
   debug("==== message event ====");
   debug(`id: ${id}`);
   const shouldIgnore = shouldIgnoreModule(id, filter);
   debug(`should ignore: ${shouldIgnore}`);
-  if (shouldIgnore) return;
+  if (shouldIgnore) {
+    return;
+  }
   const filePath = getFilePath(id);
   debug(`filePath: ${filePath}`);
   lintFiles({

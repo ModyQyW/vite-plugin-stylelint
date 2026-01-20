@@ -91,9 +91,13 @@ export const getFilePath = (id: string) => normalizePath(id).split("?")[0];
 
 export const shouldIgnoreModule = (id: string, filter: Filter) => {
   // virtual module
-  if (isVirtualModule(id)) return true;
+  if (isVirtualModule(id)) {
+    return true;
+  }
   // not included
-  if (!filter(id)) return true;
+  if (!filter(id)) {
+    return true;
+  }
   // // xxx.vue?type=style or yyy.svelte?type=style style modules
   const filePath = getFilePath(id);
   if ([".vue", ".svelte"].some((extname) => filePath.endsWith(extname))) {
@@ -112,8 +116,11 @@ export const log = (
 ) => {
   console.log("");
   if (context) {
-    if (textType === "error") context.error(text);
-    else if (textType === "warning") context.warn(text);
+    if (textType === "error") {
+      context.error(text);
+    } else if (textType === "warning") {
+      context.warn(text);
+    }
   } else {
     console.log(`${text}  Plugin: ${colorize(PLUGIN_NAME, "plugin")}\r\n`);
   }
@@ -125,9 +132,11 @@ export const lintFiles: LintFiles = async (
 ) =>
   await stylelintInstance
     .lint({ ...getStylelintLinterOptions(options), files })
-    .then(async (linterResult: StylelintLinterResult) => {
+    .then((linterResult: StylelintLinterResult) => {
       // do nothing when there are no results
-      if (!linterResult || linterResult.results.length === 0) return;
+      if (!linterResult || linterResult.results.length === 0) {
+        return;
+      }
       let results = linterResult.results.filter((item) => !item.ignored);
       if (!options.emitError) {
         results = results.map((item) => ({
@@ -147,16 +156,17 @@ export const lintFiles: LintFiles = async (
         }));
       }
       results = results.filter((item) => item.warnings.length > 0);
-      if (results.length === 0) return;
+      if (results.length === 0) {
+        return;
+      }
 
       linterResult.results = results;
       const formattedText = formatter(results, linterResult);
-      const formattedTextType: TextType = linterResult.errored
-        ? options.emitErrorAsWarning
-          ? "warning"
-          : "error"
-        : options.emitWarningAsError
-          ? "error"
-          : "warning";
+      const formattedTextType: TextType = (() => {
+        if (linterResult.errored) {
+          return options.emitErrorAsWarning ? "warning" : "error";
+        }
+        return options.emitWarningAsError ? "error" : "warning";
+      })();
       return log(formattedText, formattedTextType, context);
     });
