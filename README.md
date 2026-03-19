@@ -16,7 +16,6 @@ English | [简体中文](./README.zh-CN.md)
 | ----------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | [core](https://github.com/ModyQyW/vite-plugin-stylelint/tree/main/packages/core)    | Core package                                              |
 | [docs](https://github.com/ModyQyW/vite-plugin-stylelint/tree/main/docs)             | Documentation                                             |
-| [playground](https://github.com/ModyQyW/vite-plugin-stylelint/tree/main/playground) | Light playground for local trying and testing             |
 | [examples](https://github.com/ModyQyW/vite-plugin-stylelint/tree/main/examples)     | Examples integrated with specific frameworks or libraries |
 
 ## Acknowledgements
