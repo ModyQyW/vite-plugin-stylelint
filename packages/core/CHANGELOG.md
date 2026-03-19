@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.0.4...v6.1.0) (2026-03-19)
+
+### Features
+
+* support vite 8 ([1a47067](https://github.com/ModyQyW/vite-plugin-stylelint/commit/1a470675511bfc4a88549563c9054eeefc560770)) - by @
+
+### Bug Fixes
+
+* fix types usage ([efcfaea](https://github.com/ModyQyW/vite-plugin-stylelint/commit/efcfaea2f99c70811ebc3abfde1e1cef24dd71b0)) - by @
+
 ## [6.0.4](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.0.3...v6.0.4) (2026-01-20)
 
 **Note:** Version bump only for package vite-plugin-stylelint
