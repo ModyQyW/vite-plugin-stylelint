@@ -16,7 +16,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-Stylelint plugin for Vite. Supports Vite v2 ~ v6 and Stylelint v13 ~ v16. Requires `node>=18`.
+Stylelint plugin for Vite. Supports Vite v2 ~ v8 and Stylelint v13 ~ v17. Requires `node>=18`.
 
 👇 See the documentation for specific usage and examples.
 
@@ -31,6 +31,16 @@ npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
+
+<details>
+
+<summary>Stylelint v17</summary>
+
+```sh
+npm install stylelint@^17 -D
+```
+
+</details>
 
 <details>
 

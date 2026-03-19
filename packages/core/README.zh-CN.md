@@ -16,7 +16,7 @@
 
 ## 介绍
 
-Vite Stylelint 插件。支持 Vite v2 ~ v6 和 Stylelint v13 ~ v16。要求 `node>=18`。
+Vite Stylelint 插件。支持 Vite v2 ~ v8 和 Stylelint v13 ~ v17。要求 `node>=18`。
 
 👇 请查看文档了解具体用法和示例。
 
@@ -31,6 +31,18 @@ npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` 不会为你安装和配置 Stylelint。你应该自己处理这些。
+
+<details>
+
+<summary>Stylelint v17</summary>
+
+```sh
+npm install stylelint@^17 -D
+```
+
+</details>
+
+<details>
 
 <details>
 

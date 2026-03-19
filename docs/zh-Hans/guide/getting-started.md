@@ -2,7 +2,7 @@
 
 ## 总览
 
-`vite-plugin-stylelint` 是 Vite Stylelint 插件。支持 Vite v2 ~ v6 和 Stylelint v13 ~ v16。要求 `node>=18`。
+`vite-plugin-stylelint` 是 Vite Stylelint 插件。支持 Vite v2 ~ v8 和 Stylelint v13 ~ v17。要求 `node>=18`。
 
 > 对于 Nuxt 项目，请使用[@nuxtjs/stylelint-module](https://github.com/nuxt-modules/stylelint)。
 
@@ -15,6 +15,14 @@ npm install vite-plugin-stylelint -D
 ```
 
 `vite-plugin-stylelint` 不会为你安装和配置 Stylelint。你应该自己处理这些。
+
+::: details Stylelint v17
+
+```sh
+npm install stylelint@^17 -D
+```
+
+:::
 
 ::: details Stylelint v16
 
