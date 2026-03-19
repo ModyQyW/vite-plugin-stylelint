@@ -83,7 +83,8 @@ export default function StylelintPlugin(
     async transform(_, id) {
       debug("==== transform hook ====");
       debug(`id: ${id}`);
-      const watchIds = this.getWatchFiles();
+      // @ts-expect-error It seems to be a bug of Rolldown's type definition.
+      const watchIds = this.getWatchFiles ? this.getWatchFiles() : [];
       debug(`watchIds: ${watchIds}`);
       const ids = [id, ...watchIds];
       debug(`ids: ${ids}`);

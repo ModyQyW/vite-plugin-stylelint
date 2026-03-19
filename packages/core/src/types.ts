@@ -1,5 +1,4 @@
 import type { CreateFilter } from "@rollup/pluginutils";
-import type * as Rollup from "rollup";
 import type * as Stylelint from "stylelint";
 import type stylelint from "stylelint";
 
@@ -179,15 +178,5 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   test: boolean;
 }
 export type StylelintPluginUserOptions = Partial<StylelintPluginOptions>;
-
-export type LintFiles = (
-  config: {
-    files: FilterPattern;
-    stylelintInstance: StylelintInstance;
-    formatter: StylelintFormatter;
-    options: StylelintPluginOptions;
-  },
-  context?: Rollup.PluginContext,
-) => Promise<void>;
 
 export type TextType = "error" | "warning" | "plugin";

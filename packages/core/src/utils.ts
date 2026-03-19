@@ -1,10 +1,10 @@
 import { createFilter, normalizePath } from "@rollup/pluginutils";
 import pico from "picocolors";
-import type * as Rollup from "rollup";
+import type * as Vite from "vite";
 import { COLOR_MAPPING, PLUGIN_NAME, STYLELINT_SEVERITY } from "./constants";
 import type {
   Filter,
-  LintFiles,
+  FilterPattern,
   StylelintFormatter,
   StylelintInstance,
   StylelintLinterOptions,
@@ -112,7 +112,7 @@ export const colorize = (text: string, textType: TextType) =>
 export const log = (
   text: string,
   textType: TextType,
-  context?: Rollup.PluginContext,
+  context?: Vite.Rolldown.PluginContext,
 ) => {
   console.log("");
   if (context) {
@@ -126,7 +126,15 @@ export const log = (
   }
 };
 
-export const lintFiles: LintFiles = async (
+export const lintFiles: (
+  config: {
+    files: FilterPattern;
+    stylelintInstance: StylelintInstance;
+    formatter: StylelintFormatter;
+    options: StylelintPluginOptions;
+  },
+  context?: Vite.Rolldown.PluginContext,
+) => Promise<void> = async (
   { files, stylelintInstance, formatter, options },
   context,
 ) =>
