@@ -2,7 +2,8 @@ import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Worker } from "node:worker_threads";
 import debugWrap from "debug";
-import type * as Vite from "vite";
+// biome-ignore lint/performance/noNamespaceImport: Work as expected.
+import * as Vite from "vite";
 import { PLUGIN_NAME } from "./constants";
 import type {
   StylelintFormatter,
@@ -34,7 +35,7 @@ export default function StylelintPlugin(
   let stylelintInstance: StylelintInstance;
   let formatter: StylelintFormatter;
 
-  return {
+  const plugin: Vite.Plugin = {
     name: PLUGIN_NAME,
     apply(config, { command }) {
       debug("==== apply hook ====");
@@ -120,6 +121,20 @@ export default function StylelintPlugin(
       }
     },
   };
+
+  // For compatibility
+  if (Vite.withFilter) {
+    return Vite.withFilter(plugin, {
+      transform: {
+        id: {
+          include: options.include,
+          exclude: options.exclude,
+        },
+      },
+    });
+  }
+
+  return plugin;
 }
 
 export type {
