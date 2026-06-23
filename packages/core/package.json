@@ -6,6 +6,7 @@
     "stylelint",
     "vite-plugin"
   ],
+  "funding": "https://github.com/modyqyw/sponsors",
   "homepage": "https://github.com/ModyQyW/vite-plugin-stylelint",
   "repository": {
     "type": "git",
