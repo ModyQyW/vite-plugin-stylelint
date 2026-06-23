@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.3.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.2.0...v6.3.0) (2026-06-23)
+
+### Features
+
+* **core:** add customOverlay option for browser-native Stylelint overlay ([5e6aa93](https://github.com/ModyQyW/vite-plugin-stylelint/commit/5e6aa93e9d8ccdb18a1c27166c6151ca971623e7)) - by @
+
 ## [6.2.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.1.0...v6.2.0) (2026-06-23)
 
 **Note:** Version bump only for package vite-plugin-stylelint
