@@ -9,21 +9,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4"
+    "react": "catalog:",
+    "react-dom": "catalog:"
   },
   "devDependencies": {
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "less": "^4.6.4",
-    "sass-embedded": "^1.98.0",
-    "stylelint": "^17.4.0",
-    "stylelint-config-recommended": "^18.0.0",
-    "stylelint-config-recommended-scss": "^17.0.0",
-    "stylus": "^0.64.0",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.1",
-    "vite-plugin-stylelint": "workspace: *"
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "catalog:",
+    "less": "catalog:",
+    "sass-embedded": "catalog:",
+    "stylelint": "catalog:",
+    "stylelint-config-recommended": "catalog:",
+    "stylelint-config-recommended-scss": "catalog:",
+    "stylus": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plugin-stylelint": "workspace:*"
   }
 }
