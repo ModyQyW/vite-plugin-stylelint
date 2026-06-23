@@ -1,68 +1,28 @@
 import { parentPort, workerData } from "node:worker_threads";
 import debugWrap from "debug";
 import { PLUGIN_NAME } from "./constants";
-import type {
-  StylelintFormatter,
-  StylelintInstance,
-  StylelintPluginOptions,
-} from "./types";
-import {
-  getFilePath,
-  getFilter,
-  initializeStylelint,
-  lintFiles,
-  shouldIgnoreModule,
-} from "./utils";
+import { createLinter } from "./linter";
+import type { StylelintPluginOptions } from "./types";
 
 const debug = debugWrap(`${PLUGIN_NAME}:worker`);
 
 const options = workerData.options as StylelintPluginOptions;
-const filter = getFilter(options);
-let stylelintInstance: StylelintInstance;
-let formatter: StylelintFormatter;
 
-const initPromise = initializeStylelint(options).then((result) => {
-  stylelintInstance = result.stylelintInstance;
-  formatter = result.formatter;
-  return result;
-});
+// Worker emits to stdout only — no Vite PluginContext available here.
+const linter = createLinter(options);
 
-// this file needs to be compiled into cjs, which doesn't support top-level await
-// so we use iife here
-(async () => {
-  debug("==== worker start ====");
-  debug("Initialize Stylelint");
-  // remove this line will cause ts2454
-  const { stylelintInstance, formatter } = await initPromise;
-  if (options.lintOnStart) {
-    debug("Lint on start");
-    lintFiles({
-      files: options.include,
-      stylelintInstance,
-      formatter,
-      options,
-    }); // don't use context
-  }
-})();
+// this file needs to be compiled into cjs, which doesn't support top-level await.
+// lint/lintAll internally await their own ready promise, so we fire and forget here.
+// Each call gets a `.catch` because a rejected `ready` (e.g. Stylelint missing)
+// would otherwise become an unhandled rejection and silently kill the worker.
+debug("==== worker start ====");
+if (options.lintOnStart) {
+  debug("Lint on start");
+  linter.lintAll().catch((error) => debug(`lintAll failed: ${error}`));
+}
 
-parentPort?.on("message", async (id) => {
-  // make sure stylelintInstance is initialized
-  if (!stylelintInstance) {
-    await initPromise;
-  }
+parentPort?.on("message", (id: string) => {
   debug("==== message event ====");
   debug(`id: ${id}`);
-  const shouldIgnore = shouldIgnoreModule(id, filter);
-  debug(`should ignore: ${shouldIgnore}`);
-  if (shouldIgnore) {
-    return;
-  }
-  const filePath = getFilePath(id);
-  debug(`filePath: ${filePath}`);
-  lintFiles({
-    files: options.lintDirtyOnly ? filePath : options.include,
-    stylelintInstance,
-    formatter,
-    options,
-  }); // don't use context
+  linter.lint(id).catch((error) => debug(`lint failed: ${error}`));
 });

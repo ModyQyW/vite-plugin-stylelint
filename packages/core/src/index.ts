@@ -5,24 +5,30 @@ import debugWrap from "debug";
 // biome-ignore lint/performance/noNamespaceImport: Work as expected.
 import * as Vite from "vite";
 import { PLUGIN_NAME } from "./constants";
-import type {
-  StylelintFormatter,
-  StylelintInstance,
-  StylelintPluginUserOptions,
-} from "./types";
-import {
-  getFilePath,
-  getFilter,
-  getOptions,
-  initializeStylelint,
-  lintFiles,
-  shouldIgnoreModule,
-} from "./utils";
+import { createLinter, type Linter } from "./linter";
+import type { StylelintPluginUserOptions } from "./types";
+import { getOptions } from "./utils";
 
 const debug = debugWrap(PLUGIN_NAME);
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ext = extname(__filename);
+
+// Derive the worker env so its color support matches the main thread.
+// picocolors/chalk check `process.stdout.isTTY` and `FORCE_COLOR` at module
+// load; inside a worker stdout is a pipe (not a TTY), so without this the
+// worker's formatted output loses color. Respect explicit user overrides
+// (NO_COLOR / FORCE_COLOR) and only force color on when the parent is a TTY;
+// otherwise leave the env untouched so worker behavior tracks the parent.
+const getWorkerEnv = () => {
+  if (process.env.NO_COLOR || process.env.FORCE_COLOR !== undefined) {
+    return { ...process.env };
+  }
+  if (process.stdout.isTTY) {
+    return { ...process.env, FORCE_COLOR: "1" };
+  }
+  return { ...process.env };
+};
 
 export default function StylelintPlugin(
   userOptions: StylelintPluginUserOptions = {},
@@ -30,10 +36,7 @@ export default function StylelintPlugin(
   const options = getOptions(userOptions);
 
   let worker: Worker;
-
-  const filter = getFilter(options);
-  let stylelintInstance: StylelintInstance;
-  let formatter: StylelintFormatter;
+  let linter: Linter;
 
   const plugin: Vite.Plugin = {
     name: PLUGIN_NAME,
@@ -58,26 +61,22 @@ export default function StylelintPlugin(
         debug("Initialize worker");
         worker = new Worker(resolve(__dirname, `worker${ext}`), {
           workerData: { options },
+          // Worker stdout is a pipe, not a TTY, so picocolors/chalk disable color
+          // at module load. Forward the main thread's color support so worker
+          // output matches the main-thread path. Only force color when the main
+          // thread itself supports it — never override an explicit user override
+          // (NO_COLOR / FORCE_COLOR) or a non-TTY/CI parent.
+          env: getWorkerEnv(),
         });
         return;
       }
-      // initialize Stylelint
+      // initialize linter
       debug("Initial Stylelint");
-      const result = await initializeStylelint(options);
-      stylelintInstance = result.stylelintInstance;
-      formatter = result.formatter;
+      linter = createLinter(options);
       // lint on start if needed
       if (options.lintOnStart) {
         debug("Lint on start");
-        await lintFiles(
-          {
-            files: options.include,
-            stylelintInstance,
-            formatter,
-            options,
-          },
-          this, // use buildStart hook context
-        );
+        await linter.lintAll(this);
       }
     },
     async transform(_, id) {
@@ -96,24 +95,7 @@ export default function StylelintPlugin(
         return;
       }
       // no worker
-      // filtered
-      const filteredIds = ids.filter((id) => !shouldIgnoreModule(id, filter));
-      debug(`filteredIds: ${filteredIds}`);
-      const shouldIgnore = filteredIds.length === 0;
-      debug(`should ignore: ${shouldIgnore}`);
-      if (shouldIgnore) {
-        return;
-      }
-      const filePaths = filteredIds.map((id) => getFilePath(id));
-      return await lintFiles(
-        {
-          files: options.lintDirtyOnly ? filePaths : options.include,
-          stylelintInstance,
-          formatter,
-          options,
-        },
-        this, // use transform hook context
-      );
+      return await linter.lint(ids, this); // use transform hook context
     },
     async buildEnd() {
       debug("==== buildEnd hook ====");

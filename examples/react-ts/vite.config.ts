@@ -4,5 +4,28 @@ import stylelint from "vite-plugin-stylelint";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), stylelint()],
+  plugins: [
+    react(),
+
+    // Only for tests
+    stylelint(),
+
+    // Only for tests
+    // stylelint({
+    //   fix: true,
+    // }),
+
+    // Only for tests
+    // stylelint({
+    //   lintInWorker: true,
+    //   lintOnStart: true,
+    // }),
+
+    // Recommended
+    // stylelint({
+    //   fix: true,
+    //   lintInWorker: true,
+    //   lintOnStart: true,
+    // }),
+  ],
 });
