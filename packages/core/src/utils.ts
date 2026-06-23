@@ -19,6 +19,7 @@ export const getOptions = ({
   emitErrorAsWarning,
   emitWarning,
   emitWarningAsError,
+  customOverlay,
   ...stylelintOptions
 }: StylelintPluginUserOptions): StylelintPluginOptions => ({
   test: test ?? false,
@@ -36,5 +37,6 @@ export const getOptions = ({
   emitErrorAsWarning: emitErrorAsWarning ?? false,
   emitWarning: emitWarning ?? true,
   emitWarningAsError: emitWarningAsError ?? false,
+  customOverlay: customOverlay ?? false,
   ...stylelintOptions,
 });

@@ -104,6 +104,32 @@ Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](http
 
 这与 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 类似，但 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 可以在浏览器中显示错误。
 
+### `customOverlay`
+
+- 类型：`boolean | CustomOverlayOptions`
+- 默认值：`false`
+
+```ts
+interface CustomOverlayOptions {
+  initialIsOpen?: boolean | "error";
+  position?: "tl" | "tr" | "bl" | "br";
+  theme?: Partial<Record<ThemeKey, string>>;
+  zIndex?: number;
+}
+```
+
+使用插件的自定义遮罩层，替代 Vite 原生错误遮罩层。
+
+原生遮罩层会把 Stylelint 带 ANSI 颜色的 `string` 输出原样渲染，在浏览器中颜色丢失（或显示转义字符）。自定义遮罩层原生渲染结构化结果，并且与原生遮罩层不同——在启用 `lintInWorker` 时也能工作。
+
+在没有 DOM 入口的环境（小程序、SSR、无头测试）中，运行时不会被注入；插件会警告一次并降级为仅终端输出。
+
+- `false`：保留 Vite 原生遮罩层（当前行为；worker 模式下无遮罩层）。
+- `true`：使用自定义遮罩层，默认样式。
+- `{...}`：使用自定义遮罩层，并按给定配置定制样式。
+
+仅在 `serve` 下生效。`build` 模式下始终保留原生 `context.error` 的阻塞行为。
+
 ### `lintOnStart`
 
 - 类型：`boolean`

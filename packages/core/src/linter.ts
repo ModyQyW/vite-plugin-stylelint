@@ -10,6 +10,7 @@ import {
 import type {
   Filter,
   FilterPattern,
+  OverlayPayload,
   StylelintFormatter,
   StylelintInstance,
   StylelintLinterOptions,
@@ -30,6 +31,30 @@ export interface Linter {
     context?: Vite.Rolldown.PluginContext,
   ): Promise<void>;
   lintAll(context?: Vite.Rolldown.PluginContext): Promise<void>;
+}
+
+/**
+ * Adapter the linter calls to emit a formatted lint message. Kept as a callback
+ * (not imported) so the linter stays free of Vite server dependencies and remains
+ * unit-testable. When absent, the legacy `log()` path (context.error/warn or
+ * console.log) is used.
+ */
+export type EmitFn = (params: {
+  formattedText: string;
+  textType: TextType;
+  // Present in non-worker serve/build paths; absent in worker (stdout-only).
+  context?: Vite.Rolldown.PluginContext;
+}) => void;
+
+/**
+ * Sink for the structured overlay payload. Called with `undefined` to clear.
+ * Only wired when the custom overlay is enabled; otherwise never called.
+ */
+export type OverlayPayloadSink = (payload: OverlayPayload | undefined) => void;
+
+export interface LinterAdapters {
+  emit?: EmitFn;
+  onOverlayPayload?: OverlayPayloadSink;
 }
 
 const getFilter = (options: StylelintPluginOptions): Filter =>
@@ -162,20 +187,83 @@ const deriveTextType = (
   return options.emitWarningAsError ? "error" : "warning";
 };
 
-// Format filtered results and emit them to the Vite context (or stdout).
+// Format filtered results and emit them via the adapter (or the legacy path).
 const report = (
   results: StylelintLinterResult["results"],
   linterResult: StylelintLinterResult,
   formatter: StylelintFormatter,
   textType: TextType,
-  context?: Vite.Rolldown.PluginContext,
+  context: Vite.Rolldown.PluginContext | undefined,
+  emit: EmitFn | undefined,
 ) => {
   linterResult.results = results;
   const formattedText = formatter(results, linterResult);
-  return log(formattedText, textType, context);
+  if (emit) {
+    emit({ formattedText, textType, context });
+  } else {
+    log(formattedText, textType, context);
+  }
 };
 
-export function createLinter(options: StylelintPluginOptions): Linter {
+/**
+ * Build a structured overlay payload from filtered results.
+ *
+ * Severity follows the *post-filter* textType so `emitErrorAsWarning` /
+ * `emitWarningAsError` are reflected in the overlay, matching the terminal
+ * channel. Each result retains only the fields the runtime needs to render.
+ * Field mapping adapts Stylelint's shape to the wire-stable OverlayPayload:
+ * `source` → `filePath`, `warning.rule` → `ruleId`, `warning.text` → `message`.
+ *
+ * Exported for testing.
+ */
+export const buildOverlayPayload = (
+  results: StylelintLinterResult["results"],
+  textType: TextType,
+): OverlayPayload => ({
+  results: results.map((result) => ({
+    filePath: result.source ?? "",
+    messages: result.warnings.map((warning) => ({
+      line: warning.line,
+      column: warning.column,
+      severity: textType === "error" ? "error" : "warning",
+      ruleId: warning.rule,
+      message: warning.text,
+    })),
+  })),
+});
+
+/**
+ * Accumulates per-file overlay payloads so the panel shows all current problems
+ * across the project, not just the last-linted file. Files with no remaining
+ * messages are dropped; once empty, `snapshot` returns `undefined` so the caller
+ * can clear the overlay.
+ */
+export class OverlayManager {
+  private readonly files = new Map<string, OverlayPayload["results"][number]>();
+
+  upsert(payload: OverlayPayload): OverlayPayload | undefined {
+    for (const result of payload.results) {
+      if (result.messages.length === 0) {
+        this.files.delete(result.filePath);
+      } else {
+        this.files.set(result.filePath, result);
+      }
+    }
+    return this.snapshot();
+  }
+
+  snapshot(): OverlayPayload | undefined {
+    if (this.files.size === 0) {
+      return;
+    }
+    return { results: [...this.files.values()] };
+  }
+}
+
+export function createLinter(
+  options: StylelintPluginOptions,
+  adapters?: LinterAdapters,
+): Linter {
   const filter = getFilter(options);
   let stylelintInstance: StylelintInstance;
   let formatter: StylelintFormatter;
@@ -185,6 +273,12 @@ export function createLinter(options: StylelintPluginOptions): Linter {
     stylelintInstance = result.stylelintInstance;
     formatter = result.formatter;
   });
+
+  // Only allocated when an overlay sink is wired; otherwise overlay bookkeeping
+  // is skipped entirely, preserving the non-overlay code path unchanged.
+  const overlayManager = adapters?.onOverlayPayload
+    ? new OverlayManager()
+    : undefined;
 
   const lintFiles = async (
     files: FilterPattern,
@@ -201,9 +295,33 @@ export function createLinter(options: StylelintPluginOptions): Linter {
     }
     const { results, textType } = filterResults(linterResult, options);
     if (results.length === 0) {
+      // No problems for these files; drop their overlay entries if tracking.
+      if (overlayManager && adapters?.onOverlayPayload) {
+        overlayManager.upsert({
+          results: linterResult.results.map((result) => ({
+            filePath: result.source ?? "",
+            messages: [],
+          })),
+        });
+        adapters.onOverlayPayload(overlayManager.snapshot());
+      }
       return;
     }
-    return report(results, linterResult, formatter, textType, context);
+    // Push structured payload to the overlay sink (serve+customOverlay / worker).
+    if (overlayManager && adapters?.onOverlayPayload) {
+      const payload = overlayManager.upsert(
+        buildOverlayPayload(results, textType),
+      );
+      adapters.onOverlayPayload(payload);
+    }
+    return report(
+      results,
+      linterResult,
+      formatter,
+      textType,
+      context,
+      adapters?.emit,
+    );
   };
 
   return {

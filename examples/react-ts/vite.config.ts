@@ -21,11 +21,28 @@ export default defineConfig({
     //   lintOnStart: true,
     // }),
 
+
+    // Only for tests
+    // stylelint({
+    //   customOverlay: true,
+    //   // customOverlay: {
+    //   //   position: "tl",
+    //   //   initialIsOpen: true,
+    //   //   zIndex: 99999,
+    //   //   theme: {
+    //   //     "--vite-plugin-stylelint-bg": "#1a1a2e",
+    //   //     "--vite-plugin-stylelint-panel-bg": "#16213e",
+    //   //     "--vite-plugin-stylelint-error": "#ff6b6b",
+    //   //   },
+    //   // },
+    // }),
+
     // Recommended
     // stylelint({
     //   fix: true,
     //   lintInWorker: true,
     //   lintOnStart: true,
+    //   customOverlay: true,
     // }),
   ],
 });

@@ -1,7 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { STYLELINT_SEVERITY } from "./constants";
-import { filterResults, shouldIgnoreModule } from "./linter";
-import type { StylelintLinterResult, StylelintPluginOptions } from "./types";
+import {
+  buildOverlayPayload,
+  filterResults,
+  OverlayManager,
+  shouldIgnoreModule,
+} from "./linter";
+import type {
+  OverlayPayload,
+  StylelintLinterResult,
+  StylelintPluginOptions,
+} from "./types";
 
 describe("shouldIgnoreModule", () => {
   const include = () => true;
@@ -165,5 +174,193 @@ describe("filterResults", () => {
       emitWarningAsError: true,
     } as StylelintPluginOptions);
     expect(textType).toBe("error");
+  });
+});
+
+describe("buildOverlayPayload", () => {
+  it("maps warning severity from the post-filter textType", () => {
+    const linterResult = makeLinterResult(
+      [makeResult({ source: "/src/a.css", warnings: [warningWarning] })],
+      false,
+    );
+    const { results, textType } = filterResults(
+      linterResult,
+      baseOptions as StylelintPluginOptions,
+    );
+    const payload = buildOverlayPayload(results, textType);
+    expect(textType).toBe("warning");
+    expect(payload.results[0].messages[0].severity).toBe("warning");
+  });
+
+  it("reflects emitErrorAsWarning as 'warning' severity in the payload", () => {
+    const linterResult = makeLinterResult(
+      [makeResult({ source: "/src/a.css", warnings: [errorWarning] })],
+      true,
+    );
+    // filterResults derives the post-filter textType; buildOverlayPayload honors it.
+    const { results, textType } = filterResults(linterResult, {
+      ...baseOptions,
+      emitErrorAsWarning: true,
+    } as StylelintPluginOptions);
+    const payload = buildOverlayPayload(results, textType);
+    expect(textType).toBe("warning");
+    expect(payload.results[0].messages[0].severity).toBe("warning");
+  });
+
+  it("preserves source as filePath, and rule/text/line/column on each message", () => {
+    const customWarning = {
+      severity: STYLELINT_SEVERITY.ERROR,
+      text: "Expected no errors",
+      line: 12,
+      column: 3,
+      rule: "test/no-error",
+    } as StylelintLinterResult["results"][number]["warnings"][number];
+    const linterResult = makeLinterResult(
+      [makeResult({ source: "/src/a.css", warnings: [customWarning] })],
+      true,
+    );
+    const { results, textType } = filterResults(
+      linterResult,
+      baseOptions as StylelintPluginOptions,
+    );
+    const payload = buildOverlayPayload(results, textType);
+    const msg = payload.results[0].messages[0];
+    expect(msg).toMatchObject({
+      line: 12,
+      column: 3,
+      severity: "error",
+      ruleId: "test/no-error",
+      message: "Expected no errors",
+    });
+    expect(payload.results[0].filePath).toBe("/src/a.css");
+  });
+});
+
+describe("OverlayManager", () => {
+  it("accumulates results across files", () => {
+    const mgr = new OverlayManager();
+    const first = mgr.upsert({
+      results: [
+        {
+          filePath: "/src/a.css",
+          messages: [
+            {
+              line: 1,
+              column: 1,
+              severity: "error",
+              ruleId: "x",
+              message: "e",
+            },
+          ],
+        },
+      ],
+    });
+    expect(first?.results).toHaveLength(1);
+    const second = mgr.upsert({
+      results: [
+        {
+          filePath: "/src/b.css",
+          messages: [
+            {
+              line: 2,
+              column: 1,
+              severity: "warning",
+              ruleId: "y",
+              message: "w",
+            },
+          ],
+        },
+      ],
+    });
+    expect(second?.results).toHaveLength(2);
+  });
+
+  it("replaces a file's entry on re-lint", () => {
+    const mgr = new OverlayManager();
+    mgr.upsert({
+      results: [
+        {
+          filePath: "/src/a.css",
+          messages: [
+            {
+              line: 1,
+              column: 1,
+              severity: "error",
+              ruleId: "x",
+              message: "e",
+            },
+          ],
+        },
+      ],
+    });
+    const updated = mgr.upsert({
+      results: [
+        {
+          filePath: "/src/a.css",
+          messages: [
+            {
+              line: 5,
+              column: 2,
+              severity: "error",
+              ruleId: "z",
+              message: "new",
+            },
+          ],
+        },
+      ],
+    });
+    expect(updated?.results).toHaveLength(1);
+    expect(updated?.results[0].messages[0].message).toBe("new");
+  });
+
+  it("drops a file when its messages become empty and returns undefined when all clear", () => {
+    const mgr = new OverlayManager();
+    mgr.upsert({
+      results: [
+        {
+          filePath: "/src/a.css",
+          messages: [
+            {
+              line: 1,
+              column: 1,
+              severity: "error",
+              ruleId: "x",
+              message: "e",
+            },
+          ],
+        },
+      ],
+    });
+    const cleared = mgr.upsert({
+      results: [{ filePath: "/src/a.css", messages: [] }],
+    });
+    expect(cleared).toBeUndefined();
+  });
+
+  it("snapshot returns undefined when empty", () => {
+    const mgr = new OverlayManager();
+    expect(mgr.snapshot()).toBeUndefined();
+  });
+
+  it("snapshot returns the accumulated payload", () => {
+    const mgr = new OverlayManager();
+    mgr.upsert({
+      results: [
+        {
+          filePath: "/src/a.css",
+          messages: [
+            {
+              line: 1,
+              column: 1,
+              severity: "error",
+              ruleId: "x",
+              message: "e",
+            },
+          ],
+        },
+      ],
+    });
+    const snap = mgr.snapshot() as OverlayPayload;
+    expect(snap.results).toHaveLength(1);
   });
 });

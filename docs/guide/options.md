@@ -104,6 +104,32 @@ When lint in worker, Vite build process will be faster. You will not see Vite er
 
 It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but vite-plugin-checker can show you errors and warnings in browsers.
 
+### `customOverlay`
+
+- Type: `boolean | CustomOverlayOptions`
+- Default: `false`
+
+```ts
+interface CustomOverlayOptions {
+  initialIsOpen?: boolean | "error";
+  position?: "tl" | "tr" | "bl" | "br";
+  theme?: Partial<Record<ThemeKey, string>>;
+  zIndex?: number;
+}
+```
+
+Use the plugin's custom overlay instead of Vite's native error overlay.
+
+The native overlay renders Stylelint's ANSI-colored `string` output verbatim, which loses color (or shows escape codes) in the browser. The custom overlay renders structured results natively, and — unlike the native overlay — also works when `lintInWorker` is enabled.
+
+In environments without a DOM entry (mini-programs, SSR, headless tests), the runtime is not injected; the plugin warns once and falls back to terminal-only output.
+
+- `false`: keep Vite's native overlay (current behavior; no overlay in worker mode).
+- `true`: use the custom overlay with default styling.
+- `{...}`: use the custom overlay with the given styling.
+
+Only takes effect under `serve`. In `build` mode the native `context.error` blocking behavior is always preserved.
+
 ### `lintOnStart`
 
 - Type: `boolean`
