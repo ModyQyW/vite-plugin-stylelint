@@ -2,6 +2,8 @@
 
 [English](./README.md) | 简体中文
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ModyQyW/vite-plugin-stylelint)
+
 👇 请查看文档了解具体用法和示例。
 
 [Cloudflare Pages](https://vite-plugin-stylelint.modyqyw.top/)

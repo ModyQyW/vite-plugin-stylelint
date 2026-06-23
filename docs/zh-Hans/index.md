@@ -16,6 +16,9 @@ hero:
     - theme: alt
       text: 在 GitHub 查看
       link: https://github.com/ModyQyW/vite-plugin-stylelint
+    - theme: alt
+      text: "Ask AI \U0001F916"
+      link: https://deepwiki.com/ModyQyW/vite-plugin-stylelint
   image:
     src: /vite-plugin-stylelint.svg
     alt: vite-plugin-stylelint

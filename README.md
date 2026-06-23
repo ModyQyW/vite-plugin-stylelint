@@ -4,6 +4,8 @@
 
 English | [简体中文](./README.zh-CN.md)
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ModyQyW/vite-plugin-stylelint)
+
 👇 See the documentation for specific usage and examples.
 
 [Cloudflare Pages](https://vite-plugin-stylelint.modyqyw.top/)
