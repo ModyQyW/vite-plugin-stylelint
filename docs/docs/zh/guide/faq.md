@@ -10,6 +10,8 @@ Webpack 里常配 [stylelint-webpack-plugin](https://github.com/webpack-contrib/
 
 路子里有这么多，专门在 Vite 里再跑一遍 Stylelint 就没多大必要了。真想边开发边看错误和警告，打开 `lintInWorker`，它不占构建线程，结果打到控制台。也可以试试 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker)。
 
+如果你还要校验 JavaScript 和 TypeScript，[vite-plugin-eslint2](https://github.com/ModyQyW/vite-plugin-eslint2) 在 ESLint 上做着同样的事。
+
 ## 缓存好像坏了？
 
 删掉缓存文件，手动修好问题，然后重启 Vite。

@@ -6,6 +6,8 @@
 
 社区里的 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 覆盖了差不多的场景，按你的需要挑一个就行。
 
+Stylelint 只管样式。想在 Vite 里用同样的方式跑 ESLint，用 [vite-plugin-eslint2](https://github.com/ModyQyW/vite-plugin-eslint2)。
+
 ## 致谢
 
 最初从 [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint) 分叉出来。

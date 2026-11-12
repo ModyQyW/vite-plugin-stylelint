@@ -10,6 +10,8 @@ Your editor already shows the same information. In VS Code you add the [Stylelin
 
 With all of those options, running Stylelint inside Vite is rarely necessary. If you do want errors and warnings while Vite runs, turn on `lintInWorker` so the checks stay off the build thread and print to the console. [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) is another choice.
 
+If you also lint JavaScript and TypeScript, [vite-plugin-eslint2](https://github.com/ModyQyW/vite-plugin-eslint2) does the same job for ESLint.
+
 ## Cache looks broken?
 
 Delete the cache file, fix the problem by hand, then restart Vite.
