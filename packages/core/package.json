@@ -6,13 +6,13 @@
     "stylelint",
     "vite-plugin"
   ],
-  "funding": "https://github.com/modyqyw/sponsors",
   "homepage": "https://github.com/ModyQyW/vite-plugin-stylelint",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ModyQyW/vite-plugin-stylelint.git",
     "directory": "packages/core"
   },
+  "funding": "https://github.com/modyqyw/sponsors",
   "license": "MIT",
   "author": {
     "name": "ModyQyW",
@@ -60,15 +60,18 @@
     "@types/debug": "catalog:",
     "picocolors": "catalog:",
     "postcss": "catalog:",
+    "stylelint": "catalog:",
+    "tsdown": "catalog:",
     "typescript": "catalog:",
-    "vite": "catalog:"
+    "vite": "catalog:",
+    "vitest": "catalog:"
   },
   "peerDependencies": {
     "@types/stylelint": "^13.0.0",
     "postcss": "^7.0.0 || ^8.0.0",
     "rolldown": "^1.0.0-0 || ^1.0.0",
     "rollup": "^2.0.0 || ^3.0.0 || ^4.0.0",
-    "stylelint": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0",
+    "stylelint": "^13.0.0 || ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0",
     "vite": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
@@ -85,7 +88,7 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@10.34.4",
+  "packageManager": "pnpm@12.18.0",
   "engines": {
     "node": ">=18"
   },
