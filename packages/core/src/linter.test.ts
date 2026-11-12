@@ -224,7 +224,7 @@ describe("buildOverlayPayload", () => {
       baseOptions as StylelintPluginOptions,
     );
     const payload = buildOverlayPayload(results, textType);
-    const msg = payload.results[0].messages[0];
+    const [msg] = payload.results[0].messages;
     expect(msg).toMatchObject({
       line: 12,
       column: 3,

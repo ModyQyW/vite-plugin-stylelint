@@ -3,7 +3,6 @@ import { dirname, extname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Worker } from "node:worker_threads";
 import debugWrap from "debug";
-// biome-ignore lint/performance/noNamespaceImport: Work as expected.
 import * as Vite from "vite";
 import { composePreambleCode } from "./client/preamble";
 import {
@@ -139,13 +138,10 @@ export default function StylelintPlugin(
   };
 
   // serve + customOverlay: print Stylelint's formatted output to the terminal once.
-  // The `string` formatter already emits ANSI color codes; printing it directly
-  // (not via Vite's logger, which would re-wrap it in another color layer and
-  // corrupt the output) preserves the original coloring. The structured overlay
-  // is rendered natively in the browser, so the terminal keeps the formatter's
-  // native coloring. `context.error/warn` is deliberately NOT called: it would
-  // trigger Vite's native overlay (which customOverlay replaces) and duplicate
-  // terminal output.
+  // The `string` formatter already emits ANSI codes, and Vite's logger would wrap
+  // them in another color layer, so the text goes straight to console.log.
+  // `context.error/warn` stays unused here: it would trigger the native overlay
+  // that customOverlay replaces, and print the result a second time.
   const makeEmit =
     (): EmitFn =>
     ({ formattedText }) => {
@@ -155,22 +151,21 @@ export default function StylelintPlugin(
 
   const plugin: Vite.Plugin = {
     name: PLUGIN_NAME,
-    apply(config, { command }) {
+    apply(config, { command: applyCommand }) {
       debug("==== apply hook ====");
       if (config.mode === "test" || process.env.VITEST) {
         return options.test;
       }
       const shouldApply =
-        (command === "serve" && options.dev) ||
-        (command === "build" && options.build);
+        (applyCommand === "serve" && options.dev) ||
+        (applyCommand === "build" && options.build);
       debug(`should apply this plugin: ${shouldApply}`);
       return shouldApply;
     },
     configResolved(config) {
       // Resolve the logger and command early so hooks can use them. Vite 8's
       // Environment type has no `command` field; capture it from the config.
-      logger = config.logger;
-      command = config.command;
+      ({ logger, command } = config);
     },
     configureServer(server) {
       devServerRef = server;
@@ -216,7 +211,7 @@ export default function StylelintPlugin(
           worker.on(
             "message",
             (msg: { type: string; payload?: OverlayPayload }) => {
-              if (msg?.type === "overlay-payload" && devServerRef) {
+              if (msg.type === "overlay-payload" && devServerRef) {
                 pushOverlay(devServerRef, msg.payload);
               }
             },
@@ -253,7 +248,6 @@ export default function StylelintPlugin(
       ) {
         return wrapVirtualPrefix(id);
       }
-      return;
     },
     load(id) {
       if (id === wrapVirtualPrefix(RUNTIME_CLIENT_RUNTIME_PATH)) {
@@ -267,7 +261,6 @@ export default function StylelintPlugin(
             | CustomOverlayOptions,
         });
       }
-      return;
     },
     transformIndexHtml() {
       // Only inject in serve (dev). Build mode produces static output and the
@@ -301,8 +294,8 @@ export default function StylelintPlugin(
       debug(`ids: ${ids}`);
       // worker
       if (worker) {
-        for (const id of ids) {
-          worker.postMessage(id);
+        for (const watchedId of ids) {
+          worker.postMessage(watchedId);
         }
         return;
       }
@@ -317,7 +310,9 @@ export default function StylelintPlugin(
     },
   };
 
-  // For compatibility
+  // Compatibility with Vite versions that predate `withFilter`; the installed
+  // types always declare it, so the condition only matters against older peers.
+  // biome-ignore lint/suspicious/noUnnecessaryConditions: guards an older peer range.
   if (Vite.withFilter) {
     return Vite.withFilter(plugin, {
       transform: {

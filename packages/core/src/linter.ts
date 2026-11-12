@@ -26,11 +26,11 @@ import type {
 // `lint` accepts a single id or a batch (the main-thread adapter batches the
 // transform id together with its watch files); the worker always sends one id.
 export interface Linter {
-  lint(
+  lint: (
     ids: string | string[],
     context?: Vite.Rolldown.PluginContext,
-  ): Promise<void>;
-  lintAll(context?: Vite.Rolldown.PluginContext): Promise<void>;
+  ) => Promise<void>;
+  lintAll: (context?: Vite.Rolldown.PluginContext) => Promise<void>;
 }
 
 /**
@@ -93,7 +93,8 @@ const initializeStylelint = async (options: StylelintPluginOptions) => {
     };
   } catch (error) {
     throw new Error(
-      `Failed to initialize Stylelint. Have you installed and configured correctly? ${error}`,
+      "Failed to initialize Stylelint. Have you installed and configured correctly?",
+      { cause: error },
     );
   }
 };
@@ -109,15 +110,13 @@ const getFilePath = (id: string) => normalizePath(id).split("?")[0];
 // `.vue`/`.svelte` modules, so those modules are KEPT when they carry a
 // `?type=style` query and dropped otherwise.
 export const shouldIgnoreModule = (id: string, filter: Filter) => {
-  // virtual module
   if (isVirtualModule(id)) {
     return true;
   }
-  // not included
   if (!filter(id)) {
     return true;
   }
-  // // xxx.vue?type=style or yyy.svelte?type=style style modules
+  // `x.vue?type=style` / `y.svelte?type=style` carry the style block itself.
   const filePath = getFilePath(id);
   if ([".vue", ".svelte"].some((extname) => filePath.endsWith(extname))) {
     return !(id.includes("?") && id.includes("type=style"));
@@ -187,7 +186,8 @@ const deriveTextType = (
   return options.emitWarningAsError ? "error" : "warning";
 };
 
-// Format filtered results and emit them via the adapter (or the legacy path).
+// Format filtered results and emit them through the adapter, or through
+// `log` (context.error/warn, or console) when no adapter is wired.
 const report = (
   results: StylelintLinterResult["results"],
   linterResult: StylelintLinterResult,
@@ -269,9 +269,8 @@ export function createLinter(
   let formatter: StylelintFormatter;
 
   // Eager initialization: triggered at construction, awaited before each lint.
-  const ready = initializeStylelint(options).then((result) => {
-    stylelintInstance = result.stylelintInstance;
-    formatter = result.formatter;
+  const ready = initializeStylelint(options).then((initialized) => {
+    ({ stylelintInstance, formatter } = initialized);
   });
 
   // Only allocated when an overlay sink is wired; otherwise overlay bookkeeping

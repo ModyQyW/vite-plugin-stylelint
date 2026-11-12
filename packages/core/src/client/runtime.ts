@@ -8,6 +8,9 @@
 // on `typeof document`, so it no-ops. Mini-program builds never trigger
 // transformIndexHtml, so the runtime is never injected there.
 
+// Type-only import is erased at build time; does not create a runtime dep.
+import type { CustomOverlayOptions, OverlayPayload } from "../types";
+
 // #region
 // NOTE: keep in sync with packages/core/src/constants.ts. Inlined as string
 // literals (not imported) so this file bundles to a standalone browser ESM.
@@ -15,9 +18,6 @@ const WS_RUNTIME_LOADED_EVENT = "vite:stylelint:runtime-loaded";
 const WS_OVERLAY_EVENT = "vite:stylelint:overlay";
 
 // #endregion
-
-// Type-only import is erased at build time; does not create a runtime dep.
-import type { CustomOverlayOptions, OverlayPayload } from "../types";
 
 const OVERLAY_TAG = "vite-plugin-stylelint-overlay";
 
@@ -45,7 +45,9 @@ const POSITION_STYLES: Record<
 };
 
 const normalizeConfig = (
-  overlayConfig: false | true | CustomOverlayOptions,
+  // `undefined` is reachable: the preamble JSON-serializes the config, which
+  // drops an undefined value into a missing property.
+  overlayConfig: false | true | CustomOverlayOptions | undefined,
 ): Required<Omit<CustomOverlayOptions, "theme">> & {
   theme: CustomOverlayOptions["theme"];
 } => {
@@ -67,10 +69,10 @@ const normalizeConfig = (
 
 const escapeHtml = (s: string): string =>
   s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/&/gu, "&amp;")
+    .replace(/</gu, "&lt;")
+    .replace(/>/gu, "&gt;")
+    .replace(/"/gu, "&quot;");
 
 class VitePluginStylelintOverlay extends HTMLElement {
   private readonly shadow: ShadowRoot;
@@ -106,9 +108,9 @@ class VitePluginStylelintOverlay extends HTMLElement {
     for (const result of this.payload?.results ?? []) {
       for (const message of result.messages) {
         if (message.severity === "error") {
-          errors++;
+          errors += 1;
         } else {
-          warnings++;
+          warnings += 1;
         }
       }
     }
@@ -131,6 +133,7 @@ class VitePluginStylelintOverlay extends HTMLElement {
     this.payload = payload;
     // Respect explicit toggles once the user has interacted; otherwise follow
     // initialIsOpen policy on each update so fixing the last error collapses.
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: the rule treats a class field initialised to `false` as a constant.
     if (!this.userToggled) {
       this.isOpen = this.resolveOpenState();
     }
@@ -296,9 +299,12 @@ class VitePluginStylelintOverlay extends HTMLElement {
       label.textContent = "Stylelint";
     }
 
-    panel.classList.toggle("open", this.isOpen && errors + warnings > 0);
+    const total = errors + warnings;
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: the rule treats a class field initialised to `false` as a constant.
+    panel.classList.toggle("open", this.isOpen && total > 0);
 
-    if (!this.isOpen || errors + warnings === 0 || !this.payload) {
+    // biome-ignore lint/suspicious/noUnnecessaryConditions: the rule treats a class field initialised to `false` as a constant.
+    if (!this.isOpen || total === 0 || !this.payload) {
       panel.innerHTML = `<div class="empty">No problems</div>`;
       return;
     }
