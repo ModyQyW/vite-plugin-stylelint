@@ -27,7 +27,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   build: boolean;
   /**
-   * Whether to enable the cache. This is disabled in Stylelint by default and enabled in plugin by default to improve speed.
+   * Whether to enable the cache. Stylelint disables it by default; the plugin enables it for speed.
    *
    * 是否启用缓存。Stylelint 默认禁用，插件默认启用以提高速度。
    *
@@ -37,11 +37,11 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * Use the plugin's custom overlay instead of Vite's native error overlay.
    *
-   * The native overlay renders Stylelint's ANSI-colored `string` output verbatim, which loses color (or shows escape codes) in the browser. The custom overlay renders structured results natively, and — unlike the native overlay — also works when `lintInWorker` is enabled.
+   * The native overlay renders Stylelint's ANSI-colored `string` output verbatim, which loses color (or shows escape codes) in the browser. The custom overlay renders structured results natively, and unlike the native overlay it also works when `lintInWorker` is enabled.
    *
    * In environments without a DOM entry (mini-programs, SSR, headless tests), the runtime is not injected; the plugin warns once and falls back to terminal-only output.
    *
-   * - `false`: keep Vite's native overlay (current behavior; no overlay in worker mode).
+   * - `false`: keep Vite's native overlay. With `lintInWorker` there is no overlay at all in this case.
    * - `true`: use the custom overlay with default styling.
    * - `{...}`: use the custom overlay with the given styling.
    *
@@ -49,11 +49,11 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    *
    * 使用插件的自定义遮罩层，替代 Vite 原生错误遮罩层。
    *
-   * 原生遮罩层会把 Stylelint 带 ANSI 颜色的 `string` 输出原样渲染，在浏览器中颜色丢失（或显示转义字符）。自定义遮罩层原生渲染结构化结果，并且与原生遮罩层不同——在启用 `lintInWorker` 时也能工作。
+   * 原生遮罩层会把 Stylelint 带 ANSI 颜色的 `string` 输出原样渲染，在浏览器中颜色丢失（或显示转义字符）。自定义遮罩层原生渲染结构化结果，和原生遮罩层不同，开 `lintInWorker` 时也能用。
    *
    * 在没有 DOM 入口的环境（小程序、SSR、无头测试）中，运行时不会被注入；插件会警告一次并降级为仅终端输出。
    *
-   * - `false`：保留 Vite 原生遮罩层（当前行为；worker 模式下无遮罩层）。
+   * - `false`：保留 Vite 原生遮罩层。配合 `lintInWorker` 时完全没有遮罩层。
    * - `true`：使用自定义遮罩层，默认样式。
    * - `{...}`：使用自定义遮罩层，并按给定配置定制样式。
    *
@@ -71,9 +71,9 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   dev: boolean;
   /**
-   * Emit found errors. This is enabled by default.
+   * Emit found errors. Enabled by default.
    *
-   * 输出发现的错误。默认启用。
+   * 输出发现的错误。默认开启。
    *
    * @default true
    */
@@ -82,23 +82,23 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    * Emit found errors as warnings. This is disabled by default but you may want it enabled when
    * prototyping.
    *
-   * 将发现的错误作为警告输出。默认禁用，但你可能会在开发原型时启用这个。
+   * 把发现的错误当警告输出。默认关闭，做原型时可以打开。
    *
    * @default false
    */
   emitErrorAsWarning: boolean;
   /**
-   * Emit found warnings. This is enabled by default.
+   * Emit found warnings. Enabled by default.
    *
-   * 输出发现的警告。默认启用。
+   * 输出发现的警告。默认开启。
    *
    * @default true
    */
   emitWarning: boolean;
   /**
-   * Emit found warnings as errors when enabled. This is disabled by default.
+   * Emit found warnings as errors. Disabled by default.
    *
-   * 将发现的警告作为错误输出。默认禁用。
+   * 把发现的警告当错误输出。默认关闭。
    *
    * @default false
    */
@@ -108,7 +108,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    *
    * The plugin forces the virtual module to be ignored and you don't need to do any configuration related to it here.
    *
-   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, which means that the option value needs to fulfill the requirements of [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1).
+   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
    *
    * If you enable the `lintOnStart` option or disable the `lintDirtyOnly` option, the option value will not take effect. You need to change `include` value to include this option value.
    *
@@ -116,7 +116,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    *
    * 插件强制忽略虚拟模块，你不需要在这里进行任何相关配置。
    *
-   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。这意味着选项值需要满足 [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1) 的要求。
+   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
    *
    * 如果你启用了 `lintOnStart` 选项或者禁用了 `lintDirtyOnly` 选项，这个选项值不会生效。你需要调整 `include` 值以包含该选项值。
    */
@@ -132,27 +132,27 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * This option specifies the files you want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
    *
-   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, which means that the option value needs to fulfill the requirements of [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1).
+   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
    *
-   * If you enable the `lintOnStart` option, the plugin will also call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. The option value will not be used to create a filter, but will be used directly as the call parameter, which means that the option value also needs to fulfill the [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0) requirement.
+   * If you enable the `lintOnStart` option, the plugin will also call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. There the value is passed straight through as `files`, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
    *
-   * If you disable the `lintDirtyOnly` option, the plugin will use the option value as the call parameter every time it calls [stylelint.lint](https://stylelint.io/user-guide/node-api/), which means that the option value also needs to fulfill the requirements of [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0).
+   * If you disable the `lintDirtyOnly` option, the plugin passes the value to [stylelint.lint](https://stylelint.io/user-guide/node-api/) every time, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
    *
    * 这个选项指定你想要校验的文件模式。在绝大部分情况下，你并不需要调整它，除非 `include` 和 `exclude` 范围有重合。
    *
-   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。这意味着选项值需要满足 [picomatch@2.3.1](https://github.com/micromatch/picomatch/tree/2.3.1) 的要求。
+   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
    *
-   * 如果你启用了 `lintOnStart` 选项，插件还会在 `buildStart` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值不会用于创建过滤器，而是直接用作调用参数。这意味着这个选项值还需要满足 [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0) 的要求。
+   * 如果你启用了 `lintOnStart` 选项，插件还会在 `buildStart` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这时选项值会原样传给 `files`，所以它还得是 Stylelint 认得的 glob；v18 用的是 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby)。
    *
-   * 如果你禁用了 `lintDirtyOnly` 选项，插件每次调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/) 时都会将该选项值作为调用参数。这意味着这个选项值也需要满足 [globby@11.1.0](https://github.com/sindresorhus/globby/tree/v11.1.0) 的要求。
+   * 如果你禁用了 `lintDirtyOnly` 选项，插件每次调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/) 都会把这个选项值传过去，所以它同样得是 Stylelint 认得的 glob；v18 用的是 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby)。
    */
   include: FilterPattern;
   /**
-   * Whether or not to checkout only modified files that are not included in the `exclude` option value when running Stylelint outside of the `buildStart` lifecycle. Enabled by default.
+   * Whether to lint only the files a request touches, minus the ones matched by `exclude`, when running outside the `buildStart` hook. Enabled by default.
    *
    * When disabled, files are checked against the `include` and `exclude` option values.
    *
-   * 在 `buildStart` 生命周期之外运行 Stylelint 时，是否只校验修改过且没有包含在 `exclude` 选项值内的文件。默认启用。
+   * 在 `buildStart` 之外运行 Stylelint 时，是否只校验本次请求涉及、且没被 `exclude` 匹配到的文件。默认开启。
    *
    * 禁用时，会根据 `include` 和 `exclude` 选项值确定需要校验文件。
    *
@@ -160,29 +160,29 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   lintDirtyOnly: boolean;
   /**
-   * Lint in [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran). This is disabled by default.
+   * Lint in a [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran).
    *
-   * When lint in worker, Vite build process will be faster. You will not see Vite error overlay, Vite build process will not be stopped, even with errors shown in terminal.
+   * Linting in a worker keeps Vite fast. The trade-off is that the build no longer stops on Stylelint errors, even though the terminal still prints them, and Vite's native overlay is gone. The custom overlay still works with `lintInWorker`.
    *
-   * It is similar with [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker), but vite-plugin-checker can show you errors and warnings in browsers.
+   * It solves the same problem as [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker); pick whichever fits your setup.
    *
-   * 在 [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran) 校验。默认禁用。
+   * 在 [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran) 里校验。
    *
-   * 在 worker 中校验时，Vite 的构建过程会更快。即使终端显示了 Stylelint 校验错误，你也不会看到 Vite 错误遮罩层，Vite 构建也不会停止。
+   * 放到 worker 里校验，Vite 跑得更快。代价是构建不会因为 Stylelint 报错停下来（终端照样打印），Vite 原生遮罩层也没了。开 `lintInWorker` 时自定义遮罩层依然可用。
    *
-   * 这与 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 类似，但 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 可以在浏览器中显示错误。
+   * 它和 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 解决的是同一个问题，挑一个顺手的就行。
    *
    * @default false
    */
   lintInWorker: boolean;
   /**
-   * Lint `include` option specified files once in `buildStart` hook to find potential errors. This is disabled by default.
+   * Lint the files matched by `include` once in the `buildStart` hook. Disabled by default.
    *
-   * This will significantly slow down Vite first starting if you have no caches and don't enable `lintInWorker`.
+   * Without a cache, and without `lintInWorker`, this makes Vite's first start noticeably slower.
    *
-   * 在 `buildStart` 生命周期中校验 `include` 选项指定的文件一次以发现潜在的错误。默认禁用。
+   * 在 `buildStart` 钩子里把 `include` 匹配到的文件校验一次。默认关闭。
    *
-   * 如果你没有缓存而且没有启用 `lintInWorker`，这将大大降低 Vite 的初次启动速度。
+   * 没有缓存、又没开 `lintInWorker` 时，Vite 第一次启动会明显变慢。
    *
    * @default false
    */
@@ -190,7 +190,7 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * Path to Stylelint that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
    *
-   * Stylelint 路径，用于校验文件。底层使用使用 [dynamic import](https://javascript.info/modules-dynamic-imports)。请先阅读 [Vite server.fs 选项](https://cn.vitejs.dev/config/server-options.html#server-fs-strict)。
+   * Stylelint 路径，用于校验文件。底层用 [dynamic import](https://javascript.info/modules-dynamic-imports)。请先阅读 [Vite server.fs 选项](https://cn.vitejs.dev/config/server-options.html#server-fs-strict)。
    *
    * @default "stylelint"
    */
