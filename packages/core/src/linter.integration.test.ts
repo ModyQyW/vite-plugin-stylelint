@@ -1,6 +1,7 @@
 import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { normalizePath } from "@rollup/pluginutils";
 import { afterEach, describe, expect, it } from "vitest";
 import { createLinter } from "./linter";
 import { getOptions } from "./utils";
@@ -21,7 +22,9 @@ const lintProject = async (dir: string) => {
   const emitted: string[] = [];
   const linter = createLinter(
     getOptions({
-      include: [join(dir, "**/*.css")],
+      // Stylelint globs need forward slashes; `join` produces backslashes on
+      // Windows, which the globber reads as escapes and matches nothing.
+      include: [normalizePath(join(dir, "**/*.css"))],
       formatter: "string",
       // Inline config keeps the test independent of any config file on disk.
       config: { rules: { "color-no-invalid-hex": true } },
