@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.3.0...v6.4.0) (2026-11-12)
+
+### Features
+
+* **core:** support stylelint 18 ([28189f7](https://github.com/ModyQyW/vite-plugin-stylelint/commit/28189f7fe62878457c3d817364ae7c002248eeb5)) - by @ModyQyW
+
 ## [6.3.0](https://github.com/ModyQyW/vite-plugin-stylelint/compare/v6.2.0...v6.3.0) (2026-06-23)
 
 ### Features
