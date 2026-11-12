@@ -6,23 +6,21 @@ English | [简体中文](./README.zh-CN.md)
   <a href="https://github.com/ModyQyW/vite-plugin-stylelint/blob/main/LICENSE">
     <img src="https://img.shields.io/github/license/ModyQyW/vite-plugin-stylelint?style=for-the-badge" alt="License" />
   </a>
-  <a href="https://www.npmjs.com/package/ModyQyW/vite-plugin-stylelint">
+  <a href="https://www.npmjs.com/package/vite-plugin-stylelint">
     <img src="https://img.shields.io/npm/v/vite-plugin-stylelint?style=for-the-badge" alt="npm" />
   </a>
-  <a href="https://www.npmjs.com/package/ModyQyW/vite-plugin-stylelint">
+  <a href="https://www.npmjs.com/package/vite-plugin-stylelint">
     <img src="https://img.shields.io/npm/dm/vite-plugin-stylelint?style=for-the-badge" alt="npm downloads" />
   </a>
 </div>
 
 ## Introduction
 
-Stylelint plugin for Vite. Supports Vite v2 ~ v8 and Stylelint v13 ~ v17. Requires `node>=18`.
+Stylelint plugin for Vite. Supports Vite v2 to v8 and Stylelint v13 to v18. Requires `node>=18`.
 
-👇 See the documentation for specific usage and examples.
+See the [documentation](https://vite-plugin-stylelint.modyqyw.top/) for usage, options and examples.
 
-[Cloudflare Pages](https://vite-plugin-stylelint.modyqyw.top/)
-
-> You may also want [ESLint plugin for Vite](https://github.com/ModyQyW/vite-plugin-eslint2).
+> You may also want the [ESLint plugin for Vite](https://github.com/ModyQyW/vite-plugin-eslint2).
 
 ## Install
 
@@ -30,7 +28,17 @@ Stylelint plugin for Vite. Supports Vite v2 ~ v8 and Stylelint v13 ~ v17. Requir
 npm install vite-plugin-stylelint -D
 ```
 
-`vite-plugin-stylelint` does not install and config Stylelint for you. You should handle these yourself.
+`vite-plugin-stylelint` does not install or configure Stylelint for you. Install the Stylelint major you want; each one has its own Node.js requirement, listed in the [getting started guide](https://vite-plugin-stylelint.modyqyw.top/guide/getting-started).
+
+<details>
+
+<summary>Stylelint v18</summary>
+
+```sh
+npm install stylelint@^18 -D
+```
+
+</details>
 
 <details>
 
@@ -94,10 +102,6 @@ export default defineConfig({
 });
 ```
 
-👇 See the documentation for specific usage and examples.
-
-[Cloudflare Pages](https://vite-plugin-stylelint.modyqyw.top/)
-
 ## Acknowledge
 
 Initially forked from [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint).
@@ -110,7 +114,7 @@ Thanks to [all contributors](https://github.com/ModyQyW/vite-plugin-stylelint/gr
 
 ## Sponsors
 
-If this package is helpful to you, please consider [sponsoring](https://github.com/ModyQyW/sponsors), which will benefit the ongoing development and maintenance of the project.
+If this package is helpful to you, please consider [sponsoring](https://github.com/ModyQyW/sponsors). It keeps the project developed and maintained.
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/ModyQyW/sponsors/sponsorkit/sponsors.svg">
