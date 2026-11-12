@@ -2,9 +2,9 @@
 
 ## Reason
 
-This project is forked from [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint) to run Stylelint in Vite.
+This project was forked from [gxmari007/vite-plugin-eslint](https://github.com/gxmari007/vite-plugin-eslint) so that Stylelint could run inside Vite.
 
-There are also [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) that provide similar functionality, please choose one to use according to your needs.
+[vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) covers similar ground. Pick the one that fits your needs.
 
 ## Acknowledge
 
@@ -18,7 +18,7 @@ Thanks to [all contributors](https://github.com/ModyQyW/vite-plugin-stylelint/gr
 
 ## Sponsors
 
-If this package is helpful to you, please consider [sponsoring](https://github.com/ModyQyW/sponsors), which will benefit the ongoing development and maintenance of the project.
+If this package is helpful to you, please consider [sponsoring](https://github.com/ModyQyW/sponsors). It keeps the project developed and maintained.
 
 <p align="center">
   <a href="https://cdn.jsdelivr.net/gh/ModyQyW/sponsors/sponsorkit/sponsors.svg">

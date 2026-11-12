@@ -1,6 +1,6 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
-layout: home
+pageType: home
+title: vite-plugin-stylelint
 
 hero:
   name: vite-plugin-stylelint
@@ -17,13 +17,9 @@ hero:
       text: View on GitHub
       link: https://github.com/ModyQyW/vite-plugin-stylelint
     - theme: alt
-      text: "Ask AI \U0001F916"
+      text: "Ask AI 🤖"
       link: https://deepwiki.com/ModyQyW/vite-plugin-stylelint
   image:
     src: /vite-plugin-stylelint.svg
     alt: vite-plugin-stylelint
-# features:
-#   - title: "_feature_"
-#     details: _feature-details_
-#     link: /guide/_feature_
 ---
