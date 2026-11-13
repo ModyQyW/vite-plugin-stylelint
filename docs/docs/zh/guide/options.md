@@ -1,3 +1,7 @@
+---
+description: "插件接受的全部选项：fix、cache 等 Stylelint 共享选项，以及文件匹配、worker、浮层、错误上报等插件特有选项。"
+---
+
 # 选项配置
 
 你可以给这个插件传递 Stylelint [shared options](https://stylelint.io/user-guide/options)，也可以传递这个插件特有的额外选项。`files` 选项总是会被覆盖。

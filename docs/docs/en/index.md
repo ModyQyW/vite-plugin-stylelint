@@ -1,6 +1,7 @@
 ---
 pageType: home
 title: vite-plugin-stylelint
+description: "Vite plugin that runs Stylelint while you develop: terminal output, an in-page overlay, and worker-based linting for Vite 2 to 8 and Stylelint 13 to 18."
 
 hero:
   name: vite-plugin-stylelint

@@ -1,3 +1,7 @@
+---
+description: "这个插件的由来，和 vite-plugin-checker 的差别，以及什么情况下用编辑器或 CI 跑 Stylelint 更合适。"
+---
+
 # 为什么？
 
 ## 起因

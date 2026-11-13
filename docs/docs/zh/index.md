@@ -1,6 +1,7 @@
 ---
 pageType: home
 title: vite-plugin-stylelint
+description: "在 Vite 里运行 Stylelint 的插件：终端输出、页面内浮层、worker 校验，支持 Vite 2 到 8 和 Stylelint 13 到 18。"
 
 hero:
   name: vite-plugin-stylelint

@@ -1,3 +1,7 @@
+---
+description: "Where this plugin came from, how it compares with vite-plugin-checker, and when linting from your editor or CI is the better choice."
+---
+
 # Why?
 
 ## Reason

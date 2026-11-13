@@ -1,3 +1,7 @@
+---
+description: "Whether you need the plugin at all, how to recover from a broken cache, what makes linting slow, a recommended config, and why the output is all red."
+---
+
 # FAQ
 
 ## Should I use this plugin?

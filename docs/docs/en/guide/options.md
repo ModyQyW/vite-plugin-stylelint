@@ -1,3 +1,7 @@
+---
+description: "Every option the plugin accepts: shared Stylelint options such as fix and cache, plus plugin options for file matching, workers, the overlay, and error reporting."
+---
+
 # Options
 
 You can pass Stylelint [shared options](https://stylelint.io/user-guide/options) to the plugin, or you can pass the extra options. The `files` option will always be overridden.

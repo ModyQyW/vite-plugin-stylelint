@@ -1,3 +1,7 @@
+---
+description: "Install vite-plugin-stylelint, register it in vite.config.ts, and match the Stylelint major and Node.js version your project already uses."
+---
+
 # Getting Started
 
 ## Overview

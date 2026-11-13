@@ -1,3 +1,7 @@
+---
+description: "安装 vite-plugin-stylelint，在 vite.config.ts 里注册，并选好和项目匹配的 Stylelint 主版本与 Node.js 版本。"
+---
+
 # 起步
 
 ## 总览
