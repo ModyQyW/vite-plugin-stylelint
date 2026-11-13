@@ -1,6 +1,6 @@
 import path from "node:path";
 import { defineConfig } from "@rspress/core";
-import { SITE_ORIGIN } from "./seo";
+import { SITE_ORIGIN, seoHead } from "./seo";
 
 export default defineConfig({
   lang: "en",
@@ -25,6 +25,7 @@ export default defineConfig({
   ],
   globalStyles: path.join(import.meta.dirname, "theme/index.css"),
   head: [
+    ...seoHead,
     // Google Analytics
     [
       "script",
