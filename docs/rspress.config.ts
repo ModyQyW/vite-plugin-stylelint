@@ -1,10 +1,13 @@
 import path from "node:path";
 import { defineConfig } from "@rspress/core";
+import { SITE_ORIGIN } from "./seo";
 
 export default defineConfig({
   lang: "en",
   title: "vite-plugin-stylelint",
   description: "Stylelint plugin for Vite.",
+  // Without this the sitemap, llms.txt and hreflang links all come out relative.
+  siteOrigin: SITE_ORIGIN,
   icon: "/vite-plugin-stylelint.svg",
   locales: [
     {
