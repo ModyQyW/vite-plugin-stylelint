@@ -1,0 +1,5 @@
+# Rspress fingerprints every file under /static, so a URL's content never
+# changes. Without this, Cloudflare Pages serves them as `max-age=0` and every
+# repeat visit revalidates the whole bundle.
+/static/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -1,0 +1,9 @@
+# Cloudflare serves a managed robots.txt only while the origin has none, so this
+# file also replaces its "content signals" placeholder. Search indexing and AI
+# grounding are allowed because being cited is the point of these docs; model
+# training is not. Flip ai-train to `yes` if you want that too.
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+
+Sitemap: https://vite-plugin-stylelint.modyqyw.top/sitemap.xml
