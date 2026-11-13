@@ -6,7 +6,9 @@ description: "Install vite-plugin-stylelint, register it in vite.config.ts, and 
 
 ## Overview
 
-`vite-plugin-stylelint` runs Stylelint inside Vite. It supports Vite v2 to v8 and Stylelint v13 to v18. The plugin needs Node.js 18 or newer; each Stylelint major has its own Node.js requirement, listed below.
+`vite-plugin-stylelint` runs Stylelint inside Vite. It supports Vite v2 to v8 and Stylelint v13 to v18.
+
+The plugin needs Node.js 18 or newer. Each Stylelint major has its own Node.js requirement. The table below lists them.
 
 > For Nuxt projects, use [@nuxtjs/stylelint-module](https://github.com/nuxt-modules/stylelint).
 
@@ -18,7 +20,7 @@ description: "Install vite-plugin-stylelint, register it in vite.config.ts, and 
 npm install vite-plugin-stylelint -D
 ```
 
-`vite-plugin-stylelint` does not install or configure Stylelint for you. Install the Stylelint major you want and the configs it needs.
+`vite-plugin-stylelint` does not install or configure Stylelint for you. Install the Stylelint major you want, and the configs it needs.
 
 | Stylelint | Install                                     | Node.js                            |
 | --------- | ------------------------------------------- | ---------------------------------- |
@@ -29,7 +31,9 @@ npm install vite-plugin-stylelint -D
 | 14        | `npm install stylelint@^14 -D`              | `^12.20.0 \|\| ^14.13.1 \|\| >=16`  |
 | 13        | `npm install stylelint@^13 @types/stylelint@^13 -D` | `>=10.13.0`               |
 
-Stylelint 18 also needs configs that support it, such as `stylelint-config-recommended@^19`. Some community configs, `stylelint-config-recommended-scss` among them, still require Stylelint 17.
+Stylelint 18 also needs configs that support it. `stylelint-config-recommended@^19` is one.
+
+Some community configs still require Stylelint 17. `stylelint-config-recommended-scss` is one of them.
 
 ## Usage
 

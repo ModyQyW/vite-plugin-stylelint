@@ -4,11 +4,11 @@ description: "Every option the plugin accepts: shared Stylelint options such as 
 
 # Options
 
-You can pass Stylelint [shared options](https://stylelint.io/user-guide/options) to the plugin, or you can pass the extra options. The `files` option will always be overridden.
+The plugin takes Stylelint [shared options](https://stylelint.io/user-guide/options) and its own extra options in one object. The plugin always overrides the `files` option.
 
 ## Shared Options
 
-The most common ones are listed below; the link above covers the rest.
+The sections below cover the most common ones. The link above covers the rest.
 
 ### `fix`
 
@@ -23,79 +23,77 @@ Whether Stylelint rewrites the problems it can fix.
 - Stylelint default: `false`
 - Plugin default: `true`
 
-Whether to enable the cache. Stylelint disables it by default; the plugin enables it for speed.
+Whether to enable the cache. Stylelint disables it by default. The plugin enables it for speed.
 
 ### `cacheLocation`
 
 - Type: `string`
 - Default: `.stylelintcache`
 
-The path to the cache.
+The path to the cache file.
 
 ## Extra Options
-
-Extra options and explanations are listed below.
 
 ### `test`
 
 - Type: `boolean`
 - Default: `false`
 
-Whether to run Stylelint in `test` mode. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) and [Configuring Vitest](https://vitest.dev/guide/#configuring-vitest) for more.
+Whether to run Stylelint in `test` mode. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) and [Configuring Vitest](https://vitest.dev/guide/#configuring-vitest).
 
 ### `dev`
 
 - Type: `boolean`
 - Default: `true`
 
-Whether to run Stylelint under `serve`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Whether to run Stylelint under `serve`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface).
 
 ### `build`
 
 - Type: `boolean`
 - Default: `false`
 
-Whether to run Stylelint under `build`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+Whether to run Stylelint under `build`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface).
 
 ### `include`
 
 - Type: `string | string[]`
 - Default: `["src/**/*.{css,scss,sass,less,styl,vue,svelte}"]`
 
-This option specifies the files you want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
+The files to lint. Most projects never change it. Change it only when the `include` and `exclude` ranges overlap.
 
-If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
+With the default settings, the plugin calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) only in the `transform` hook. It builds a [filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) from this value. The filter decides whether to call Stylelint, and what to pass. So the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
 
-If you enable the `lintOnStart` option, the plugin will also call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. There the value is passed straight through as `files`, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
+When `lintOnStart` is on, the plugin also calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. There it passes the value straight through as `files`. So the value must also be a glob that Stylelint understands. Stylelint 18 resolves globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
 
-If you disable the `lintDirtyOnly` option, the plugin passes the value to [stylelint.lint](https://stylelint.io/user-guide/node-api/) every time, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
+When `lintDirtyOnly` is off, the plugin passes the value to [stylelint.lint](https://stylelint.io/user-guide/node-api/) on every call. So the value must also be a glob that Stylelint understands. Stylelint 18 resolves globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
 
 ### `exclude`
 
 - Type: `string | string[]`
 - Default: `['node_modules', 'virtual:']`
 
-This option specifies the files you don't want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
+The files not to lint. Most projects never change it. Change it only when the `include` and `exclude` ranges overlap.
 
-The plugin forces the virtual module to be ignored and you don't need to do any configuration related to it here.
+The plugin always ignores the virtual module. You do not configure that here.
 
-If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
+With the default settings, the plugin calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) only in the `transform` hook. It builds a [filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) from this value. The filter decides whether to call Stylelint, and what to pass. So the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
 
-If you enable the `lintOnStart` option or disable the `lintDirtyOnly` option, the option value will not take effect. You need to change `include` value to include this option value.
+When `lintOnStart` is on, or `lintDirtyOnly` is off, this value has no effect. To leave those files out, adjust the `include` value.
 
 ### `stylelintPath`
 
 - Type: `string`
 - Default: `"stylelint"`
 
-Path to Stylelint that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
+The path to the Stylelint used for linting. The plugin loads it with a [dynamic import](https://javascript.info/modules-dynamic-imports). Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
 
 ### `formatter`
 
 - Type: `string`
 - Default: `"string"`
 
-The name, the path or the function implementation of a formatter. This is used to [set a formatter](https://stylelint.io/user-guide/usage/options#formatter) in order to convert lint results to a human- or machine-readable string.
+The formatter name, path or function. The plugin passes it to [Stylelint's formatter option](https://stylelint.io/user-guide/usage/options#formatter) to turn lint results into a human-readable or machine-readable string.
 
 ### `lintInWorker`
 
@@ -104,9 +102,9 @@ The name, the path or the function implementation of a formatter. This is used t
 
 Lint in a [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran).
 
-Linting in a worker keeps Vite fast. The trade-off is that the build no longer stops on Stylelint errors, even though the terminal still prints them, and Vite's native overlay is gone. The custom overlay still works with `lintInWorker`.
+A worker keeps Vite fast. The trade-off: the build no longer stops on Stylelint errors, and Vite's native overlay is gone. The terminal still prints the errors. The custom overlay still works with `lintInWorker`.
 
-It solves the same problem as [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker); pick whichever fits your setup.
+[vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) solves the same problem. Pick whichever fits your setup.
 
 ### `customOverlay`
 
@@ -124,22 +122,22 @@ interface CustomOverlayOptions {
 
 Use the plugin's custom overlay instead of Vite's native error overlay.
 
-The native overlay renders Stylelint's ANSI-colored `string` output verbatim, which loses color (or shows escape codes) in the browser. The custom overlay renders structured results natively, and unlike the native overlay it also works when `lintInWorker` is enabled.
+The native overlay renders Stylelint's ANSI-colored `string` output verbatim. Color is lost in the browser, or the escape codes show through. The custom overlay renders structured results natively. It also works when `lintInWorker` is on, which the native overlay does not.
 
-In environments without a DOM entry (mini-programs, SSR, headless tests), the runtime is not injected; the plugin warns once and falls back to terminal-only output.
+In an environment without a DOM entry (mini-programs, SSR, headless tests), the plugin does not inject the runtime. It warns once, then prints to the terminal only.
 
-- `false`: keep Vite's native overlay. With `lintInWorker` there is no overlay at all in this case.
+- `false`: keep Vite's native overlay. With `lintInWorker` there is no overlay at all.
 - `true`: use the custom overlay with default styling.
 - `{...}`: use the custom overlay with the given styling.
 
-Only takes effect under `serve`. In `build` mode the native `context.error` blocking behavior is always preserved.
+This option applies under `serve` only. In `build` mode the native `context.error` blocking behavior is always preserved.
 
 ### `lintOnStart`
 
 - Type: `boolean`
 - Default: `false`
 
-Lint the files matched by `include` once in the `buildStart` hook. Disabled by default.
+Lint the files matched by `include` once, in the `buildStart` hook.
 
 Without a cache, and without `lintInWorker`, this makes Vite's first start noticeably slower.
 
@@ -148,34 +146,34 @@ Without a cache, and without `lintInWorker`, this makes Vite's first start notic
 - Type: `boolean`
 - Default: `true`
 
-Whether to lint only the files a request touches, minus the ones matched by `exclude`, when running outside the `buildStart` hook. Enabled by default.
+Outside the `buildStart` hook, lint only the files a request touches. The files matched by `exclude` are skipped.
 
-When disabled, files are checked against the `include` and `exclude` option values.
+When this option is off, the plugin checks files against the `include` and `exclude` values instead.
 
 ### `emitError`
 
 - Type: `boolean`
 - Default: `true`
 
-Emit found errors. Enabled by default.
+Emit found errors.
 
 ### `emitErrorAsWarning`
 
 - Type: `boolean`
 - Default: `false`
 
-Emit found errors as warnings. Disabled by default; useful while prototyping.
+Emit found errors as warnings. Useful while prototyping.
 
 ### `emitWarning`
 
 - Type: `boolean`
 - Default: `true`
 
-Emit found warnings. Enabled by default.
+Emit found warnings.
 
 ### `emitWarningAsError`
 
 - Type: `boolean`
 - Default: `false`
 
-Emit found warnings as errors. Disabled by default.
+Emit found warnings as errors.
