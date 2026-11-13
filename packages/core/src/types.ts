@@ -19,17 +19,17 @@ export type StylelintLinterResult = Stylelint.LinterResult;
 
 export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
-   * Run Stylelint under `build` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+   * Run Stylelint under `build`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface).
    *
-   * 在 `build` 命令下运行 Stylelint。查看 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface) 了解更多。
+   * 在 `build` 下运行 Stylelint。见 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface)。
    *
    * @default false
    */
   build: boolean;
   /**
-   * Whether to enable the cache. Stylelint disables it by default; the plugin enables it for speed.
+   * Whether to enable the cache. Stylelint disables it by default. The plugin enables it for speed.
    *
-   * 是否启用缓存。Stylelint 默认禁用，插件默认启用以提高速度。
+   * 是否启用缓存。Stylelint 默认关掉。插件默认打开，为了快一点。
    *
    * @default true
    */
@@ -37,35 +37,35 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * Use the plugin's custom overlay instead of Vite's native error overlay.
    *
-   * The native overlay renders Stylelint's ANSI-colored `string` output verbatim, which loses color (or shows escape codes) in the browser. The custom overlay renders structured results natively, and unlike the native overlay it also works when `lintInWorker` is enabled.
+   * The native overlay renders Stylelint's ANSI-colored `string` output verbatim. Color is lost in the browser, or the escape codes show through. The custom overlay renders structured results natively. It also works when `lintInWorker` is on, which the native overlay does not.
    *
-   * In environments without a DOM entry (mini-programs, SSR, headless tests), the runtime is not injected; the plugin warns once and falls back to terminal-only output.
+   * In an environment without a DOM entry (mini-programs, SSR, headless tests), the plugin does not inject the runtime. It warns once, then prints to the terminal only.
    *
-   * - `false`: keep Vite's native overlay. With `lintInWorker` there is no overlay at all in this case.
+   * - `false`: keep Vite's native overlay. With `lintInWorker` there is no overlay at all.
    * - `true`: use the custom overlay with default styling.
    * - `{...}`: use the custom overlay with the given styling.
    *
-   * Only takes effect under `serve`. In `build` mode the native `context.error` blocking behavior is always preserved.
+   * This option applies under `serve` only. In `build` mode the native `context.error` blocking behavior is always preserved.
    *
-   * 使用插件的自定义遮罩层，替代 Vite 原生错误遮罩层。
+   * 用插件的自定义遮罩层，替代 Vite 原生错误遮罩层。
    *
-   * 原生遮罩层会把 Stylelint 带 ANSI 颜色的 `string` 输出原样渲染，在浏览器中颜色丢失（或显示转义字符）。自定义遮罩层原生渲染结构化结果，和原生遮罩层不同，开 `lintInWorker` 时也能用。
+   * 原生遮罩层把 Stylelint 带 ANSI 颜色的 `string` 输出原样渲染。浏览器里颜色丢失，或者直接显示转义字符。自定义遮罩层原生渲染结构化结果。它还能配合 `lintInWorker` 使用，原生遮罩层做不到。
    *
-   * 在没有 DOM 入口的环境（小程序、SSR、无头测试）中，运行时不会被注入；插件会警告一次并降级为仅终端输出。
+   * 环境里没有 DOM 入口时（小程序、SSR、无头测试），插件不注入运行时。它警告一次，之后只打到终端。
    *
    * - `false`：保留 Vite 原生遮罩层。配合 `lintInWorker` 时完全没有遮罩层。
    * - `true`：使用自定义遮罩层，默认样式。
-   * - `{...}`：使用自定义遮罩层，并按给定配置定制样式。
+   * - `{...}`：使用自定义遮罩层，按给定配置定制样式。
    *
-   * 仅在 `serve` 下生效。`build` 模式下始终保留原生 `context.error` 的阻塞行为。
+   * 这个选项只在 `serve` 下生效。`build` 模式下始终保留原生 `context.error` 的阻塞行为。
    *
    * @default false
    */
   customOverlay: false | true | CustomOverlayOptions;
   /**
-   * Run Stylelint under `serve` command. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) for more.
+   * Run Stylelint under `serve`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface).
    *
-   * 在 `serve` 命令下运行 Stylelint。查看 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface) 了解更多。
+   * 在 `serve` 下运行 Stylelint。见 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface)。
    *
    * @default true
    */
@@ -79,10 +79,9 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   emitError: boolean;
   /**
-   * Emit found errors as warnings. This is disabled by default but you may want it enabled when
-   * prototyping.
+   * Emit found errors as warnings. Useful while prototyping.
    *
-   * 把发现的错误当警告输出。默认关闭，做原型时可以打开。
+   * 把发现的错误当警告输出。做原型时可以打开。
    *
    * @default false
    */
@@ -104,57 +103,57 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   emitWarningAsError: boolean;
   /**
-   * This option specifies the files you don't want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
+   * The files not to lint. Most projects never change it. Change it only when the `include` and `exclude` ranges overlap.
    *
-   * The plugin forces the virtual module to be ignored and you don't need to do any configuration related to it here.
+   * The plugin always ignores the virtual module. You do not configure that here.
    *
-   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
+   * With the default settings, the plugin calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) only in the `transform` hook. It builds a [filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) from this value. The filter decides whether to call Stylelint, and what to pass. So the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
    *
-   * If you enable the `lintOnStart` option or disable the `lintDirtyOnly` option, the option value will not take effect. You need to change `include` value to include this option value.
+   * When `lintOnStart` is on, or `lintDirtyOnly` is off, this value has no effect. To leave those files out, adjust the `include` value.
    *
-   * 这个选项指定你不想要校验的文件模式。在绝大部分情况下，你并不需要调整它，除非 `include` 和 `exclude` 范围有重合。
+   * 不要校验的文件。大多数项目不用改它。只有 `include` 和 `exclude` 范围重合时才需要调整。
    *
-   * 插件强制忽略虚拟模块，你不需要在这里进行任何相关配置。
+   * 插件总是忽略虚拟模块。这里不用配置。
    *
-   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
+   * 用默认设置时，插件只在 `transform` 钩子里调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。它用这个选项值 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter)。过滤器决定是否调用 Stylelint，以及传什么参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
    *
-   * 如果你启用了 `lintOnStart` 选项或者禁用了 `lintDirtyOnly` 选项，这个选项值不会生效。你需要调整 `include` 值以包含该选项值。
+   * 开了 `lintOnStart`，或者关了 `lintDirtyOnly` 时，这个选项值不生效。要排除这些文件，得改 `include` 值。
    */
   exclude: FilterPattern;
   /**
-   * The name, the path or the function implementation of a formatter. This is used to [set a formatter](https://stylelint.io/user-guide/usage/options#formatter) in order to convert lint results to a human- or machine-readable string.
+   * The formatter name, path or function. The plugin passes it to [Stylelint's formatter option](https://stylelint.io/user-guide/usage/options#formatter) to turn lint results into a human-readable or machine-readable string.
    *
-   * 格式化器的名称、路径或函数实现。用于 [设置格式化器](https://stylelint.io/user-guide/usage/options#formatter)，以便将校验结果转换为人类或机器可读的字符串。
+   * 格式化器的名称、路径或函数。插件把它传给 [Stylelint 的格式化器选项](https://stylelint.io/user-guide/usage/options#formatter)，把校验结果转成人类或机器可读的字符串。
    *
    * @default "string"
    */
   formatter: StylelintFormatterType | StylelintFormatter;
   /**
-   * This option specifies the files you want to lint. You don't need to change it in most cases, unless the `include` and `exclude` ranges overlap.
+   * The files to lint. Most projects never change it. Change it only when the `include` and `exclude` ranges overlap.
    *
-   * If you're using the plugin defaults, the plugin will only call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `transform` hook. The option value will be used to [create a filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) to determine if the call should be made and the parameter of the call, so the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
+   * With the default settings, the plugin calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) only in the `transform` hook. It builds a [filter](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) from this value. The filter decides whether to call Stylelint, and what to pass. So the value must be a valid [picomatch](https://github.com/micromatch/picomatch) pattern.
    *
-   * If you enable the `lintOnStart` option, the plugin will also call [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. There the value is passed straight through as `files`, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
+   * When `lintOnStart` is on, the plugin also calls [stylelint.lint](https://stylelint.io/user-guide/node-api/) in the `buildStart` hook. There it passes the value straight through as `files`. So the value must also be a glob that Stylelint understands. Stylelint 18 resolves globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
    *
-   * If you disable the `lintDirtyOnly` option, the plugin passes the value to [stylelint.lint](https://stylelint.io/user-guide/node-api/) every time, so it must also be a glob Stylelint understands; v18 globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
+   * When `lintDirtyOnly` is off, the plugin passes the value to [stylelint.lint](https://stylelint.io/user-guide/node-api/) on every call. So the value must also be a glob that Stylelint understands. Stylelint 18 resolves globs with [tinyglobby](https://github.com/SuperchupuDev/tinyglobby).
    *
-   * 这个选项指定你想要校验的文件模式。在绝大部分情况下，你并不需要调整它，除非 `include` 和 `exclude` 范围有重合。
+   * 要校验的文件。大多数项目不用改它。只有 `include` 和 `exclude` 范围重合时才需要调整。
    *
-   * 如果你正在使用插件默认设置，插件只会在 `transform` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这个选项值会被用于 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter) 来确定是否该调用以及调用参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
+   * 用默认设置时，插件只在 `transform` 钩子里调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。它用这个选项值 [创建一个过滤器](https://github.com/rollup/plugins/blob/master/packages/pluginutils/README.md#createfilter)。过滤器决定是否调用 Stylelint，以及传什么参数。所以选项值要符合 [picomatch](https://github.com/micromatch/picomatch) 的写法。
    *
-   * 如果你启用了 `lintOnStart` 选项，插件还会在 `buildStart` 生命周期中调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这时选项值会原样传给 `files`，所以它还得是 Stylelint 认得的 glob；v18 用的是 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby)。
+   * 开了 `lintOnStart` 时，插件还会在 `buildStart` 钩子里调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/)。这时选项值原样传给 `files`。所以它还得是 Stylelint 认得的 glob。Stylelint 18 用 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby) 解析 glob。
    *
-   * 如果你禁用了 `lintDirtyOnly` 选项，插件每次调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/) 都会把这个选项值传过去，所以它同样得是 Stylelint 认得的 glob；v18 用的是 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby)。
+   * 关了 `lintDirtyOnly` 时，插件每次调用 [stylelint.lint](https://stylelint.io/user-guide/node-api/) 都会传这个选项值。所以它同样得是 Stylelint 认得的 glob。Stylelint 18 用 [tinyglobby](https://github.com/SuperchupuDev/tinyglobby) 解析 glob。
    */
   include: FilterPattern;
   /**
-   * Whether to lint only the files a request touches, minus the ones matched by `exclude`, when running outside the `buildStart` hook. Enabled by default.
+   * Outside the `buildStart` hook, lint only the files a request touches. The files matched by `exclude` are skipped.
    *
-   * When disabled, files are checked against the `include` and `exclude` option values.
+   * When this option is off, the plugin checks files against the `include` and `exclude` values instead.
    *
-   * 在 `buildStart` 之外运行 Stylelint 时，是否只校验本次请求涉及、且没被 `exclude` 匹配到的文件。默认开启。
+   * 在 `buildStart` 之外，只校验本次请求涉及的文件。被 `exclude` 匹配到的文件跳过。
    *
-   * 禁用时，会根据 `include` 和 `exclude` 选项值确定需要校验文件。
+   * 关掉这个选项时，插件改为按 `include` 和 `exclude` 的值判断要校验哪些文件。
    *
    * @default true
    */
@@ -162,25 +161,25 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
   /**
    * Lint in a [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran).
    *
-   * Linting in a worker keeps Vite fast. The trade-off is that the build no longer stops on Stylelint errors, even though the terminal still prints them, and Vite's native overlay is gone. The custom overlay still works with `lintInWorker`.
+   * A worker keeps Vite fast. The trade-off: the build no longer stops on Stylelint errors, and Vite's native overlay is gone. The terminal still prints the errors. The custom overlay still works with `lintInWorker`.
    *
-   * It solves the same problem as [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker); pick whichever fits your setup.
+   * [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) solves the same problem. Pick whichever fits your setup.
    *
    * 在 [worker](https://nodejs.org/api/worker_threads.html#portpostmessagevalue-tran) 里校验。
    *
-   * 放到 worker 里校验，Vite 跑得更快。代价是构建不会因为 Stylelint 报错停下来（终端照样打印），Vite 原生遮罩层也没了。开 `lintInWorker` 时自定义遮罩层依然可用。
+   * 放到 worker 里校验，Vite 跑得更快。代价是构建不会因为 Stylelint 报错停下来，Vite 原生遮罩层也没了。终端照样打印错误。开 `lintInWorker` 时自定义遮罩层依然可用。
    *
-   * 它和 [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 解决的是同一个问题，挑一个顺手的就行。
+   * [vite-plugin-checker](https://github.com/fi3ework/vite-plugin-checker) 解决的是同一个问题。挑一个顺手的就行。
    *
    * @default false
    */
   lintInWorker: boolean;
   /**
-   * Lint the files matched by `include` once in the `buildStart` hook. Disabled by default.
+   * Lint the files matched by `include` once, in the `buildStart` hook.
    *
    * Without a cache, and without `lintInWorker`, this makes Vite's first start noticeably slower.
    *
-   * 在 `buildStart` 钩子里把 `include` 匹配到的文件校验一次。默认关闭。
+   * 在 `buildStart` 钩子里，把 `include` 匹配到的文件校验一次。
    *
    * 没有缓存、又没开 `lintInWorker` 时，Vite 第一次启动会明显变慢。
    *
@@ -188,18 +187,18 @@ export interface StylelintPluginOptions extends StylelintLinterOptions {
    */
   lintOnStart: boolean;
   /**
-   * Path to Stylelint that will be used for linting. Use [dynamic import](https://javascript.info/modules-dynamic-imports) under the hood. Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
+   * The path to the Stylelint used for linting. The plugin loads it with a [dynamic import](https://javascript.info/modules-dynamic-imports). Read [Vite server.fs options](https://vitejs.dev/config/server-options.html#server-fs-strict) first.
    *
-   * Stylelint 路径，用于校验文件。底层用 [dynamic import](https://javascript.info/modules-dynamic-imports)。请先阅读 [Vite server.fs 选项](https://cn.vitejs.dev/config/server-options.html#server-fs-strict)。
+   * 用于校验的 Stylelint 路径。底层用 [dynamic import](https://javascript.info/modules-dynamic-imports) 加载。请先读 [Vite server.fs 选项](https://cn.vitejs.dev/config/server-options.html#server-fs-strict)。
    *
    * @default "stylelint"
    */
   stylelintPath: string;
 
   /**
-   * Run Stylelint under `test` mode. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) and [Configuring Vitest](https://vitest.dev/guide/#configuring-vitest) for more.
+   * Run Stylelint under `test`. See [Command Line Interface](https://vitejs.dev/guide/#command-line-interface) and [Configuring Vitest](https://vitest.dev/guide/#configuring-vitest).
    *
-   * 在 `test` 模式下运行 Stylelint。查看 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface) 和 [配置 Vitest](https://cn.vitest.dev/guide/) 了解更多。
+   * 在 `test` 下运行 Stylelint。见 [命令行界面](https://cn.vitejs.dev/guide/#command-line-interface) 和 [配置 Vitest](https://cn.vitest.dev/guide/)。
    *
    * @default false
    */
