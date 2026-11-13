@@ -119,10 +119,11 @@ The docs site is Rspress. The workspace package is `docs/`:
 ```tree
 docs/
 ├── rspress.config.ts   # site config: locales, nav, head tags
+├── seo.ts              # canonical, Open Graph and JSON-LD head tags
 ├── docs/               # content root, one directory per locale
 │   ├── en/
-│   └── zh/
-├── theme/              # custom theme (Layout override + AdSense unit)
+│   ├── zh/
+│   └── public/         # robots.txt, _headers and the Open Graph image
 └── tsconfig.json
 ```
 

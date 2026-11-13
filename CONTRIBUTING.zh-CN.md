@@ -119,10 +119,11 @@ flowchart TD
 ```tree
 docs/
 ├── rspress.config.ts   # 站点配置：语言、导航、head 标签
+├── seo.ts              # canonical、Open Graph 和 JSON-LD head 标签
 ├── docs/               # 内容根目录，一种语言一个目录
 │   ├── en/
-│   └── zh/
-├── theme/              # 自定义主题（Layout 覆写 + AdSense 单元）
+│   ├── zh/
+│   └── public/         # robots.txt、_headers 和 Open Graph 图
 └── tsconfig.json
 ```
 

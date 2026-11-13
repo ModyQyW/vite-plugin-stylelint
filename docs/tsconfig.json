@@ -15,5 +15,5 @@
     "skipDefaultLibCheck": true,
     "types": ["node"]
   },
-  "include": ["docs", "theme", "rspress.config.ts"]
+  "include": ["docs", "rspress.config.ts"]
 }

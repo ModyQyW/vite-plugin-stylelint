@@ -1,4 +1,3 @@
-import path from "node:path";
 import { defineConfig } from "@rspress/core";
 import { SITE_ORIGIN, seoHead } from "./seo";
 
@@ -23,42 +22,7 @@ export default defineConfig({
       description: "Vite 的 Stylelint 插件。",
     },
   ],
-  globalStyles: path.join(import.meta.dirname, "theme/index.css"),
-  head: [
-    ...seoHead,
-    // Google Analytics
-    [
-      "script",
-      {
-        async: "",
-        src: "https://www.googletagmanager.com/gtag/js?id=G-1WT0NZVS5X",
-      },
-    ],
-    // Google AdSense
-    [
-      "script",
-      {
-        async: "",
-        crossorigin: "anonymous",
-        src: "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3102250747488251",
-      },
-    ],
-  ],
-  // `head` only accepts tags without children, so the inline gtag bootstrap has
-  // to go through Rsbuild's html tag config instead.
-  builderConfig: {
-    html: {
-      tags: [
-        {
-          tag: "script",
-          children: `window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-1WT0NZVS5X');`,
-        },
-      ],
-    },
-  },
+  head: seoHead,
   themeConfig: {
     socialLinks: [
       {
