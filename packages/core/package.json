@@ -4,9 +4,14 @@
   "description": "Stylelint plugin for Vite.",
   "keywords": [
     "stylelint",
-    "vite-plugin"
+    "vite-plugin",
+    "vite",
+    "plugin",
+    "linter",
+    "css",
+    "lint"
   ],
-  "homepage": "https://github.com/ModyQyW/vite-plugin-stylelint",
+  "homepage": "https://vite-plugin-stylelint.modyqyw.top",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ModyQyW/vite-plugin-stylelint.git",
