@@ -8,7 +8,7 @@ English | [简体中文](./README.zh-CN.md)
 
 Usage and examples live in the [documentation](https://vite-plugin-stylelint.modyqyw.top/).
 
-## Introductions
+## Introduction
 
 `vite-plugin-stylelint` is a monorepo for the Vite Stylelint plugin and the packages around it:
 
